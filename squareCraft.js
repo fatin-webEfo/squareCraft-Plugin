@@ -5,7 +5,6 @@
     return;
   }
 
-  // Include external CSS
   const link = document.createElement("link");
   link.rel = "stylesheet";
   link.type = "text/css";
@@ -25,7 +24,6 @@
   let selectedElement = null;
   let appliedStyles = new Set();
 
-  // Get the page ID from the DOM
   function getPageId() {
     let pageElement = document.querySelector("article[data-page-sections]");
     return pageElement ? pageElement.getAttribute("data-page-sections") : null;
@@ -34,9 +32,7 @@
   let pageId = getPageId();
   if (!pageId) console.warn("⚠️ No page ID found. Plugin may not work correctly.");
 
-  /**
-   * 🎨 Apply Styles to an Element & Ensure Persistence
-   */
+
   function applyStylesToElement(elementId, css) {
     if (!elementId || !css || appliedStyles.has(elementId)) return;
 
@@ -57,9 +53,7 @@
     appliedStyles.add(elementId);
   }
 
-  /**
-   * 📡 Fetch & Apply Stored Modifications After Page Load
-   */
+ 
   async function fetchModifications(retries = 3) {
     if (!pageId) return;
 
@@ -102,9 +96,7 @@
     }
   }
 
-  /**
-   * 💾 Save Modifications for Selected Element
-   */
+
   async function saveModifications(elementId, css) {
     let pageId = getPageId();
     if (!pageId || !elementId || !css) {
@@ -141,9 +133,7 @@
     }
   }
 
-  /**
-   * 🎛️ Create Floating Widget for Editing Styles
-   */
+
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
@@ -157,25 +147,17 @@
         <h3>🎨 SquareCraft Widget</h3>
         <label>Font Size:</label>
         <input type="number" id="squareCraftFontSize" value="16" min="10" max="50" style="width: 100%;">
-
         <label>Background Color:</label>
         <input type="color" id="squareCraftBgColor" value="#ffffff" style="width: 100%;">
-
         <label>Border Radius:</label>
         <input type="range" id="squareCraftBorderRadius" min="0" max="50" value="0">
         <p>Border Radius: <span id="borderRadiusValue">0px</span></p>
-
-        <button id="squareCraftPublish" style="width: 100%; padding: 10px; background: #EF7C2F; color: white;">
-          Publish Changes
-        </button>
       </div>
     `;
     document.body.appendChild(widgetContainer);
   }
 
-  /**
-   * 🎯 Handle Element Selection & Style Updates
-   */
+
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"]');
@@ -188,25 +170,26 @@
       console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
 
-    document.getElementById("squareCraftPublish").addEventListener("click", async () => {
-      if (!selectedElement) {
-        console.warn("⚠️ No element selected.");
-        return;
+    document.body.addEventListener("input", async (event) => {
+      if (!selectedElement) return;
+
+      let css = {};
+      if (event.target.id === "squareCraftFontSize") {
+        css["font-size"] = event.target.value + "px";
+      } else if (event.target.id === "squareCraftBgColor") {
+        css["background-color"] = event.target.value;
+      } else if (event.target.id === "squareCraftBorderRadius") {
+        css["border-radius"] = event.target.value + "px";
       }
 
-      let css = {
-        "font-size": document.getElementById("squareCraftFontSize").value + "px",
-        "background-color": document.getElementById("squareCraftBgColor").value,
-        "border-radius": document.getElementById("squareCraftBorderRadius").value + "px"
-      };
-
-      await saveModifications(selectedElement.id, css); // Save changes
+      if (Object.keys(css).length > 0) {
+        applyStylesToElement(selectedElement.id, css); // Apply changes instantly
+        await saveModifications(selectedElement.id, css); // Save changes to the backend
+      }
     });
   }
 
-  /**
-   * 🔄 Handle AJAX Navigation
-   */
+
   const observer = new MutationObserver(() => {
     console.log("🔄 Page updated via AJAX. Re-fetching styles...");
     pageId = getPageId();
