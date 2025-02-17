@@ -8,13 +8,19 @@
   const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
-
-    const fontSizes = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
-    let fontSizeOptions = '';
-    for (let size of fontSizes) {
-      fontSizeOptions += `<option value="${size}">${size}px</option>`;
-    }
   
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.type = "text/css";
+  link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
+  document.head.appendChild(link);
+
+  const fontSizes = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
+  let fontSizeOptions = '';
+  for (let size of fontSizes) {
+    fontSizeOptions += `<option value="${size}">${size}px</option>`;
+  }
+
 
   if (token) localStorage.setItem("squareCraft_auth_token", token);
   if (userId) localStorage.setItem("squareCraft_u_id", userId);
