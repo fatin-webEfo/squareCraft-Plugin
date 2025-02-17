@@ -409,24 +409,27 @@
 
   function applyStylesToElement(elementId, css) {
     if (!elementId || !css || appliedStyles.has(elementId)) return;
-
+  
     let styleTag = document.getElementById(`style-${elementId}`);
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = `style-${elementId}`;
       document.head.appendChild(styleTag);
     }
-
+  
     let cssText = `#${elementId} { `;
     Object.keys(css).forEach(prop => {
       cssText += `${prop}: ${css[prop]} !important; `;
     });
     cssText += "}";
-
+  
+    console.log(`✅ Injecting CSS for ${elementId}: ${cssText}`);
+  
     styleTag.innerHTML = cssText;
     appliedStyles.add(elementId);
     console.log(`✅ Styles Persisted for ${elementId}`);
   }
+  
 
   async function fontfamilies() {
     const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
