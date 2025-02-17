@@ -446,10 +446,6 @@
         }
       );
 
-      if (!response.ok) {
-        console.error(`❌ Error: HTTP status ${response.status}`);
-        return;
-      }
 
       const data = await response.json();
       console.log("📥 Get method response:", data);
