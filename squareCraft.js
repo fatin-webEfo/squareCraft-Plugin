@@ -143,7 +143,7 @@
     widgetContainer.style.zIndex = "9999";
 
     widgetContainer.innerHTML = `
-     <div class="squareCraft-widget-container">
+     <div class="squareCraft-widget-container squareCraft-p-4 squareCraft-bg-white squareCraft-bg-color-2c2c2c squareCraft-shadow-md">
   <h3 class="squareCraft-widget-title">🎨 SquareCraft Widget</h3>
 
   <label class="squareCraft-label" for="squareCraftFontSize">Font Size:</label>
