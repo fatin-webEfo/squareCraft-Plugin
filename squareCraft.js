@@ -5,7 +5,7 @@
     return;
   }
 
-  // Add your CSS link
+  // Include external CSS
   const link = document.createElement("link");
   link.rel = "stylesheet";
   link.type = "text/css";
@@ -31,7 +31,12 @@
     return pageElement ? pageElement.getAttribute("data-page-sections") : null;
   }
 
-  // Apply CSS to a selected element dynamically
+  let pageId = getPageId();
+  if (!pageId) console.warn("⚠️ No page ID found. Plugin may not work correctly.");
+
+  /**
+   * 🎨 Apply Styles to an Element & Ensure Persistence
+   */
   function applyStylesToElement(elementId, css) {
     if (!elementId || !css || appliedStyles.has(elementId)) return;
 
@@ -52,9 +57,10 @@
     appliedStyles.add(elementId);
   }
 
-  // Fetch saved modifications for the page and apply them
-  async function fetchModifications() {
-    let pageId = getPageId();
+  /**
+   * 📡 Fetch & Apply Stored Modifications After Page Load
+   */
+  async function fetchModifications(retries = 3) {
     if (!pageId) return;
 
     try {
@@ -82,17 +88,23 @@
       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
         if (storedPageId === pageId) {
           elements.forEach(({ elementId, css }) => {
-            applyStylesToElement(elementId, css);
+            applyStylesToElement(elementId, css); // Apply styles directly
           });
         }
       });
 
     } catch (error) {
       console.error("❌ Error fetching modifications:", error);
+      if (retries > 0) {
+        console.log(`🔄 Retrying fetch... (${retries} left)`);
+        setTimeout(() => fetchModifications(retries - 1), 2000);
+      }
     }
   }
 
-  // Save modifications to the backend
+  /**
+   * 💾 Save Modifications for Selected Element
+   */
   async function saveModifications(elementId, css) {
     let pageId = getPageId();
     if (!pageId || !elementId || !css) {
@@ -129,7 +141,9 @@
     }
   }
 
-  // Create the widget UI for font size selection
+  /**
+   * 🎛️ Create Floating Widget for Editing Styles
+   */
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
@@ -139,32 +153,29 @@
     widgetContainer.style.zIndex = "9999";
 
     widgetContainer.innerHTML = `
-        <div class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
-          <select id="fontSizeDropdown" class="squareCraft-text-sm squareCraft-font-light squareCraft-bg-494949 squareCraft-text-white">
-            ${fontSizeOptions}
-          </select>
-        </div>
-      `;
+      <div style="width: 300px; background: #2c2c2c; padding: 20px; border-radius: 18px; color: white;">
+        <h3>🎨 SquareCraft Widget</h3>
+        <label>Font Size:</label>
+        <input type="number" id="squareCraftFontSize" value="16" min="10" max="50" style="width: 100%;">
+
+        <label>Background Color:</label>
+        <input type="color" id="squareCraftBgColor" value="#ffffff" style="width: 100%;">
+
+        <label>Border Radius:</label>
+        <input type="range" id="squareCraftBorderRadius" min="0" max="50" value="0">
+        <p>Border Radius: <span id="borderRadiusValue">0px</span></p>
+
+        <button id="squareCraftPublish" style="width: 100%; padding: 10px; background: #EF7C2F; color: white;">
+          Publish Changes
+        </button>
+      </div>
+    `;
     document.body.appendChild(widgetContainer);
-
-    // Handle font size selection change
-    document.body.addEventListener("change", async (event) => {
-      if (event.target.id === "fontSizeDropdown") {
-        const fontSize = event.target.value;
-
-        if (!selectedElement) return;
-
-        let css = {
-          "font-size": fontSize + "px",
-        };
-
-        applyStylesToElement(selectedElement.id, css); // Apply real-time changes
-        await saveModifications(selectedElement.id, css); // Save changes to the backend
-      }
-    });
   }
 
-  // Attach event listeners for element selection and modification
+  /**
+   * 🎯 Handle Element Selection & Style Updates
+   */
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"]');
@@ -176,9 +187,34 @@
 
       console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
+
+    document.getElementById("squareCraftPublish").addEventListener("click", async () => {
+      if (!selectedElement) {
+        console.warn("⚠️ No element selected.");
+        return;
+      }
+
+      let css = {
+        "font-size": document.getElementById("squareCraftFontSize").value + "px",
+        "background-color": document.getElementById("squareCraftBgColor").value,
+        "border-radius": document.getElementById("squareCraftBorderRadius").value + "px"
+      };
+
+      await saveModifications(selectedElement.id, css); // Save changes
+    });
   }
 
-  // Initialize everything after DOM content is loaded
+  /**
+   * 🔄 Handle AJAX Navigation
+   */
+  const observer = new MutationObserver(() => {
+    console.log("🔄 Page updated via AJAX. Re-fetching styles...");
+    pageId = getPageId();
+    appliedStyles.clear();
+    fetchModifications();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+
   document.addEventListener("DOMContentLoaded", () => {
     createWidget();
     attachEventListeners();
