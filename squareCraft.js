@@ -9,6 +9,7 @@
   link.type = "text/css";
   link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
   document.head.appendChild(link);
+  fetchModifications();
   
   const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
@@ -58,14 +59,11 @@
 
 
   async function fetchModifications(retries = 3) {
-    if (!pageId) {
-      console.error('Please provide a page ID');
-      return;
-    };
-
+    if (!pageId) return;
+  
     try {
       console.log(`📄 Fetching saved modifications for Page ID: ${pageId}`);
-
+  
       const response = await fetch(
         `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
         {
@@ -76,15 +74,20 @@
           },
         }
       );
-
-
+  
+      if (!response.ok) {
+        console.error(`❌ Error: HTTP status ${response.status}`);
+        return;
+      }
+  
       const data = await response.json();
-      console.log("📥 Get method fro api", data);
+      console.log("📥 Get method response:", data);
+  
       if (!data.modifications || data.modifications.length === 0) {
         console.warn("⚠️ No styles found for this page.");
         return;
       }
-
+  
       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
         if (storedPageId === pageId) {
           elements.forEach(({ elementId, css }) => {
@@ -92,7 +95,7 @@
           });
         }
       });
-
+  
     } catch (error) {
       console.error("❌ Error fetching modifications:", error);
       if (retries > 0) {
@@ -101,6 +104,7 @@
       }
     }
   }
+  
 
 
   async function saveModifications(elementId, css) {
