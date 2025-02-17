@@ -5,15 +5,31 @@
     return;
   }
 
-  const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
-  document.cookie.setItem("squarecraft_auth_token", token);
-  document.cookie.setItem("squarecraft_u_id", widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id"));
-  document.cookie.setItem("squarecraft_w_id", widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id"));
-  const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
-  const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
+  const token = widgetScript.dataset?.token;
+  const squareCraft_u_id = widgetScript.dataset?.uId; 
+  const squareCraft_w_id = widgetScript.dataset?.wId; 
+  
+  if (token) {
+      console.log("🔑 Token received:", token);
+      localStorage.setItem("squareCraft_auth_token", token);
+      document.cookie = `squareCraft_auth_token=${token}; path=.squarespace.com;`;
+  }
+
+  if (squareCraft_u_id) {
+      console.log("👤 User ID received:", squareCraft_u_id);
+      localStorage.setItem("squareCraft_u_id", squareCraft_u_id);
+      document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;
+
+  }
+
+  if (squareCraft_w_id) {
+      console.log("🛠️ Widget ID received:", squareCraft_w_id);
+      localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
+      document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
+  }
   
   const link = document.createElement("link");
-  link.rel = "stylesheet";
+  link.rel = "stylesheet";  
   link.type = "text/css";
   link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
   document.head.appendChild(link);
