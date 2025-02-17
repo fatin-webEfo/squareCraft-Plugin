@@ -13,6 +13,7 @@
   const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
+  console.log(" widgetId: " + widgetId , "token: " + token, "userId: " + userId);
 
   if (token) localStorage.setItem("squareCraft_auth_token", token);
   if (userId) localStorage.setItem("squareCraft_u_id", userId);
