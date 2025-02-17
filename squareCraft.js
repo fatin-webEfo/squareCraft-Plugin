@@ -705,7 +705,7 @@
       selectedElement = block;
       selectedElement.style.outline = "2px dashed #EF7C2F";
 
-      console.log(`✅ Selected Element: ${selectedElement.id}`);
+      console.log(`✅ Selected Element: ${selectedElement}`);
     });
 
     document.getElementById("squareCraftFontSize").addEventListener("input", updateStylesAndSave);
