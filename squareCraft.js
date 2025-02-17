@@ -42,6 +42,12 @@
     }
   }
 
+  async function fontfamilies() {
+    const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
 
   async function fetchModifications(retries = 3) {
     if (!pageId) return;
@@ -372,5 +378,6 @@
     attachEventListeners();
     fetchModifications();
     saveModifications();
+    fontfamilies();
   });
 })();
