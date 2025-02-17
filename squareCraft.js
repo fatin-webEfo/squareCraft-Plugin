@@ -260,21 +260,6 @@
             <option value="46">46px</option>
             <option value="48">48px</option>
             <option value="50">50px</option>
-            <option value="52">52px</option>
-            <option value="54">54px</option>
-            <option value="56">56px</option>
-            <option value="58">58px</option>
-            <option value="60">60px</option>
-            <option value="62">62px</option>
-            <option value="64">64px</option>
-            <option value="66">66px</option>
-            <option value="68">68px</option>
-            <option value="70">70px</option>
-            <option value="72">72px</option>
-            <option value="74">74px</option>
-            <option value="76">76px</option>
-            <option value="78">78px</option>
-            <option value="80">80px</option>
         </select>
     </div>
     <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
