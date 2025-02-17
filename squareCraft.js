@@ -9,6 +9,12 @@
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
 
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
+    document.head.appendChild(link);
+    
   let selectedElement = null;
   let appliedStyles = new Set();
 
