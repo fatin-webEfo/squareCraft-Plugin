@@ -244,9 +244,16 @@ class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-b
         <div class="squareCraft-flex squareCraft-text-white squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
         <div class="squareCraft-flex squareCraft-text-white squareCraft-items-center squareCraft-w-full">
 <div class="squareCraft-bg-494949 squareCraft-text-white squareCraft-px-2 squareCraft-w-full squareCraft-py-1px">
-    <select id="squareCraftFontSize" class="squareCraft-text-sm squareCraft-font-light squareCraft-bg-494949 squareCraft-text-white" id="fontSizeDropdown">
-       ${fontSizeOptions}
-    </select>
+    <div id="squareCraftFontDropdown" class="squareCraft-dropdown">
+    <div class="squareCraft-dropdown-header">
+        <span id="squareCraftSelectedFontSize">16px</span>
+        <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
+    </div>
+    <div class="squareCraft-dropdown-options">
+        ${fontSizes.map(size => `<div class="squareCraft-dropdown-item" data-size="${size}">${size}px</div>`).join('')}
+    </div>
+</div>
+
 </div>
 <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
 
@@ -327,8 +334,32 @@ class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-b
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    createWidget();
-    attachEventListeners();
-    fetchModifications();  // Fetch and apply saved modifications immediately
-  });
+    const fontDropdown = document.getElementById("squareCraftFontDropdown");
+    const selectedFontSize = document.getElementById("squareCraftSelectedFontSize");
+    const dropdownOptions = fontDropdown.querySelector(".squareCraft-dropdown-options");
+
+    fontDropdown.addEventListener("click", (event) => {
+        dropdownOptions.style.display = dropdownOptions.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!fontDropdown.contains(event.target)) {
+            dropdownOptions.style.display = "none";
+        }
+    });
+
+    dropdownOptions.addEventListener("click", async (event) => {
+        if (event.target.classList.contains("squareCraft-dropdown-item")) {
+            const selectedSize = event.target.dataset.size;
+            selectedFontSize.textContent = selectedSize + "px";
+
+            if (selectedElement) {
+                let css = { "font-size": selectedSize + "px" };
+                applyStylesToElement(selectedElement.id, css);
+                await saveModifications(selectedElement.id, css);
+            }
+        }
+    });
+});
+
 })();
