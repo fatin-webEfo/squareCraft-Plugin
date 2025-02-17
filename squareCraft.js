@@ -6,6 +6,9 @@
   }
 
   const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
+  document.cookie.setItem("squarecraft_auth_token", token);
+  document.cookie.setItem("squarecraft_u_id", widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id"));
+  document.cookie.setItem("squarecraft_w_id", widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id"));
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
   
