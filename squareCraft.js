@@ -5,19 +5,12 @@
     return;
   }
 
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.type = "text/css";
-  link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
-  document.head.appendChild(link);
-
   const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
-  console.log(" widgetId: " + widgetId, "token: " + token, "userId: " + userId);
 
   let selectedElement = null;
-  let appliedStyles = new Set(); // Track applied styles to prevent duplicate injection
+  let appliedStyles = new Set();
 
   function getPageId() {
     let pageElement = document.querySelector("article[data-page-sections]");
@@ -27,16 +20,15 @@
   let pageId = getPageId();
   if (!pageId) console.warn("⚠️ No page ID found. Plugin may not work correctly.");
 
+  // Function to apply styles dynamically to the element
   function applyStylesToElement(elementId, css) {
     if (!elementId || !css) return;
 
-    // Remove previous style tag if it exists
     let styleTag = document.getElementById(`style-${elementId}`);
     if (styleTag) {
-      styleTag.remove(); // Remove the old styles before adding new ones
+      styleTag.remove();  // Remove the old styles before adding new ones
     }
 
-    // Create new style tag to apply updated styles
     styleTag = document.createElement("style");
     styleTag.id = `style-${elementId}`;
     document.head.appendChild(styleTag);
@@ -52,12 +44,11 @@
     console.log(`✅ Styles Applied for ${elementId}: ${cssText}`);
   }
 
+  // Fetch saved modifications (including font sizes) from the backend
   async function fetchModifications(retries = 3) {
     if (!pageId) return;
 
     try {
-      console.log(`📄 Fetching saved modifications for Page ID: ${pageId}`);
-
       const response = await fetch(
         `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
         {
@@ -70,14 +61,12 @@
       );
 
       const data = await response.json();
-      console.log("📥 Get method response:", data);
 
       if (!data.modifications || data.modifications.length === 0) {
         console.warn("⚠️ No styles found for this page.");
         return;
       }
 
-      // Apply styles dynamically for each element stored
       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
         if (storedPageId === pageId) {
           elements.forEach(({ elementId, css }) => {
@@ -89,22 +78,20 @@
     } catch (error) {
       console.error("❌ Error fetching modifications:", error);
       if (retries > 0) {
-        console.log(`🔄 Retrying fetch... (${retries} left)`);
         setTimeout(() => fetchModifications(retries - 1), 2000);
       }
     }
   }
 
+  // Save modifications to backend
   async function saveModifications(elementId, css) {
     if (!pageId || !elementId || !css) {
       console.warn("⚠️ Missing required data to save modifications.");
       return;
     }
 
-    // Apply styles instantly
+    // Apply the changes instantly
     applyStylesToElement(elementId, css);
-
-    console.log("📡 Saving modifications for:", { pageId, elementId, css });
 
     const modificationData = {
       userId,
@@ -141,17 +128,17 @@
     widgetContainer.style.zIndex = "9999";
 
     widgetContainer.innerHTML = `
-      <div class="squareCraft-widget-container squareCraft-bg-color-2c2c2c squareCraft-text-color-white squareCraft-p-4">
+      <div class="squareCraft-widget-container squareCraft-widget-container squareCraft-bg-color-2c2c2c squareCraft-text-color-white squareCraft-p-4">
         <h3 class="squareCraft-widget-title">🎨 SquareCraft Widget</h3>
 
-       <div> <label class="squareCraft-label" for="squareCraftFontSize">Font Size:</label>
-        <input type="number" id="squareCraftFontSize" class="squareCraft-input" value="16" min="10" max="50"></div>
+        <label class="squareCraft-label" for="squareCraftFontSize">Font Size:</label>
+        <input type="number" id="squareCraftFontSize" class="squareCraft-input" value="16" min="10" max="50">
 
-      <div>  <label class="squareCraft-label" for="squareCraftBgColor">Background Color:</label>
-        <input type="color" id="squareCraftBgColor" class="squareCraft-input" value="#ffffff"></div>
+        <label class="squareCraft-label" for="squareCraftBgColor">Background Color:</label>
+        <input type="color" id="squareCraftBgColor" class="squareCraft-input" value="#ffffff">
 
-      <div>  <label class="squareCraft-label" for="squareCraftBorderRadius">Border Radius:</label>
-        <input type="range" id="squareCraftBorderRadius" class="squareCraft-input" min="0" max="50" value="0"></div>
+        <label class="squareCraft-label" for="squareCraftBorderRadius">Border Radius:</label>
+        <input type="range" id="squareCraftBorderRadius" class="squareCraft-input" min="0" max="50" value="0">
         
         <p class="squareCraft-text">Border Radius: <span id="borderRadiusValue">0px</span></p>
       </div>
