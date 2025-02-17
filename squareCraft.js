@@ -75,12 +75,12 @@
 
 
       const data = await response.json();
+      console.log("📥 Get method fro api", data);
       if (!data.modifications || data.modifications.length === 0) {
         console.warn("⚠️ No styles found for this page.");
         return;
       }
 
-      console.log("📥 Get method fro api", data);
       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
         if (storedPageId === pageId) {
           elements.forEach(({ elementId, css }) => {
