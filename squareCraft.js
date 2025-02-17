@@ -472,6 +472,9 @@
     }
   }
 
+
+  fetchModifications();
+
   async function saveModifications(elementId, css) {
     if (!pageId || !elementId || !css) {
       console.warn("⚠️ Missing required data to save modifications.");
