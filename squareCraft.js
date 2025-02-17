@@ -699,7 +699,7 @@
 
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
-      let block = event.target.closest('[id^="block-"], section, .sqs-block');
+      let block = event.target.closest('[id^="block-"]');
       if (!block) return;
 
       if (selectedElement) selectedElement.style.outline = "";
