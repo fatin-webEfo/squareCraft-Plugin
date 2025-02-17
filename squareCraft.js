@@ -128,7 +128,7 @@
     }
   }
 
-  // Create Widget HTML dynamically
+  // Create Widget HTML dynamicallyart
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
@@ -139,7 +139,7 @@
 
     widgetContainer.innerHTML = `
       <div style="width: 300px; background: #2C2C2C; padding: 20px; border-radius: 18px; color: white;">
-        <h3>:art: SquareCraft Widget</h3>
+        <h2>SquareCraft Widget</h2>
         <label>Font Size:</label>
         <input type="number" id="squareCraftFontSize" value="16" min="10" max="50" style="width: 100%;">
         <label>Background Color:</label>
