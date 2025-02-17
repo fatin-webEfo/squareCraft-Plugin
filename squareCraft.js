@@ -73,7 +73,6 @@
         }
       );
 
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       const data = await response.json();
       if (!data.modifications || data.modifications.length === 0) {
@@ -81,7 +80,7 @@
         return;
       }
 
-      console.log("📥 Applying stored modifications...", data);
+      console.log("📥 Get method fro api", data);
       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
         if (storedPageId === pageId) {
           elements.forEach(({ elementId, css }) => {
