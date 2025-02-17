@@ -391,6 +391,11 @@
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
   console.log(" widgetId: " + widgetId, "token: " + token, "userId: " + userId);
+  const fontSizes = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
+  let fontSizeOptions = '';
+  for (let size of fontSizes) {
+    fontSizeOptions += `<option value="${size}">${size}px</option>`;
+  }
 
   if (token) localStorage.setItem("squareCraft_auth_token", token);
   if (userId) localStorage.setItem("squareCraft_u_id", userId);
@@ -613,28 +618,7 @@
                 <div class="squareCraft-flex squareCraft-text-white squareCraft-items-center squareCraft-w-full">
         <div class="squareCraft-bg-494949 squareCraft-text-white squareCraft-px-2 squareCraft-w-full squareCraft-py-1px">
             <select class="squareCraft-text-sm squareCraft-font-light squareCraft-bg-494949 squareCraft-text-white" id="fontSizeDropdown">
-                <option value="8">8px</option>
-                <option value="10">10px</option>
-                <option value="12">12px</option>
-                <option value="14">14px</option>
-                <option value="16">16px</option>
-                <option value="18">18px</option>
-                <option value="20">20px</option>
-                <option value="22">22px</option>
-                <option value="24">24px</option>
-                <option value="26">26px</option>
-                <option value="28">28px</option>
-                <option value="30">30px</option>
-                <option value="32">32px</option>
-                <option value="34">34px</option>
-                <option value="36">36px</option>
-                <option value="38">38px</option>
-                <option value="40">40px</option>
-                <option value="42">42px</option>
-                <option value="44">44px</option>
-                <option value="46">46px</option>
-                <option value="48">48px</option>
-                <option value="50">50px</option>
+               ${fontSizeOptions}
             </select>
         </div>
         <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
