@@ -23,7 +23,7 @@
   let selectedElement = null;
   let appliedStyles = new Set();
   
-  let pageId = getPageId();
+ 
   if (!pageId) console.warn("⚠️ No page ID found. Plugin may not work correctly.");
   function getPageId() {
     let pageElement = document.querySelector("article[data-page-sections]");
@@ -51,6 +51,7 @@
 
   fontfamilies();
   async function fetchModifications(retries = 3) {
+    let pageId = getPageId();
     if (!pageId) return;
   
     try {
