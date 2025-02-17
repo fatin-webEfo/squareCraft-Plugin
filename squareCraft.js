@@ -237,7 +237,7 @@
             <div class="squareCraft-flex squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
             <div class="squareCraft-flex squareCraft-items-center squareCraft-w-full">
                 <div class=" squareCraft-bg-494949  squareCraft-px-2 squareCraft-w-full squareCraft-py-1px ">
-                    <p class="squareCraft-text-sm  squareCraft-font-light">14</p>
+                    <input type="number" id="squareCraftFontSize" value="16" min="10" max="50" class="squareCraft-text-sm  squareCraft-font-light"/>
                 </div>
                 <div class="squareCraft-border-r   squareCraft-border-585858 squareCraft-h-full"></div>
                 <div class="squareCraft-bg-494949  squareCraft-px-1 squareCraft-w-full squareCraft-py-1px ">
