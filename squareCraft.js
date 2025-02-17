@@ -35,23 +35,24 @@
 
   function applyStylesToElement(elementId, css) {
     if (!elementId || !css || appliedStyles.has(elementId)) return;
-
+ 
     let styleTag = document.getElementById(`style-${elementId}`);
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = `style-${elementId}`;
       document.head.appendChild(styleTag);
     }
-
+ 
     let cssText = `#${elementId} { `;
     Object.keys(css).forEach(prop => {
       cssText += `${prop}: ${css[prop]} !important; `;
     });
     cssText += "}";
-
+ 
     styleTag.innerHTML = cssText;
     appliedStyles.add(elementId);
-  }
+ }
+ 
 
  
   async function fetchModifications(retries = 3) {
@@ -82,10 +83,11 @@
       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
         if (storedPageId === pageId) {
           elements.forEach(({ elementId, css }) => {
-            applyStylesToElement(elementId, css); // Apply styles directly
+            applyStylesToElement(elementId, css); // Apply styles to elements
           });
         }
       });
+      
 
     } catch (error) {
       console.error("❌ Error fetching modifications:", error);
@@ -200,7 +202,8 @@
     pageId = getPageId();
     appliedStyles.clear();
     fetchModifications();
-  });
+ });
+ 
   observer.observe(document.body, { childList: true, subtree: true });
 
   document.addEventListener("DOMContentLoaded", () => {
