@@ -237,9 +237,9 @@
     
                 </div>
             </div>
-            <div class="squareCraft-flex squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
-            <div class="squareCraft-flex squareCraft-items-center squareCraft-w-full">
-    <div class="squareCraft-bg-494949 squareCraft-px-2 squareCraft-w-full squareCraft-py-1px">
+            <div class="squareCraft-flex squareCraft-text-white squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
+            <div class="squareCraft-flex squareCraft-text-white squareCraft-items-center squareCraft-w-full">
+    <div class="squareCraft-bg-494949 squareCraft-text-white squareCraft-px-2 squareCraft-w-full squareCraft-py-1px">
         <select class="squareCraft-text-sm squareCraft-font-light squareCraft-bg-494949 squareCraft-text-white" id="fontSizeDropdown">
             <option value="8">8px</option>
             <option value="10">10px</option>
