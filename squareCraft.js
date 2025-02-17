@@ -22,13 +22,14 @@
 
   let selectedElement = null;
   let appliedStyles = new Set();
-
+  
+  let pageId = getPageId();
   function getPageId() {
     let pageElement = document.querySelector("article[data-page-sections]");
     return pageElement ? pageElement.getAttribute("data-page-sections") : null;
   }
 
-  let pageId = getPageId();
+
   if (!pageId) console.warn("⚠️ No page ID found. Plugin may not work correctly.");
 
 
