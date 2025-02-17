@@ -49,6 +49,7 @@
     return data;
   }
 
+  fontfamilies();
   async function fetchModifications(retries = 3) {
     if (!pageId) return;
   
@@ -378,6 +379,5 @@
     attachEventListeners();
     fetchModifications();
     saveModifications();
-    fontfamilies();
   });
 })();
