@@ -8,19 +8,13 @@
   const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
+
+    const fontSizes = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
+    let fontSizeOptions = '';
+    for (let size of fontSizes) {
+      fontSizeOptions += `<option value="${size}">${size}px</option>`;
+    }
   
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.type = "text/css";
-  link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
-  document.head.appendChild(link);
-
-  const fontSizes = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
-  let fontSizeOptions = '';
-  for (let size of fontSizes) {
-    fontSizeOptions += `<option value="${size}">${size}px</option>`;
-  }
-
 
   if (token) localStorage.setItem("squareCraft_auth_token", token);
   if (userId) localStorage.setItem("squareCraft_u_id", userId);
@@ -244,16 +238,9 @@ class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-b
         <div class="squareCraft-flex squareCraft-text-white squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
         <div class="squareCraft-flex squareCraft-text-white squareCraft-items-center squareCraft-w-full">
 <div class="squareCraft-bg-494949 squareCraft-text-white squareCraft-px-2 squareCraft-w-full squareCraft-py-1px">
-    <div id="squareCraftFontDropdown" class="squareCraft-dropdown">
-    <div class="squareCraft-dropdown-header">
-        <span id="squareCraftSelectedFontSize">16px</span>
-        <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
-    </div>
-    <div class="squareCraft-dropdown-options">
-        ${fontSizes.map(size => `<div class="squareCraft-dropdown-item" data-size="${size}">${size}px</div>`).join('')}
-    </div>
-</div>
-
+    <select id="squareCraftFontSize" class="squareCraft-text-sm squareCraft-font-light squareCraft-bg-494949 squareCraft-text-white" id="fontSizeDropdown">
+       ${fontSizeOptions}
+    </select>
 </div>
 <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
 
