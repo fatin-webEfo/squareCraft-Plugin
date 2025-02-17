@@ -1,6 +1,5 @@
 (async function squareCraft() {
   const widgetScript = document.getElementById("squarecraft-script");
-  console.log("squarecraft script loaded from " + widgetScript.src);
   if (!widgetScript) {
     console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
     return;
@@ -321,6 +320,7 @@
     </div>
     `;
 
+    document.body.appendChild(widgetContainer);
     document.body.addEventListener("change", async (event) => {
       if (event.target.id === "fontSizeDropdown") {
         const fontSize = event.target.value;
