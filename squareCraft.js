@@ -8,6 +8,12 @@
   const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
+  
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.type = "text/css";
+  link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
+  document.head.appendChild(link);
 
   const fontSizes = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
   let fontSizeOptions = '';
@@ -24,7 +30,7 @@
     return pageElement ? pageElement.getAttribute("data-page-sections") : null;
   }
 
-  // Apply CSS to a selected element dynamically
+  // Apply CSS to the selected element dynamically
   function applyStylesToElement(elementId, css) {
     if (!elementId || !css || appliedStyles.has(elementId)) return;
 
@@ -46,7 +52,7 @@
   }
 
   // Fetch saved modifications for the page and apply them
-  async function fetchModifications(retries = 3) {
+  async function fetchModifications() {
     let pageId = getPageId();
     if (!pageId) return;
 
@@ -75,17 +81,13 @@
       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
         if (storedPageId === pageId) {
           elements.forEach(({ elementId, css }) => {
-            applyStylesToElement(elementId, css);
+            applyStylesToElement(elementId, css); // Apply saved styles
           });
         }
       });
 
     } catch (error) {
       console.error("❌ Error fetching modifications:", error);
-      if (retries > 0) {
-        console.log(`🔄 Retrying fetch... (${retries} left)`);
-        setTimeout(() => fetchModifications(retries - 1), 2000);
-      }
     }
   }
 
@@ -97,7 +99,7 @@
       return;
     }
 
-    applyStylesToElement(elementId, css); // Apply changes immediately on the page
+    applyStylesToElement(elementId, css); // Apply real-time changes immediately
     console.log("📡 Saving modifications for:", { pageId, elementId, css });
 
     const modificationData = {

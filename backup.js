@@ -4,6 +4,12 @@
       console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
       return;
     }
+
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
+    document.head.appendChild(link);
   
     const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
     const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
