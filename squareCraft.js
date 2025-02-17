@@ -141,17 +141,17 @@
     widgetContainer.style.zIndex = "9999";
 
     widgetContainer.innerHTML = `
-      <div class="squareCraft-widget-container">
+      <div class="squareCraft-widget-container squareCraft-bg-color-2c2c2c squareCraft-text-color-white">
         <h3 class="squareCraft-widget-title">🎨 SquareCraft Widget</h3>
 
-        <label class="squareCraft-label" for="squareCraftFontSize">Font Size:</label>
-        <input type="number" id="squareCraftFontSize" class="squareCraft-input" value="16" min="10" max="50">
+       <div> <label class="squareCraft-label" for="squareCraftFontSize">Font Size:</label>
+        <input type="number" id="squareCraftFontSize" class="squareCraft-input" value="16" min="10" max="50"></div>
 
-        <label class="squareCraft-label" for="squareCraftBgColor">Background Color:</label>
-        <input type="color" id="squareCraftBgColor" class="squareCraft-input" value="#ffffff">
+      <div>  <label class="squareCraft-label" for="squareCraftBgColor">Background Color:</label>
+        <input type="color" id="squareCraftBgColor" class="squareCraft-input" value="#ffffff"></div>
 
-        <label class="squareCraft-label" for="squareCraftBorderRadius">Border Radius:</label>
-        <input type="range" id="squareCraftBorderRadius" class="squareCraft-input" min="0" max="50" value="0">
+      <div>  <label class="squareCraft-label" for="squareCraftBorderRadius">Border Radius:</label>
+        <input type="range" id="squareCraftBorderRadius" class="squareCraft-input" min="0" max="50" value="0"></div>
         
         <p class="squareCraft-text">Border Radius: <span id="borderRadiusValue">0px</span></p>
       </div>
