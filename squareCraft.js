@@ -167,21 +167,22 @@
     // Listen for input changes and update styles in real-time
     document.body.addEventListener("input", async (event) => {
       if (!selectedElement) return;
-
+    
       let css = {};
       if (event.target.id === "squareCraftFontSize") {
-        css["font-size"] = event.target.value + "px";
+        css["font-size"] = event.target.value + "px";  // This applies the font size instantly
       } else if (event.target.id === "squareCraftBgColor") {
         css["background-color"] = event.target.value;
       } else if (event.target.id === "squareCraftBorderRadius") {
         css["border-radius"] = event.target.value + "px";
       }
-
+    
       if (Object.keys(css).length > 0) {
-        applyStylesToElement(selectedElement.id, css);  // Apply styles instantly
-        await saveModifications(selectedElement.id, css);  // Save to the backend for persistence
+        applyStylesToElement(selectedElement.id, css);  // Apply styles instantly to the selected element
+        await saveModifications(selectedElement.id, css);  // Save the styles in the backend
       }
     });
+    
   }
 
   document.addEventListener("DOMContentLoaded", () => {
