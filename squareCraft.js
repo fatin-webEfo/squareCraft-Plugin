@@ -9,7 +9,7 @@
   link.type = "text/css";
   link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
   document.head.appendChild(link);
-
+  
   const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
@@ -40,14 +40,14 @@
       document.head.appendChild(styleTag);
     }
 
-    let cssText = `#${elementId}, #${elementId} * { `;
+    let cssText = `#${elementId}, #${elementId} * { `; 
     Object.keys(css).forEach(prop => {
       cssText += `${prop}: ${css[prop]} !important; `;
     });
     cssText += "}";
 
     if (css["border-radius"]) {
-      cssText += `#${elementId} { overflow: hidden !important; }`;
+      cssText += `#${elementId} { overflow: hidden !important; }`; 
     }
 
     styleTag.innerHTML = cssText;
@@ -58,17 +58,17 @@
 
   // Font families
   fetch('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk')
-    .then(response => response.json())
-    .then(data => {
-      const fonts = data.items;
-      populateFontDropdown(fonts);
-    })
-    .catch(error => console.error('Error fetching font data:', error));
+  .then(response => response.json())
+  .then(data => {
+    const fonts = data.items; 
+    populateFontDropdown(fonts); 
+  })
+  .catch(error => console.error('Error fetching font data:', error));
 
 
   function populateFontDropdown(fonts) {
     const dropdown = document.getElementById('fontDropdown');
-
+    
     fonts.forEach(font => {
       const option = document.createElement('option');
       option.value = font.family; // Font family name
@@ -77,27 +77,19 @@
     });
   }
 
-
-    async function loadGoogleFont(fontFamily) {
-        const link = document.createElement('link');
-        link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(' ', '+')}&display=swap`;
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-    }
-
-
- document.getElementById('fontDropdown').addEventListener('change', async function() {
+  document.getElementById('fontDropdown').addEventListener('change', function() {
     const selectedFont = this.value;
-    if (selectedFont) {
-        await loadGoogleFont(selectedFont);  // Load the font dynamically
-        document.getElementById('textContainer').style.fontFamily = selectedFont;  // Apply the font to the text container
-    }
-});
+    document.getElementById('textContainer').style.fontFamily = selectedFont;
+  });
+  
 
-
-
-
-
+  function loadGoogleFont(fontFamily) {
+    const link = document.createElement('link');
+    link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(' ', '+')}&display=swap`;
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+  }
+  
 
   // font families
 
@@ -269,20 +261,16 @@
         </div>
     
         <div class="squareCraft-mt-2 squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
-           <div id="squareCraft-font-family" class="squareCraft-flex ...">
-    <div class="squareCraft-bg-494949 squareCraft-w-full squareCraft-px-2 squareCraft-py-1px ">
-        <p class="squareCraft-text-sm squareCraft-font-light">Sf Pro sans</p>
-        <select id="fontDropdown" class="font-dropdown-style">
-    <option value="" disabled selected>Select Font</option>
-</select>
-
-    </div>
-    <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
-        <img class="squareCraft-h-full squareCraft-rotate-180" width="12px"
-             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
-    </div>
-</div>
-
+            <div id="squareCraft-font-family" class="squareCraft-flex squareCraft-col-span-8 squareCraft-cursor-pointer squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
+                <div class="squareCraft-bg-494949 squareCraft-w-full squareCraft-px-2 squareCraft-py-1px ">
+                    <p class="squareCraft-text-sm squareCraft-font-light">Sf Pro sans</p>
+                </div>
+                <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
+                    <img class="squareCraft-h-full squareCraft-rotate-180" width="12px"
+                        src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
+    
+                </div>
+            </div>
             <div class="squareCraft-flex squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
             <div class="squareCraft-flex squareCraft-items-center squareCraft-w-full">
                 <div class=" squareCraft-bg-494949  squareCraft-px-2 squareCraft-w-full squareCraft-py-1px ">
@@ -338,7 +326,7 @@
 
     document.body.appendChild(widgetContainer);
   }
-
+  
 
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
