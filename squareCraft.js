@@ -1,10 +1,10 @@
-
 (async function squareCraft() {
   const widgetScript = document.getElementById("squarecraft-script");
   if (!widgetScript) {
     console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
     return;
   }
+
   const link = document.createElement("link");
   link.rel = "stylesheet";
   link.type = "text/css";
@@ -15,73 +15,51 @@
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
   console.log(" widgetId: " + widgetId, "token: " + token, "userId: " + userId);
-  const fontSizes = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
-  let fontSizeOptions = '';
-  for (let size of fontSizes) {
-    fontSizeOptions += `<option value="${size}">${size}px</option>`;
-  }
-
-  if (token) localStorage.setItem("squareCraft_auth_token", token);
-  if (userId) localStorage.setItem("squareCraft_u_id", userId);
-  if (widgetId) localStorage.setItem("squareCraft_w_id", widgetId);
 
   let selectedElement = null;
-  let appliedStyles = new Set();
-
-  let pageId = getPageId();
-  if (!pageId) console.warn("⚠️ No page ID found. Plugin may not work correctly.");
+  let appliedStyles = new Set(); // Track applied styles to prevent duplicate injection
 
   function getPageId() {
     let pageElement = document.querySelector("article[data-page-sections]");
     return pageElement ? pageElement.getAttribute("data-page-sections") : null;
   }
 
+  let pageId = getPageId();
+  if (!pageId) console.warn("⚠️ No page ID found. Plugin may not work correctly.");
+
   function applyStylesToElement(elementId, css) {
     if (!elementId || !css) return;
-  
-    // Check if styles have already been applied, if so, remove the existing style tag
+
+    // Remove previous style tag if it exists
     let styleTag = document.getElementById(`style-${elementId}`);
     if (styleTag) {
-      styleTag.remove();  // Remove the old styles before adding new ones
+      styleTag.remove(); // Remove the old styles before adding new ones
     }
-  
-    // Create a new style tag to apply the new styles
+
+    // Create new style tag to apply updated styles
     styleTag = document.createElement("style");
     styleTag.id = `style-${elementId}`;
     document.head.appendChild(styleTag);
-  
+
     let cssText = `#${elementId} { `;
     Object.keys(css).forEach(prop => {
       cssText += `${prop}: ${css[prop]} !important; `;
     });
     cssText += "}";
-  
+
     styleTag.innerHTML = cssText;
+    appliedStyles.add(elementId);
     console.log(`✅ Styles Applied for ${elementId}: ${cssText}`);
   }
-  
-
-  async function fontfamilies() {
-    const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
-    const data = await response.json();
-    console.log(data);
-    return data;
-  }
-
-  fontfamilies();
-
-  let userIds = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
 
   async function fetchModifications(retries = 3) {
-    let pageId = getPageId();
-
     if (!pageId) return;
 
     try {
       console.log(`📄 Fetching saved modifications for Page ID: ${pageId}`);
 
       const response = await fetch(
-        `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userIds}`,
+        `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
         {
           method: "GET",
           headers: {
@@ -91,7 +69,6 @@
         }
       );
 
-
       const data = await response.json();
       console.log("📥 Get method response:", data);
 
@@ -100,6 +77,7 @@
         return;
       }
 
+      // Apply styles dynamically for each element stored
       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
         if (storedPageId === pageId) {
           elements.forEach(({ elementId, css }) => {
@@ -117,16 +95,15 @@
     }
   }
 
-
-  fetchModifications();
-
   async function saveModifications(elementId, css) {
     if (!pageId || !elementId || !css) {
       console.warn("⚠️ Missing required data to save modifications.");
       return;
     }
 
+    // Apply styles instantly
     applyStylesToElement(elementId, css);
+
     console.log("📡 Saving modifications for:", { pageId, elementId, css });
 
     const modificationData = {
@@ -164,186 +141,58 @@
     widgetContainer.style.zIndex = "9999";
 
     widgetContainer.innerHTML = `
-        <div
-        class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
-        <div class="squareCraft-flex squareCraft-items-center squareCraft-justify-between">
-            <img src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
-            <div
-                class="squareCraft-flex squareCraft-items-center squareCraft-py-1px squareCraft-rounded-15px squareCraft-gap-2 squareCraft-bg-color-3d3d3d squareCraft-px-2">
-                <p class="squareCraft-text-sm">Auto Save</p>
-                <img src="https://i.ibb.co.com/B2NjHwSq/redo-rectangle.png" width="16px" />
-            </div>
+      <div class="squareCraft-widget-container squareCraft-bg-color-2c2c2c">
+        <h3 class="squareCraft-widget-title">🎨 SquareCraft Widget</h3>
+
+        <label class="squareCraft-label" for="squareCraftFontSize">Font Size:</label>
+        <input type="number" id="squareCraftFontSize" class="squareCraft-input" value="16" min="10" max="50">
+
+        <label class="squareCraft-label" for="squareCraftBgColor">Background Color:</label>
+        <input type="color" id="squareCraftBgColor" class="squareCraft-input" value="#ffffff">
+
+        <label class="squareCraft-label" for="squareCraftBorderRadius">Border Radius:</label>
+        <input type="range" id="squareCraftBorderRadius" class="squareCraft-input" min="0" max="50" value="0">
         
-        
-        </div>
-        <p class="squareCraft-text-sm squareCraft-mt-6 squareCraft-font-light">Lorem Ipsum is simply dummy text
-            of the printing and typesetting industry.</p>
-        <div
-            class="squareCraft-mt-6  squareCraft-border-t squareCraft-border-dashed squareCraft-border-color-494949  squareCraft-w-full">
-        </div>
-        
-        <div class="squareCraft-mt-6 squareCraft-flex  squareCraft-items-center ">
-            <p class="squareCraft-text-sm squareCraft-px-4 squareCraft-cursor-pointer tabHeader ">Design</p>
-            <p class="squareCraft-text-sm squareCraft-px-4 squareCraft-cursor-pointer tabHeader">Advanced</p>
-            <p class="squareCraft-text-sm squareCraft-px-4 squareCraft-cursor-pointer tabHeader">Presets</p>
-        </div>
-        
-        <div
-            class="squareCraft-border-t squareCraft-border-solid squareCraft-relative squareCraft-border-color-494949 squareCraft-w-full squareCraft-mt-2">
-            <div
-                class="squareCraft-absolute squareCraft-top-0 squareCraft-left-0 squareCraft-bg-colo-EF7C2F squareCraft-w-16 squareCraft-h-1px">
-            </div>
-        </div>
-        
-        <div
-            class="squareCraft-rounded-6px squareCraft-mt-6  squareCraft-border squareCraft-border-solid squareCraft-border-EF7C2F squareCraft-bg-color-3d3d3d">
-            <div class="squareCraft-flex squareCraft-p-2 squareCraft-items-center squareCraft-justify-between">
-                <div class="squareCraft-flex squareCraft-gap-2 squareCraft-items-center"><img loading="lazy"
-                        src="https://fatin-webefo.github.io/squareCraft-Plugin/public/T.svg" alt="">
-                    <p>Typography</p>
-                </div>
-                <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
-            </div>
-            <div class="squareCraft-h-1px squareCraft-bg-3f3f3f"></div>
-            <div
-                class="squareCraft-flex squareCraft-px-2 squareCraft-mt-2 squareCraft-items-center squareCraft-justify-between">
-                <div class="squareCraft-flex squareCraft-gap-2 squareCraft-items-center">
-                    <div class="toggle-container" id="toggleSwitch">
-                        <div class="toggle-bullet"></div>
-                    </div>
-                    <p id="toggleText" class="squareCraft-text-sm">Enable</p>
-                </div>
-                <div id="resetButton" 
-                class="squareCraft-flex squareCraft-cursor-pointer squareCraft-items-center squareCraft-py-1px squareCraft-rounded-15px squareCraft-gap-2 squareCraft-bg-3f3f3f squareCraft-px-2">
-                <p class="squareCraft-text-sm">Reset</p>
-                <img id="resetIcon" 
-                    src="https://fatin-webefo.github.io/squareCraft-Plugin/public/reset.svg"
-                    width="12px" />
-            </div>
-            
-            </div>
-            <div class="squareCraft-h-1px squareCraft-mt-2 squareCraft-bg-3f3f3f"></div>
-            <div class="squareCraft-mt-2">
-                <div
-                    class="squareCraft-flex squareCraft-px-2 squareCraft-w-full squareCraft-items-center squareCraft-justify-between squareCraft-gap-2">
-                    <div
-                        class="squareCraft-cursor-pointer squareCraft-bg-color-EF7C2F squareCraft-w-full squareCraft-font-light squareCraft-flex squareCraft-items-center squareCraft-text-sm squareCraft-py-1px squareCraft-rounded-6px squareCraft-text-color-white squareCraft-justify-center">
-                        Normal</div>
-                    <div
-                        class="squareCraft-cursor-pointer squareCraft-bg-3f3f3f squareCraft-w-full squareCraft-text-color-white squareCraft-font-light squareCraft-flex squareCraft-text-sm squareCraft-py-1px squareCraft-rounded-6px squareCraft-items-center squareCraft-justify-center">
-                        Hover</div>
-                </div>
-                <div class="squareCraft-px-4">
-                    <div class="squareCraft-h-1px  squareCraft-mt-2 squareCraft-bg-3f3f3f"></div>
-                </div>
-            </div>
-        
-            <div class="squareCraft-mt-6 squareCraft-px-2 squareCraft-flex squareCraft-justify-between">
-                <p class="squareCraft-text-sm">Text</p>
-                <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/eye.svg" width="12px" />
-            </div>
-        
-            <div class="squareCraft-mt-2 squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
-                <div id="squareCraft-font-family" class="squareCraft-flex squareCraft-col-span-8 squareCraft-cursor-pointer squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
-                    <div class="squareCraft-bg-494949 squareCraft-w-full squareCraft-px-2 squareCraft-py-1px ">
-                        <p class="squareCraft-text-sm squareCraft-font-light">Sf Pro sans</p>
-                    </div>
-                    <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
-                        <img class="squareCraft-h-full squareCraft-rotate-180" width="12px"
-                            src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
-        
-                    </div>
-                </div>
-                <div class="squareCraft-flex squareCraft-text-white squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
-                <div class="squareCraft-flex squareCraft-text-white squareCraft-items-center squareCraft-w-full">
-        <div class="squareCraft-bg-494949 squareCraft-text-white squareCraft-px-2 squareCraft-w-full squareCraft-py-1px">
-            <select class="squareCraft-text-sm squareCraft-font-light squareCraft-bg-494949 squareCraft-text-white" id="fontSizeDropdown">
-               ${fontSizeOptions}
-            </select>
-        </div>
-        <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
-       
-    </div>
-    
-                   
-                </div>
-            </div>
-        
-        
-            <div class="squareCraft-mt-2 squareCraft-grid squareCraft-px-2 squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 ">
-                <div class="squareCraft-flex squareCraft-col-span-7 squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
-                    <div class="squareCraft-bg-494949 squareCraft-px-2 squareCraft-w-full  squareCraft-py-1px ">
-                        <p class="squareCraft-text-sm squareCraft-font-light">Regular</p>
-                    </div>
-                    <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
-                        <img class="squareCraft-h-full squareCraft-rotate-180" width="12px"
-                            src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
-        
-                    </div>
-                </div>
-                <div class="squareCraft-flex squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
-                <div class="squareCraft-flex squareCraft-mx-auto squareCraft-items-center squareCraft-justify-center">
-                    <img class=" squareCraft-rounded-6px squareCraft-rotate-180" width="12px"
-                    src="https://fatin-webefo.github.io/squareCraft-Plugin/public/dot.svg" alt="">
-                </div>
-                <div class="squareCraft-border-r   squareCraft-border-585858 squareCraft-h-full"></div>
-                    <div class="squareCraft-flex squareCraft-mx-auto squareCraft-items-center squareCraft-justify-center squareCraft-border squareCraft-border-585858 squareCraft-w-13px squareCraft-border-solid squareCraft-h-13px">
-        
-                    </div>
-                    <div class="squareCraft-border-r   squareCraft-border-585858 squareCraft-h-full"></div>
-                    
-                    <img class=" squareCraft-rounded-6px squareCraft-rotate-180 squareCraft-flex squareCraft-mx-auto squareCraft-items-center squareCraft-justify-center" width="12px"
-                    src="https://fatin-webefo.github.io/squareCraft-Plugin/public/gap.svg" alt="">
-                </div>
-            </div>
-        
-        
-        
-            <div class="squareCraft-mt-2"> </div>
-        </div>
-        </div>
-        `;
+        <p class="squareCraft-text">Border Radius: <span id="borderRadiusValue">0px</span></p>
+      </div>
+    `;
     document.body.appendChild(widgetContainer);
-    document.body.addEventListener("change", async (event) => {
-      if (event.target.id === "fontSizeDropdown") {
-        const fontSize = event.target.value;
+  }
 
-        if (!selectedElement) return;
+  function attachEventListeners() {
+    document.body.addEventListener("click", (event) => {
+      let block = event.target.closest('[id^="block-"]');
+      if (!block) return;
 
-        let css = {
-          "font-size": fontSize + "px",
-        };
+      if (selectedElement) selectedElement.style.outline = "";
+      selectedElement = block;
+      selectedElement.style.outline = "2px dashed #EF7C2F"; // Show border to indicate selected element
 
-        applyStylesToElement(selectedElement.id, css);
-        await saveModifications(selectedElement.id, css);
+      console.log(`✅ Selected Element: ${selectedElement.id}`);
+    });
+
+    document.body.addEventListener("input", async (event) => {
+      if (!selectedElement) return;
+
+      let css = {};
+      if (event.target.id === "squareCraftFontSize") {
+        css["font-size"] = event.target.value + "px";
+      } else if (event.target.id === "squareCraftBgColor") {
+        css["background-color"] = event.target.value;
+      } else if (event.target.id === "squareCraftBorderRadius") {
+        css["border-radius"] = event.target.value + "px";
+      }
+
+      if (Object.keys(css).length > 0) {
+        applyStylesToElement(selectedElement.id, css);  // Apply styles instantly
+        await saveModifications(selectedElement.id, css);  // Save to the backend for persistence
       }
     });
   }
 
-  document.body.addEventListener("input", async (event) => {
-    if (!selectedElement) return;
-  
-    let css = {};
-    if (event.target.id === "squareCraftFontSize") {
-      css["font-size"] = event.target.value + "px";
-    } else if (event.target.id === "squareCraftBgColor") {
-      css["background-color"] = event.target.value;
-    } else if (event.target.id === "squareCraftBorderRadius") {
-      css["border-radius"] = event.target.value + "px";
-    }
-  
-    if (Object.keys(css).length > 0) {
-      applyStylesToElement(selectedElement.id, css);  // Apply styles instantly
-      await saveModifications(selectedElement.id, css);  // Save to the backend for persistence
-    }
-  });
-  
-
   document.addEventListener("DOMContentLoaded", () => {
     createWidget();
     attachEventListeners();
-    fetchModifications(); // Now called after `userIds` is initialized
-    saveModifications();
+    fetchModifications(); // Fetch modifications when the page is loaded
   });
 })();
-
