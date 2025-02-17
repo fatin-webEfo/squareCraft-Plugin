@@ -18,11 +18,13 @@
   let selectedElement = null;
   let appliedStyles = new Set();
 
+  // Get the page ID from the DOM
   function getPageId() {
     let pageElement = document.querySelector("article[data-page-sections]");
     return pageElement ? pageElement.getAttribute("data-page-sections") : null;
   }
 
+  // Apply CSS to a selected element dynamically
   function applyStylesToElement(elementId, css) {
     if (!elementId || !css || appliedStyles.has(elementId)) return;
 
@@ -43,12 +45,66 @@
     appliedStyles.add(elementId);
   }
 
+  // Fetch saved modifications for the page and apply them
+  async function fetchModifications(retries = 3) {
+    let pageId = getPageId();
+    if (!pageId) return;
+
+    try {
+      console.log(`📄 Fetching saved modifications for Page ID: ${pageId}`);
+
+      const response = await fetch(
+        `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+      console.log("📥 Get method response:", data);
+
+      if (!data.modifications || data.modifications.length === 0) {
+        console.warn("⚠️ No styles found for this page.");
+        return;
+      }
+
+      data.modifications.forEach(({ pageId: storedPageId, elements }) => {
+        if (storedPageId === pageId) {
+          elements.forEach(({ elementId, css }) => {
+            applyStylesToElement(elementId, css);
+          });
+        }
+      });
+
+    } catch (error) {
+      console.error("❌ Error fetching modifications:", error);
+      if (retries > 0) {
+        console.log(`🔄 Retrying fetch... (${retries} left)`);
+        setTimeout(() => fetchModifications(retries - 1), 2000);
+      }
+    }
+  }
+
+  // Save modifications to the backend
   async function saveModifications(elementId, css) {
+    let pageId = getPageId();
+    if (!pageId || !elementId || !css) {
+      console.warn("⚠️ Missing required data to save modifications.");
+      return;
+    }
+
+    applyStylesToElement(elementId, css); // Apply changes immediately on the page
+    console.log("📡 Saving modifications for:", { pageId, elementId, css });
+
     const modificationData = {
       userId,
       token,
       widgetId,
-      modifications: [{ pageId: getPageId(), elements: [{ elementId, css }] }],
+      modifications: [{ pageId, elements: [{ elementId, css }] }],
     };
 
     try {
@@ -57,15 +113,20 @@
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+          "userId": userId,
+          "pageId": pageId,
+          "widget-id": widgetId,
         },
         body: JSON.stringify(modificationData),
       });
+
       console.log("✅ Changes Saved Successfully!", await response.json());
     } catch (error) {
       console.error("❌ Error saving modifications:", error);
     }
   }
 
+  // Create the widget UI for font size selection
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
@@ -83,6 +144,7 @@
       `;
     document.body.appendChild(widgetContainer);
 
+    // Handle font size selection change
     document.body.addEventListener("change", async (event) => {
       if (event.target.id === "fontSizeDropdown") {
         const fontSize = event.target.value;
@@ -93,12 +155,13 @@
           "font-size": fontSize + "px",
         };
 
-        applyStylesToElement(selectedElement.id, css); // Apply styles in real-time
-        await saveModifications(selectedElement.id, css); // Save styles
+        applyStylesToElement(selectedElement.id, css); // Apply real-time changes
+        await saveModifications(selectedElement.id, css); // Save changes to the backend
       }
     });
   }
 
+  // Attach event listeners for element selection and modification
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"]');
@@ -106,14 +169,16 @@
 
       if (selectedElement) selectedElement.style.outline = "";
       selectedElement = block;
-      selectedElement.style.outline = "2px dashed #EF7C2F"; // Show the border to indicate selection
+      selectedElement.style.outline = "2px dashed #EF7C2F"; // Show border to indicate selected element
 
       console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
   }
 
+  // Initialize everything after DOM content is loaded
   document.addEventListener("DOMContentLoaded", () => {
     createWidget();
     attachEventListeners();
+    fetchModifications(); // Fetch modifications when the page is loaded
   });
 })();
