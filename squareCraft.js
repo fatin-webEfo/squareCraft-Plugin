@@ -133,7 +133,7 @@
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
-    widgetContainer.style.position = "fixed";````
+    widgetContainer.style.position = "fixed";
     widgetContainer.style.top = "100px";
     widgetContainer.style.left = "100px";
     widgetContainer.style.zIndex = "9999";
