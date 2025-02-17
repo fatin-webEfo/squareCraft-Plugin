@@ -40,14 +40,14 @@
       document.head.appendChild(styleTag);
     }
 
-    let cssText = `#${elementId}, #${elementId} * { `; 
+    let cssText = `#${elementId}, #${elementId} * { `;
     Object.keys(css).forEach(prop => {
       cssText += `${prop}: ${css[prop]} !important; `;
     });
     cssText += "}";
 
     if (css["border-radius"]) {
-      cssText += `#${elementId} { overflow: hidden !important; }`; 
+      cssText += `#${elementId} { overflow: hidden !important; }`;
     }
 
     styleTag.innerHTML = cssText;
@@ -320,7 +320,20 @@
     </div>
     `;
 
-    document.body.appendChild(widgetContainer);
+    document.body.addEventListener("change", async (event) => {
+      if (event.target.id === "fontSizeDropdown") {
+        const fontSize = event.target.value;
+        
+        if (!selectedElement) return;
+
+        let css = {
+          "font-size": fontSize + "px",
+        };
+
+        applyStylesToElement(selectedElement.id, css);
+        await saveModifications(selectedElement.id, css);
+      }
+    });
   }
 
 
