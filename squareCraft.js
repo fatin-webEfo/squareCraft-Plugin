@@ -58,7 +58,10 @@
 
 
   async function fetchModifications(retries = 3) {
-    if (!pageId) return;
+    if (!pageId) {
+      console.error('Please provide a page ID');
+      return;
+    };
 
     try {
       console.log(`📄 Fetching saved modifications for Page ID: ${pageId}`);
@@ -372,5 +375,6 @@
     createWidget();
     attachEventListeners();
     fetchModifications();
+    saveModifications();
   });
 })();
