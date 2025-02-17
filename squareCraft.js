@@ -236,14 +236,53 @@
             </div>
             <div class="squareCraft-flex squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
             <div class="squareCraft-flex squareCraft-items-center squareCraft-w-full">
-                <div class=" squareCraft-bg-494949  squareCraft-px-2 squareCraft-w-full squareCraft-py-1px ">
-                    <p class="squareCraft-text-sm  squareCraft-font-light">14</p>
-                </div>
-                <div class="squareCraft-border-r   squareCraft-border-585858 squareCraft-h-full"></div>
-                <div class="squareCraft-bg-494949  squareCraft-px-1 squareCraft-w-full squareCraft-py-1px ">
-                    <p class="squareCraft-text-sm squareCraft-font-light">px</p>
-                </div>
-            </div>
+    <div class="squareCraft-bg-494949 squareCraft-px-2 squareCraft-w-full squareCraft-py-1px">
+        <select class="squareCraft-text-sm squareCraft-font-light squareCraft-bg-494949 squareCraft-text-white" id="fontSizeDropdown">
+            <option value="8">8px</option>
+            <option value="10">10px</option>
+            <option value="12">12px</option>
+            <option value="14">14px</option>
+            <option value="16">16px</option>
+            <option value="18">18px</option>
+            <option value="20">20px</option>
+            <option value="22">22px</option>
+            <option value="24">24px</option>
+            <option value="26">26px</option>
+            <option value="28">28px</option>
+            <option value="30">30px</option>
+            <option value="32">32px</option>
+            <option value="34">34px</option>
+            <option value="36">36px</option>
+            <option value="38">38px</option>
+            <option value="40">40px</option>
+            <option value="42">42px</option>
+            <option value="44">44px</option>
+            <option value="46">46px</option>
+            <option value="48">48px</option>
+            <option value="50">50px</option>
+            <option value="52">52px</option>
+            <option value="54">54px</option>
+            <option value="56">56px</option>
+            <option value="58">58px</option>
+            <option value="60">60px</option>
+            <option value="62">62px</option>
+            <option value="64">64px</option>
+            <option value="66">66px</option>
+            <option value="68">68px</option>
+            <option value="70">70px</option>
+            <option value="72">72px</option>
+            <option value="74">74px</option>
+            <option value="76">76px</option>
+            <option value="78">78px</option>
+            <option value="80">80px</option>
+        </select>
+    </div>
+    <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
+    <div class="squareCraft-bg-494949 squareCraft-px-1 squareCraft-w-full squareCraft-py-1px">
+        <p class="squareCraft-text-sm squareCraft-font-light">px</p>
+    </div>
+</div>
+
                 <div class="squareCraft-bg-3f3f3f squareCraft-px-1" style="height: 27px; padding: 0 8px;">
                     <img class=" squareCraft-rounded-6px squareCraft-rotate-180" width="12px"
                         src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
