@@ -52,7 +52,7 @@
 
   fontfamilies();
 
-  const userIds = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
+  let userIds = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
 
   async function fetchModifications(retries = 3) {
     let pageId = getPageId();
