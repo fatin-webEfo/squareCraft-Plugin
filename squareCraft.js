@@ -8,6 +8,8 @@
   const token = widgetScript.dataset?.token;
   const squareCraft_u_id = widgetScript.dataset?.uId; 
   const squareCraft_w_id = widgetScript.dataset?.wId; 
+  const userId = localStorage.getItem("squareCraft_u_id");
+  const widgetId = localStorage.getItem("squareCraft_w_id");
   
   if (token) {
       console.log("🔑 Token received:", token);
