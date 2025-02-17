@@ -32,29 +32,13 @@
   if (!pageId) console.warn("⚠️ No page ID found. Plugin may not work correctly.");
 
 
-  function applyStylesToElement(elementId, css) {
-    if (!elementId || !css || appliedStyles.has(elementId)) return;
-
-    let styleTag = document.getElementById(`style-${elementId}`);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = `style-${elementId}`;
-      document.head.appendChild(styleTag);
+  function applyStylesToElement(elementId, styles) {
+    const element = document.getElementById(elementId);
+    if (element) {
+      for (let property in styles) {
+        element.style[property] = styles[property];
+      }
     }
-
-    let cssText = `#${elementId}, #${elementId} * { `;
-    Object.keys(css).forEach(prop => {
-      cssText += `${prop}: ${css[prop]} !important; `;
-    });
-    cssText += "}";
-
-    if (css["border-radius"]) {
-      cssText += `#${elementId} { overflow: hidden !important; }`;
-    }
-
-    styleTag.innerHTML = cssText;
-    appliedStyles.add(elementId);
-    console.log(`✅ Styles Persisted for ${elementId}`);
   }
 
 
@@ -351,28 +335,35 @@
     document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"], section, .sqs-block');
       if (!block) return;
-
+  
       if (selectedElement) selectedElement.style.outline = "";
       selectedElement = block;
       selectedElement.style.outline = "2px dashed #EF7C2F";
-
+  
       console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
-
-    document.getElementById("squareCraftPublish").addEventListener("click", async () => {
+  
+    document.getElementById("squareCraftFontSize").addEventListener("input", updateStylesAndSave);
+    document.getElementById("squareCraftBgColor").addEventListener("input", updateStylesAndSave);
+    document.getElementById("squareCraftBorderRadius").addEventListener("input", updateStylesAndSave);
+  
+    async function updateStylesAndSave() {
       if (!selectedElement) {
         console.warn("⚠️ No element selected.");
         return;
       }
-
+  
       let css = {
         "font-size": document.getElementById("squareCraftFontSize").value + "px",
         "background-color": document.getElementById("squareCraftBgColor").value,
         "border-radius": document.getElementById("squareCraftBorderRadius").value + "px"
       };
-
+  
+      applyStylesToElement(selectedElement.id, css);
       await saveModifications(selectedElement.id, css);
-    });
+  
+      console.log("✅ Styles Applied and Saved Automatically!");
+    }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
