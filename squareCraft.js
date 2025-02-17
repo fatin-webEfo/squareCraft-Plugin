@@ -4,7 +4,12 @@
     console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
     return;
   }
-
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.type = "text/css";
+  link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
+  document.head.appendChild(link);
+  
   const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
@@ -284,31 +289,11 @@
 
     document.body.appendChild(widgetContainer);
   }
-
-
-  // It worked ---
-  // <div style="width: 300px; background: #2c2c2c; padding: 20px; border-radius: 18px; color: white;">
-  //       <h3>🎨 SquareCraft Widget</h3>
-
-  //       <label>Font Size:</label>
-  //       <input type="number" id="squareCraftFontSize" value="16" min="10" max="50" style="width: 100%;">
-
-  //       <label>Background Color:</label>
-  //       <input type="color" id="squareCraftBgColor" value="#ffffff" style="width: 100%;">
-
-  //       <label>Border Radius:</label>
-  //       <input type="range" id="squareCraftBorderRadius" min="0" max="50" value="0">
-  //       <p>Border Radius: <span id="borderRadiusValue">0px</span></p>
-
-  //       <button id="squareCraftPublish" style="width: 100%; padding: 10px; background: #EF7C2F; color: white;">
-  //         Publish Changes
-  //       </button>
-  //     </div>
   
 
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
-      let block = event.target.closest('[id^="block-"]');
+      let block = event.target.closest('[id^="block-"], section, .sqs-block');
       if (!block) return;
 
       if (selectedElement) selectedElement.style.outline = "";
