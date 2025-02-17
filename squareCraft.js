@@ -407,13 +407,25 @@
     return pageElement ? pageElement.getAttribute("data-page-sections") : null;
   }
 
-  function applyStylesToElement(elementId, styles) {
-    const element = document.getElementById(elementId);
-    if (element) {
-      for (let property in styles) {
-        element.style[property] = styles[property];
-      }
+  function applyStylesToElement(elementId, css) {
+    if (!elementId || !css || appliedStyles.has(elementId)) return;
+
+    let styleTag = document.getElementById(`style-${elementId}`);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = `style-${elementId}`;
+      document.head.appendChild(styleTag);
     }
+
+    let cssText = `#${elementId} { `;
+    Object.keys(css).forEach(prop => {
+      cssText += `${prop}: ${css[prop]} !important; `;
+    });
+    cssText += "}";
+
+    styleTag.innerHTML = cssText;
+    appliedStyles.add(elementId);
+    console.log(`✅ Styles Persisted for ${elementId}`);
   }
 
   async function fontfamilies() {
@@ -705,14 +717,10 @@
       selectedElement = block;
       selectedElement.style.outline = "2px dashed #EF7C2F";
 
-      console.log(`✅ Selected Element: ${selectedElement}`);
+      console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
 
-    document.getElementById("squareCraftFontSize").addEventListener("input", updateStylesAndSave);
-    document.getElementById("squareCraftBgColor").addEventListener("input", updateStylesAndSave);
-    document.getElementById("squareCraftBorderRadius").addEventListener("input", updateStylesAndSave);
-
-    async function updateStylesAndSave() {
+    document.getElementById("squareCraftPublish").addEventListener("click", async () => {
       if (!selectedElement) {
         console.warn("⚠️ No element selected.");
         return;
@@ -724,11 +732,8 @@
         "border-radius": document.getElementById("squareCraftBorderRadius").value + "px"
       };
 
-      applyStylesToElement(selectedElement.id, css);
       await saveModifications(selectedElement.id, css);
-
-      console.log("✅ Styles Applied and Saved Automatically!");
-    }
+    });
   }
 
   document.addEventListener("DOMContentLoaded", () => {
