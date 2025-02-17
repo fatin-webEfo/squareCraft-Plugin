@@ -10,11 +10,11 @@
   link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
   document.head.appendChild(link);
   fetchModifications();
-  
+
   const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
   const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
   const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
-  console.log(" widgetId: " + widgetId , "token: " + token, "userId: " + userId);
+  console.log(" widgetId: " + widgetId, "token: " + token, "userId: " + userId);
 
   if (token) localStorage.setItem("squareCraft_auth_token", token);
   if (userId) localStorage.setItem("squareCraft_u_id", userId);
@@ -22,7 +22,7 @@
 
   let selectedElement = null;
   let appliedStyles = new Set();
-  
+
   let pageId = getPageId();
   if (!pageId) console.warn("⚠️ No page ID found. Plugin may not work correctly.");
 
@@ -51,16 +51,19 @@
   }
 
   fontfamilies();
+
+  const userIds = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
+
   async function fetchModifications(retries = 3) {
     let pageId = getPageId();
 
     if (!pageId) return;
-  
+
     try {
       console.log(`📄 Fetching saved modifications for Page ID: ${pageId}`);
-  
+
       const response = await fetch(
-        `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
+        `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userIds}`,
         {
           method: "GET",
           headers: {
@@ -69,20 +72,20 @@
           },
         }
       );
-  
+
       if (!response.ok) {
         console.error(`❌ Error: HTTP status ${response.status}`);
         return;
       }
-  
+
       const data = await response.json();
       console.log("📥 Get method response:", data);
-  
+
       if (!data.modifications || data.modifications.length === 0) {
         console.warn("⚠️ No styles found for this page.");
         return;
       }
-  
+
       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
         if (storedPageId === pageId) {
           elements.forEach(({ elementId, css }) => {
@@ -90,7 +93,7 @@
           });
         }
       });
-  
+
     } catch (error) {
       console.error("❌ Error fetching modifications:", error);
       if (retries > 0) {
@@ -99,7 +102,7 @@
       }
     }
   }
-  
+
 
 
   async function saveModifications(elementId, css) {
@@ -311,7 +314,7 @@
     document.body.addEventListener("change", async (event) => {
       if (event.target.id === "fontSizeDropdown") {
         const fontSize = event.target.value;
-        
+
         if (!selectedElement) return;
 
         let css = {
@@ -325,39 +328,39 @@
   }
 
 
-  
+
 
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"], section, .sqs-block');
       if (!block) return;
-  
+
       if (selectedElement) selectedElement.style.outline = "";
       selectedElement = block;
       selectedElement.style.outline = "2px dashed #EF7C2F";
-  
+
       console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
-  
+
     document.getElementById("squareCraftFontSize").addEventListener("input", updateStylesAndSave);
     document.getElementById("squareCraftBgColor").addEventListener("input", updateStylesAndSave);
     document.getElementById("squareCraftBorderRadius").addEventListener("input", updateStylesAndSave);
-  
+
     async function updateStylesAndSave() {
       if (!selectedElement) {
         console.warn("⚠️ No element selected.");
         return;
       }
-  
+
       let css = {
         "font-size": document.getElementById("squareCraftFontSize").value + "px",
         "background-color": document.getElementById("squareCraftBgColor").value,
         "border-radius": document.getElementById("squareCraftBorderRadius").value + "px"
       };
-  
+
       applyStylesToElement(selectedElement.id, css);
       await saveModifications(selectedElement.id, css);
-  
+
       console.log("✅ Styles Applied and Saved Automatically!");
     }
   }
