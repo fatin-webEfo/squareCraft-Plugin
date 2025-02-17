@@ -56,43 +56,6 @@
   }
 
 
-  // Font families
-  fetch('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk')
-  .then(response => response.json())
-  .then(data => {
-    const fonts = data.items; 
-    populateFontDropdown(fonts); 
-  })
-  .catch(error => console.error('Error fetching font data:', error));
-
-
-  function populateFontDropdown(fonts) {
-    const dropdown = document.getElementById('fontDropdown');
-    
-    fonts.forEach(font => {
-      const option = document.createElement('option');
-      option.value = font.family; // Font family name
-      option.textContent = font.family; // Display name in dropdown
-      dropdown.appendChild(option);
-    });
-  }
-
-  document.getElementById('fontDropdown').addEventListener('change', function() {
-    const selectedFont = this.value;
-    document.getElementById('textContainer').style.fontFamily = selectedFont;
-  });
-  
-
-  function loadGoogleFont(fontFamily) {
-    const link = document.createElement('link');
-    link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(' ', '+')}&display=swap`;
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }
-  
-
-  // font families
-
   async function fetchModifications(retries = 3) {
     if (!pageId) return;
 
@@ -274,7 +237,7 @@
             <div class="squareCraft-flex squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
             <div class="squareCraft-flex squareCraft-items-center squareCraft-w-full">
                 <div class=" squareCraft-bg-494949  squareCraft-px-2 squareCraft-w-full squareCraft-py-1px ">
-                    <input type="number" id="squareCraftFontSize" value="16" min="10" max="50" class="squareCraft-text-sm  squareCraft-font-light"/>
+                    <p class="squareCraft-text-sm  squareCraft-font-light">14</p>
                 </div>
                 <div class="squareCraft-border-r   squareCraft-border-585858 squareCraft-h-full"></div>
                 <div class="squareCraft-bg-494949  squareCraft-px-1 squareCraft-w-full squareCraft-py-1px ">
@@ -326,6 +289,8 @@
 
     document.body.appendChild(widgetContainer);
   }
+
+
   
 
   function attachEventListeners() {
