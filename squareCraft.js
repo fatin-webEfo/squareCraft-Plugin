@@ -77,17 +77,24 @@
     });
   }
 
-  function loadGoogleFont(fontFamily) {
-    const link = document.createElement('link');
-    link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(' ', '+')}&display=swap`;
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }
-  document.getElementById('fontDropdown').addEventListener('change', function() {
+
+    async function loadGoogleFont(fontFamily) {
+        const link = document.createElement('link');
+        link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(' ', '+')}&display=swap`;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+    }
+
+
+ document.getElementById('fontDropdown').addEventListener('change', async function() {
     const selectedFont = this.value;
-    loadGoogleFont(selectedFont);  // Load the selected font dynamically
-    document.getElementById('textContainer').style.fontFamily = selectedFont;  // Apply the font to the text container
+    if (selectedFont) {
+        await loadGoogleFont(selectedFont);  // Load the font dynamically
+        document.getElementById('textContainer').style.fontFamily = selectedFont;  // Apply the font to the text container
+    }
 });
+
+
 
 
 
