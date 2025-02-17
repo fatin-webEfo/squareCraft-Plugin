@@ -278,16 +278,10 @@
         </select>
     </div>
     <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
-    <div class="squareCraft-bg-494949 squareCraft-px-1 squareCraft-w-full squareCraft-py-1px">
-        <p class="squareCraft-text-sm squareCraft-font-light">px</p>
-    </div>
+   
 </div>
 
-                <div class="squareCraft-bg-3f3f3f squareCraft-px-1" style="height: 27px; padding: 0 8px;">
-                    <img class=" squareCraft-rounded-6px squareCraft-rotate-180" width="12px"
-                        src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
-    
-                </div>
+               
             </div>
         </div>
     
