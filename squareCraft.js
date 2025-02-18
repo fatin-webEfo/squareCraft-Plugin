@@ -279,11 +279,13 @@ squareCraft-w-16 squareCraft-h-full">
     
     <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
 
-  <div class="squareCraft-flex squareCraft-items-center">  <div class="squareCraft-font-size-unit squareCraft-text-sm">px</div>
+  <div class="squareCraft-flex squareCraft-items-center squareCraft-py-1">  
+  <div class="squareCraft-font-size-unit squareCraft-text-sm">px</div>
 
     <div id="squareCraftFontSizeDropdown" class="squareCraft-dropdown-arrow squareCraft-cursor-pointer">
         <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" class="squareCraft-rotate-180" width="12px">
-    </div></div>
+    </div>
+    </div>
 
     <div id="squareCraftFontSizeOptions" class="squareCraft-hidden squareCraft-font-sm squareCraft-bg-3f3f3f squareCraft-w-full 
         squareCraft-rounded-6px squareCraft-border squareCraft-border-585858 squareCraft-absolute 
