@@ -288,7 +288,7 @@
        </div>
     </div>
     
-        <div id="squareCraftFontSizeOptions" class="squareCraft-hidden squareCraft-font-sm squareCraft-bg-3f3f3f squareCraft-w-full 
+        <div id="squareCraftFontSizeOptions" class="squareCraft-hidden squareCraft-font-sm squareCraft-bg-3f3f3f squareCraft-w-toogle
             squareCraft-rounded-6px squareCraft-border squareCraft-border-585858 squareCraft-absolute 
             squareCraft-mt-1">
             ${fontSizes.map(size => `
