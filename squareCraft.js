@@ -377,29 +377,58 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     function checkURL() {
-      const currentURL = window.location.href;
-      const widgetContainer = document.getElementById("squarecraft-widget-container");
+        const currentURL = window.location.href;
+        const widgetContainer = document.getElementById("squarecraft-widget-container");
 
-      console.log("Current URL:", currentURL);
+        console.log("Current URL:", currentURL);
 
-      if (currentURL.includes("/#")) {
-          console.log("✅ Widget is VISIBLE on the Code Injection page.");
-          if (widgetContainer) {
-              widgetContainer.style.display = "block"; // Show Widget
-          } else {
-              createWidget(); // Ensure widget is created if not already
-          }
-      } else {
-          console.log("❌ Widget is HIDDEN on other pages.");
-          if (widgetContainer) widgetContainer.style.display = "none"; // Hide Widget
-      }
-  }
+        if (currentURL.includes("/#")) {
+            console.log("✅ Widget is VISIBLE on the Code Injection page.");
+            if (widgetContainer) {
+                widgetContainer.style.display = "block"; // Show Widget
+            } else {
+                createWidget(); // Ensure widget is created if not already
+                setTimeout(makeWidgetDraggable, 500); // Ensure it's draggable
+            }
+        } else {
+            console.log("❌ Widget is HIDDEN on other pages.");
+            if (widgetContainer) widgetContainer.style.display = "none"; // Hide Widget
+        }
+    }
 
-  checkURL();
-  setInterval(checkURL, 1000);
+    function makeWidgetDraggable() {
+        const widget = document.getElementById("squarecraft-widget-container");
+        if (!widget) return;
+
+        let offsetX, offsetY, isDragging = false;
+
+        widget.addEventListener("mousedown", (event) => {
+            isDragging = true;
+            offsetX = event.clientX - widget.getBoundingClientRect().left;
+            offsetY = event.clientY - widget.getBoundingClientRect().top;
+            widget.style.transition = "none"; // Disable transition for smooth dragging
+        });
+
+        document.addEventListener("mousemove", (event) => {
+            if (!isDragging) return;
+            const x = event.clientX - offsetX;
+            const y = event.clientY - offsetY;
+            widget.style.left = `${x}px`;
+            widget.style.top = `${y}px`;
+        });
+
+        document.addEventListener("mouseup", () => {
+            isDragging = false;
+            widget.style.transition = "0.2s ease-out"; // Smooth release
+        });
+    }
+
+    checkURL();
+    setInterval(checkURL, 1000);
     createWidget();
     attachEventListeners();
     fetchModifications();
+    setTimeout(makeWidgetDraggable, 500); // Ensure dragging works after widget is created
 
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
@@ -426,7 +455,7 @@
         if (event.target.classList.contains("squareCraft-dropdown-item")) {
             fontSizeInput.value = event.target.dataset.value;
             dropdownOptions.classList.add("squareCraft-hidden");
-            
+
             if (selectedElement) {
                 let css = { "font-size": `${event.target.dataset.value}px` };
                 applyStylesToElement(selectedElement.id, css);
@@ -440,6 +469,7 @@
             dropdownOptions.classList.add("squareCraft-hidden");
         }
     });
+
     fontSizeInput.addEventListener("input", function () {
         if (selectedElement) {
             let css = { "font-size": `${fontSizeInput.value}px` };
@@ -448,6 +478,7 @@
         }
     });
 });
+
 
 
 })();
