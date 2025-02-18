@@ -376,141 +376,97 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    function insertCustomAdminIcon() {
-      const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
+    let selectedElement = null;
+    let widgetContainer = null;
 
-      if (!adminNavbar) {
-          console.warn("Admin navbar not found. Retrying...");
-          setTimeout(insertCustomAdminIcon, 1000); // Retry in case the page hasn't fully loaded
-          return;
-      }
+    function createFloatingIcon() {
+        const floatingIcon = document.createElement("img");
+        floatingIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; 
+        floatingIcon.id = "floatingAdminIcon";
+        floatingIcon.style.position = "fixed";
+        floatingIcon.style.top = "10px";
+        floatingIcon.style.right = "10px";
+        floatingIcon.style.width = "40px";
+        floatingIcon.style.height = "40px";
+        floatingIcon.style.cursor = "pointer";
+        floatingIcon.style.zIndex = "9999";
+        floatingIcon.style.background = "white";
+        floatingIcon.style.borderRadius = "50%";
+        floatingIcon.style.boxShadow = "0px 0px 8px rgba(0,0,0,0.2)";
+        floatingIcon.style.padding = "5px";
 
-      // Check if icon is already added
-      if (document.getElementById("customAdminIcon")) return;
+        document.body.appendChild(floatingIcon);
+    }
 
-      // Create the custom icon element
-      const customIcon = document.createElement("img");
-      customIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Your icon URL
-      customIcon.id = "customAdminIcon";
-      customIcon.style.cursor = "pointer";
-      customIcon.style.marginLeft = "15px"; // Adjust spacing
-      customIcon.style.width = "32px"; // Icon size
-      customIcon.style.height = "32px";
-      
-      // Click action (you can modify this)
-      customIcon.addEventListener("click", function () {
-          alert("Custom Plugin Clicked!");
-          // You can also redirect or open a settings panel
-      });
+    function createWidget() {
+        widgetContainer = document.createElement("div");
+        widgetContainer.id = "squarecraft-widget-container";
+        widgetContainer.style.position = "absolute";
+        widgetContainer.style.display = "none"; 
+        widgetContainer.style.width = "300px";
+        widgetContainer.style.background = "#2c2c2c";
+        widgetContainer.style.border = "1px solid #3d3d3d";
+        widgetContainer.style.borderRadius = "8px";
+        widgetContainer.style.padding = "10px";
+        widgetContainer.style.color = "white";
+        widgetContainer.style.zIndex = "9999";
+        widgetContainer.innerHTML = `<p>Widget Active!</p>`;
 
-      // Append to the navbar
-      adminNavbar.appendChild(customIcon);
-      console.log("✅ Custom admin icon added!");
-  }
+        document.body.appendChild(widgetContainer);
+        makeWidgetDraggable();
+    }
 
-  insertCustomAdminIcon();
-    function checkURL() {
-        const currentURL = window.location.href;
-        const widgetContainer = document.getElementById("squarecraft-widget-container");
-
-        console.log("Current URL:", currentURL);
-
-        if (currentURL.includes("/#")) {
-            console.log("✅ Widget is VISIBLE on the Code Injection page.");
-            if (widgetContainer) {
-                widgetContainer.style.display = "block"; // Show Widget
-            } else {
-                createWidget(); // Ensure widget is created if not already
-                setTimeout(makeWidgetDraggable, 500); // Ensure it's draggable
-            }
-        } else {
-            console.log("❌ Widget is HIDDEN on other pages.");
-            if (widgetContainer) widgetContainer.style.display = "none"; // Hide Widget
-        }
+    function positionWidgetNearElement(element) {
+        if (!widgetContainer) return;
+        const rect = element.getBoundingClientRect();
+        widgetContainer.style.top = `${window.scrollY + rect.top + rect.height + 10}px`;
+        widgetContainer.style.left = `${window.scrollX + rect.left}px`;
+        widgetContainer.style.display = "block"; 
     }
 
     function makeWidgetDraggable() {
-        const widget = document.getElementById("squarecraft-widget-container");
-        if (!widget) return;
-
         let offsetX, offsetY, isDragging = false;
 
-        widget.addEventListener("mousedown", (event) => {
+        widgetContainer.addEventListener("mousedown", (event) => {
             isDragging = true;
-            offsetX = event.clientX - widget.getBoundingClientRect().left;
-            offsetY = event.clientY - widget.getBoundingClientRect().top;
-            widget.style.transition = "none"; // Disable transition for smooth dragging
+            offsetX = event.clientX - widgetContainer.getBoundingClientRect().left;
+            offsetY = event.clientY - widgetContainer.getBoundingClientRect().top;
+            widgetContainer.style.transition = "none"; 
         });
 
         document.addEventListener("mousemove", (event) => {
             if (!isDragging) return;
             const x = event.clientX - offsetX;
             const y = event.clientY - offsetY;
-            widget.style.left = `${x}px`;
-            widget.style.top = `${y}px`;
+            widgetContainer.style.left = `${x}px`;
+            widgetContainer.style.top = `${y}px`;
         });
 
         document.addEventListener("mouseup", () => {
             isDragging = false;
-            widget.style.transition = "0.2s ease-out"; // Smooth release
+            widgetContainer.style.transition = "0.2s ease-out"; 
         });
     }
 
-    checkURL();
-    setInterval(checkURL, 1000);
-    createWidget();
-    attachEventListeners();
-    fetchModifications();
-    setTimeout(makeWidgetDraggable, 500); // Ensure dragging works after widget is created
-
-    const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
-    const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
-    const dropdownOptions = document.getElementById("squareCraftFontSizeOptions");
-
     document.body.addEventListener("click", (event) => {
-        let block = event.target.closest('[id^="block-"]');
+        let block = event.target.closest('[id]'); 
         if (!block) return;
 
-        if (selectedElement) selectedElement.style.outline = "";
         selectedElement = block;
-        selectedElement.style.outline = "2px dashed #EF7C2F";
-
-        let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
-        fontSizeInput.value = parseInt(computedFontSize, 10); 
-    });
-
-    dropdownArrow.addEventListener("click", function (event) {
-        event.stopPropagation();
-        dropdownOptions.classList.toggle("squareCraft-hidden");
-    });
-
-    dropdownOptions.addEventListener("click", function (event) {
-        if (event.target.classList.contains("squareCraft-dropdown-item")) {
-            fontSizeInput.value = event.target.dataset.value;
-            dropdownOptions.classList.add("squareCraft-hidden");
-
-            if (selectedElement) {
-                let css = { "font-size": `${event.target.dataset.value}px` };
-                applyStylesToElement(selectedElement.id, css);
-                saveModifications(selectedElement.id, css);
-            }
-        }
+        positionWidgetNearElement(selectedElement);
+        console.log("Clicked Element ID:", selectedElement.id);
     });
 
     document.addEventListener("click", function (event) {
-        if (!dropdownArrow.contains(event.target) && !dropdownOptions.contains(event.target)) {
-            dropdownOptions.classList.add("squareCraft-hidden");
+        if (widgetContainer && event.target !== widgetContainer && !widgetContainer.contains(event.target)) {
+            widgetContainer.style.display = "none";
         }
     });
 
-    fontSizeInput.addEventListener("input", function () {
-        if (selectedElement) {
-            let css = { "font-size": `${fontSizeInput.value}px` };
-            applyStylesToElement(selectedElement.id, css);
-            saveModifications(selectedElement.id, css);
-        }
-    });
+    createFloatingIcon();
+    createWidget();
 });
+
 
 
 
