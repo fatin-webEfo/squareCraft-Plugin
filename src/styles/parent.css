@@ -630,44 +630,45 @@ font-size: 12px !important;
   animation: squareCraft-border-animation 1.5s infinite linear;
 }
 
-
-.squareCraft-dropdown {
-  position: relative;
-  width: 100px;
-  cursor: pointer;
-}
-
-.squareCraft-dropdown-header {
-  background-color: #494949;
-  color: white;
-  padding: 6px 10px;
+/* Dropdown container */
+.squareCraft-custom-select {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-radius: 6px;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
 }
 
-.squareCraft-dropdown-options {
+/* Dropdown list */
+.squareCraft-custom-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
-  z-index: 1000;  /* Ensures dropdown stays above other elements */
+  z-index: 1000;
   display: none;
   background: #3f3f3f;
   border-radius: 6px;
   border: 1px solid #585858;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  max-height: 200px; /* Limits dropdown height */
-  overflow-y: auto;  /* Adds scroll if many font sizes */
+  max-height: 200px;
+  overflow-y: auto;
 }
 
+/* Show dropdown when open */
+.squareCraft-custom-dropdown.show {
+  display: block;
+}
+
+/* Dropdown items */
 .squareCraft-dropdown-item {
-  padding: 6px 10px;
-  color: white;
-  transition: background 0.3s;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .squareCraft-dropdown-item:hover {
-  background-color: #EF7C2F;
+  background: #494949;
 }
+
+
