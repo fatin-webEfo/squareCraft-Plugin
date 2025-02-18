@@ -382,17 +382,28 @@
     createWidget();
     attachEventListeners();
     fetchModifications();
+
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
     const dropdownOptions = document.getElementById("squareCraftFontSizeOptions");
 
-    // Toggle Dropdown on Click
+    document.body.addEventListener("click", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
+
+        if (selectedElement) selectedElement.style.outline = "";
+        selectedElement = block;
+        selectedElement.style.outline = "2px dashed #EF7C2F";
+
+        let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
+        fontSizeInput.value = parseInt(computedFontSize, 10); 
+    });
+
     dropdownArrow.addEventListener("click", function (event) {
         event.stopPropagation();
         dropdownOptions.classList.toggle("squareCraft-hidden");
     });
 
-    // Select Font Size from Dropdown
     dropdownOptions.addEventListener("click", function (event) {
         if (event.target.classList.contains("squareCraft-dropdown-item")) {
             fontSizeInput.value = event.target.dataset.value;
@@ -406,14 +417,11 @@
         }
     });
 
-    // Close dropdown when clicking outside
     document.addEventListener("click", function (event) {
         if (!dropdownArrow.contains(event.target) && !dropdownOptions.contains(event.target)) {
             dropdownOptions.classList.add("squareCraft-hidden");
         }
     });
-
-    // Apply changes when manually entering a value
     fontSizeInput.addEventListener("input", function () {
         if (selectedElement) {
             let css = { "font-size": `${fontSizeInput.value}px` };
@@ -422,5 +430,6 @@
         }
     });
 });
+
 
 })();
