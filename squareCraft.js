@@ -376,6 +376,39 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    function insertCustomAdminIcon() {
+      const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
+
+      if (!adminNavbar) {
+          console.warn("Admin navbar not found. Retrying...");
+          setTimeout(insertCustomAdminIcon, 1000); // Retry in case the page hasn't fully loaded
+          return;
+      }
+
+      // Check if icon is already added
+      if (document.getElementById("customAdminIcon")) return;
+
+      // Create the custom icon element
+      const customIcon = document.createElement("img");
+      customIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Your icon URL
+      customIcon.id = "customAdminIcon";
+      customIcon.style.cursor = "pointer";
+      customIcon.style.marginLeft = "15px"; // Adjust spacing
+      customIcon.style.width = "32px"; // Icon size
+      customIcon.style.height = "32px";
+      
+      // Click action (you can modify this)
+      customIcon.addEventListener("click", function () {
+          alert("Custom Plugin Clicked!");
+          // You can also redirect or open a settings panel
+      });
+
+      // Append to the navbar
+      adminNavbar.appendChild(customIcon);
+      console.log("✅ Custom admin icon added!");
+  }
+
+  insertCustomAdminIcon();
     function checkURL() {
         const currentURL = window.location.href;
         const widgetContainer = document.getElementById("squarecraft-widget-container");
