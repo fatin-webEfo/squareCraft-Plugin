@@ -715,17 +715,7 @@ font-size: 12px !important;
   border-color: #EF7C2F;
   box-shadow: 0 0 5px rgba(239, 124, 47, 0.5);
 }
-
-.squareCraft-font-size-container {
-  display: flex !important;
-  align-items: center !important;
-  border: 1px solid #3d3d3d !important;
-  background: #2c2c2c !important;
-  border-radius: 4px !important;
-  overflow: hidden !important;
-  width: 80px !important;
-}
-
+/* Remove Default Green Outline */
 .squareCraft-font-size-input {
   outline: none !important;
   border: none !important;
@@ -734,21 +724,15 @@ font-size: 12px !important;
   padding: 4px 8px !important;
   font-size: 14px !important;
   text-align: center !important;
+  width: 40px !important;
 }
 
 .squareCraft-font-size-input:focus {
-  border: 1px solid #EF7C2F !important; /* Orange Border */
-  box-shadow: 0 0 4px #EF7C2F !important; /* Orange Glow */
-  border-radius: 4px !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-.squareCraft-custom-select:focus {
-  border-color: #EF7C2F !important;
-  box-shadow: 0 0 5px rgba(239, 124, 47, 0.5) !important;
-}
-
-
-
+/* "px" Unit Styling */
 .squareCraft-font-size-unit {
   background: #3d3d3d !important;
   padding: 4px 8px !important;
@@ -758,9 +742,26 @@ font-size: 12px !important;
   justify-content: center !important;
 }
 
+/* Dropdown Arrow Corrected */
 .squareCraft-dropdown-arrow {
   width: 10px !important;
   margin-left: 4px !important;
+  cursor: pointer !important;
+  padding: 4px 6px !important;
+}
+
+.squareCraft-font-size-container {
+  position: relative !important;
+}
+
+/* Dropdown Styles */
+.squareCraft-hidden {
+  display: none !important;
+}
+
+.squareCraft-dropdown-item:hover {
+  background: #EF7C2F !important;
+  color: white !important;
   cursor: pointer !important;
 }
 

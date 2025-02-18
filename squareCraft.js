@@ -269,20 +269,37 @@ class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-b
 squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 
 squareCraft-items-center squareCraft-h-full">
 
-    <div class="squareCraft-flex squareCraft-text-color-white squareCraft-items-center squareCraft-w-full">
-        <select id="squareCraftFontSize" 
-           class="squareCraft-text-sm squareCraft-rounded-6px squareCraft-text-color-white 
-           squareCraft-px-2 squareCraft-w-full squareCraft-py-1px squareCraft-font-light 
-           squareCraft-bg-494949 squareCraft-text-color-white">
-             ${fontSizeOptions}
-        </select>
-    </div>
+   <div class="squareCraft-font-size-container squareCraft-flex squareCraft-items-center squareCraft-border 
+squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-6px 
+squareCraft-w-16 squareCraft-h-full">
 
-    <!-- Add Vertical Line -->
+    <!-- Dynamic Input for Font Size -->
+    <input type="number" id="squareCraftFontSizeInput" value="16" 
+        class="squareCraft-font-size-input squareCraft-text-sm squareCraft-text-color-white 
+        squareCraft-bg-transparent squareCraft-w-full squareCraft-px-2 squareCraft-py-1px squareCraft-font-light">
+    
+    <!-- Vertical Line -->
     <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
 
     <!-- "px" Unit -->
     <div class="squareCraft-font-size-unit">px</div>
+
+    <!-- Dropdown Arrow (Corrected Position) -->
+    <div id="squareCraftFontSizeDropdown" class="squareCraft-dropdown-arrow squareCraft-cursor-pointer">
+        <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" width="12px">
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div id="squareCraftFontSizeOptions" class="squareCraft-hidden squareCraft-bg-3f3f3f squareCraft-w-full 
+        squareCraft-rounded-6px squareCraft-border squareCraft-border-585858 squareCraft-absolute 
+        squareCraft-mt-1">
+        ${fontSizes.map(size => `
+            <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-px-2 squareCraft-text-sm" 
+                data-value="${size}">${size}px</div>
+        `).join('')}
+    </div>
+</div>
+
 </div>
 
 
@@ -363,9 +380,46 @@ squareCraft-items-center squareCraft-h-full">
     
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    createWidget();
-    attachEventListeners();
-    fetchModifications();  // Fetch and apply saved modifications immediately
-  });
+  document.addEventListener("DOMContentLoaded", function () {
+    const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
+    const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
+    const dropdownOptions = document.getElementById("squareCraftFontSizeOptions");
+
+    // Toggle Dropdown on Click
+    dropdownArrow.addEventListener("click", function (event) {
+        event.stopPropagation();
+        dropdownOptions.classList.toggle("squareCraft-hidden");
+    });
+
+    // Select Font Size from Dropdown
+    dropdownOptions.addEventListener("click", function (event) {
+        if (event.target.classList.contains("squareCraft-dropdown-item")) {
+            fontSizeInput.value = event.target.dataset.value;
+            dropdownOptions.classList.add("squareCraft-hidden");
+            
+            if (selectedElement) {
+                let css = { "font-size": `${event.target.dataset.value}px` };
+                applyStylesToElement(selectedElement.id, css);
+                saveModifications(selectedElement.id, css);
+            }
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+        if (!dropdownArrow.contains(event.target) && !dropdownOptions.contains(event.target)) {
+            dropdownOptions.classList.add("squareCraft-hidden");
+        }
+    });
+
+    // Apply changes when manually entering a value
+    fontSizeInput.addEventListener("input", function () {
+        if (selectedElement) {
+            let css = { "font-size": `${fontSizeInput.value}px` };
+            applyStylesToElement(selectedElement.id, css);
+            saveModifications(selectedElement.id, css);
+        }
+    });
+});
+
 })();
