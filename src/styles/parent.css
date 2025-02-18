@@ -724,3 +724,40 @@ font-size: 12px !important;
   border-color: #EF7C2F;
   box-shadow: 0 0 5px rgba(239, 124, 47, 0.5);
 }
+
+.squareCraft-font-size-container {
+  display: flex !important;
+  align-items: center !important;
+  border: 1px solid #3d3d3d !important;
+  background: #2c2c2c !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  width: 80px !important;
+}
+
+.squareCraft-font-size-input {
+  flex: 1 !important;
+  background: transparent !important;
+  border: none !important;
+  color: #fff !important;
+  padding: 4px 8px !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  outline: none !important;
+}
+
+.squareCraft-font-size-unit {
+  background: #3d3d3d !important;
+  padding: 4px 8px !important;
+  color: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.squareCraft-dropdown-arrow {
+  width: 10px !important;
+  margin-left: 4px !important;
+  cursor: pointer !important;
+}
+
