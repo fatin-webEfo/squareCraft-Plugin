@@ -6,7 +6,9 @@
   }
 
   var newURL = window.location.protocol + "//" + window.location.host + window.location.pathname
-  console.log(newURL)
+
+  console.log(newURL);
+  console.log("document title" , document)
 
   const token = widgetScript.dataset?.token;
   const squareCraft_u_id = widgetScript.dataset?.uId; 
