@@ -5,11 +5,31 @@
       return;
     }
   
-    const token = widgetScript?.dataset?.token || localStorage.getItem("squareCraft_auth_token");
-    const userId = widgetScript.dataset?.uId || localStorage.getItem("squareCraft_u_id");
-    const widgetId = widgetScript.dataset?.wId || localStorage.getItem("squareCraft_w_id");
+    const token = widgetScript.dataset?.token;
+    const squareCraft_u_id = widgetScript.dataset?.uId; 
+    const squareCraft_w_id = widgetScript.dataset?.wId; 
+    const userId = localStorage.getItem("squareCraft_u_id");
+    const widgetId = localStorage.getItem("squareCraft_w_id");
+    
+    if (token) {
+        console.log("🔑 Token received:", token);
+        localStorage.setItem("squareCraft_auth_token", token);
+        document.cookie = `squareCraft_auth_token=${token}; path=.squarespace.com;`;
+    }
   
-    if (token) localStorage.setItem("squareCraft_auth_token", token);
+    if (squareCraft_u_id) {
+        console.log("👤 User ID received:", squareCraft_u_id);
+        localStorage.setItem("squareCraft_u_id", squareCraft_u_id);
+        document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;
+  
+    }
+  
+    if (squareCraft_w_id) {
+        console.log("🛠️ Widget ID received:", squareCraft_w_id);
+        localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
+        document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
+    }
+   if (token) localStorage.setItem("squareCraft_auth_token", token);
     if (userId) localStorage.setItem("squareCraft_u_id", userId);
     if (widgetId) localStorage.setItem("squareCraft_w_id", widgetId);
   
