@@ -382,7 +382,7 @@
 
       console.log("Current URL:", currentURL);
 
-      if (currentURL.includes("/config/pages/website-tools/code-injection")) {
+      if (currentURL.includes("/#")) {
           console.log("✅ Widget is VISIBLE on the Code Injection page.");
           if (widgetContainer) {
               widgetContainer.style.display = "block"; // Show Widget
