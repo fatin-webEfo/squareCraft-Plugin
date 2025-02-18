@@ -630,7 +630,6 @@ font-size: 12px !important;
   animation: squareCraft-border-animation 1.5s infinite linear;
 }
 
-/* Dropdown container */
 .squareCraft-custom-select {
   display: flex;
   align-items: center;
@@ -639,7 +638,6 @@ font-size: 12px !important;
   position: relative;
 }
 
-/* Dropdown list */
 .squareCraft-custom-dropdown {
   position: absolute;
   top: 100%;
@@ -655,12 +653,10 @@ font-size: 12px !important;
   overflow-y: auto;
 }
 
-/* Show dropdown when open */
 .squareCraft-custom-dropdown.show {
   display: block;
 }
 
-/* Dropdown items */
 .squareCraft-dropdown-item {
   padding: 8px 12px;
   cursor: pointer;
@@ -672,7 +668,6 @@ font-size: 12px !important;
 }
 
 
-/* Customizing the Select Box */
 .squareCraft-custom-select {
   appearance: none; /* Removes default OS styling */
   -webkit-appearance: none;
@@ -689,7 +684,6 @@ font-size: 12px !important;
   position: relative;
 }
 
-/* Adding a dropdown arrow manually */
 .squareCraft-custom-select-wrapper {
   position: relative;
   width: 100%;
@@ -706,7 +700,6 @@ font-size: 12px !important;
   pointer-events: none;
 }
 
-/* Styling the dropdown options */
 .squareCraft-custom-select option {
   background: #3f3f3f;
   color: white;
@@ -714,12 +707,10 @@ font-size: 12px !important;
   font-size: 14px;
 }
 
-/* On Hover */
 .squareCraft-custom-select option:hover {
   background: #585858 !important;
 }
 
-/* Remove default blue highlight in Chrome */
 .squareCraft-custom-select:focus {
   border-color: #EF7C2F;
   box-shadow: 0 0 5px rgba(239, 124, 47, 0.5);
@@ -736,15 +727,21 @@ font-size: 12px !important;
 }
 
 .squareCraft-font-size-input {
-  flex: 1 !important;
-  background: transparent !important;
-  border: none !important;
-  color: #fff !important;
-  padding: 4px 8px !important;
-  font-size: 14px !important;
+  outline: none !important; 
+  border: none !important; 
+  background: transparent !important; 
+  color: #fff !important; 
+  padding: 4px 8px !important; 
+  font-size: 14px !important; 
   text-align: center !important;
-  outline: none !important;
 }
+
+.squareCraft-font-size-input:focus {
+  border: 1px solid #EF7C2F !important; 
+  box-shadow: 0 0 4px #EF7C2F !important; 
+  border-radius: 4px !important;
+}
+
 
 .squareCraft-font-size-unit {
   background: #3d3d3d !important;
