@@ -727,20 +727,26 @@ font-size: 12px !important;
 }
 
 .squareCraft-font-size-input {
-  outline: none !important; 
-  border: none !important; 
-  background: transparent !important; 
-  color: #fff !important; 
-  padding: 4px 8px !important; 
-  font-size: 14px !important; 
+  outline: none !important;
+  border: none !important;
+  background: transparent !important;
+  color: #fff !important;
+  padding: 4px 8px !important;
+  font-size: 14px !important;
   text-align: center !important;
 }
 
 .squareCraft-font-size-input:focus {
-  border: 1px solid #EF7C2F !important; 
-  box-shadow: 0 0 4px #EF7C2F !important; 
+  border: 1px solid #EF7C2F !important; /* Orange Border */
+  box-shadow: 0 0 4px #EF7C2F !important; /* Orange Glow */
   border-radius: 4px !important;
 }
+
+.squareCraft-custom-select:focus {
+  border-color: #EF7C2F !important;
+  box-shadow: 0 0 5px rgba(239, 124, 47, 0.5) !important;
+}
+
 
 
 .squareCraft-font-size-unit {

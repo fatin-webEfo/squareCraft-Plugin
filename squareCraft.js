@@ -265,9 +265,26 @@ class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-b
         <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
         <div class="squareCraft-flex squareCraft-text-color-white squareCraft-items-center squareCraft-w-full">
 
-    <select id="squareCraftFontSize" class="squareCraft-text-sm squareCraft-rounded-6px squareCraft-text-color-white squareCraft-px-2 squareCraft-w-full squareCraft-py-1px squareCraft-font-light squareCraft-bg-494949 squareCraft-text-color-white" id="fontSizeDropdown">
-       ${fontSizeOptions}
-    </select>
+  <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4  
+squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 
+squareCraft-items-center squareCraft-h-full">
+
+    <div class="squareCraft-flex squareCraft-text-color-white squareCraft-items-center squareCraft-w-full">
+        <select id="squareCraftFontSize" 
+           class="squareCraft-text-sm squareCraft-rounded-6px squareCraft-text-color-white 
+           squareCraft-px-2 squareCraft-w-full squareCraft-py-1px squareCraft-font-light 
+           squareCraft-bg-494949 squareCraft-text-color-white">
+             ${fontSizeOptions}
+        </select>
+    </div>
+
+    <!-- Add Vertical Line -->
+    <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
+
+    <!-- "px" Unit -->
+    <div class="squareCraft-font-size-unit">px</div>
+</div>
+
 
 <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
 
