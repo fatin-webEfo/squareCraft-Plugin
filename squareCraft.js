@@ -5,7 +5,7 @@
     return;
   }
 
-  console.log("Current path " , window.location)
+  console.log("Current path " , window)
 
   const token = widgetScript.dataset?.token;
   const squareCraft_u_id = widgetScript.dataset?.uId; 
