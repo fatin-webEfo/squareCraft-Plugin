@@ -267,16 +267,15 @@ class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-b
 <div class="squareCraft-bg-494949 squareCraft-text-white squareCraft-px-2 squareCraft-w-full squareCraft-py-1px">
   <div class="squareCraft-dropdown squareCraft-w-full" id="squareCraftFontSizeDropdown">
     <div class="squareCraft-dropdown-header squareCraft-flex squareCraft-items-center squareCraft-justify-between squareCraft-bg-494949 squareCraft-text-white squareCraft-px-2 squareCraft-py-1px">
-        <span id="squareCraftFontSizeSelected">16px</span>
+        <input type="number" id="squareCraftFontSizeInput" class="squareCraft-bg-3f3f3f squareCraft-text-white squareCraft-border-none squareCraft-px-2 squareCraft-py-1px" 
+            value="16" min="8" max="100" step="1" />
         <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" width="12px" />
     </div>
     <div class="squareCraft-dropdown-options squareCraft-hidden squareCraft-bg-3f3f3f squareCraft-w-full squareCraft-rounded-6px squareCraft-border squareCraft-border-585858" id="squareCraftFontSizeOptions">
-    ${fontSizes?.map(size => `
-        <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-px-2 squareCraft-text-sm" data-value="${size}">${size}px</div>
-    `).join('')}
+        <!-- Font Sizes Will Be Injected Here -->
+    </div>
 </div>
 
-</div>
 
 
 </div>
@@ -359,45 +358,69 @@ class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-b
     createWidget();
     attachEventListeners();
     fetchModifications();
-    
+
     const dropdown = document.getElementById("squareCraftFontSizeDropdown");
-    const selected = document.getElementById("squareCraftFontSizeSelected");
+    const selectedInput = document.getElementById("squareCraftFontSizeInput");
     const options = document.getElementById("squareCraftFontSizeOptions");
 
-    if (!dropdown || !selected || !options) {
+    if (!dropdown || !selectedInput || !options) {
         console.error("Dropdown elements not found! Ensure they are correctly added to the DOM.");
         return;
     }
 
+    // Inject font sizes dynamically into the dropdown
     options.innerHTML = fontSizes.map(size => `
         <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-px-2 squareCraft-text-sm" data-value="${size}">${size}px</div>
     `).join('');
 
+    // Toggle dropdown visibility
     dropdown.addEventListener("click", function (event) {
         event.stopPropagation();
         options.classList.toggle("squareCraft-hidden");
     });
 
+    // Handle font size selection from the dropdown
     options.addEventListener("click", function (event) {
         if (event.target.classList.contains("squareCraft-dropdown-item")) {
-            selected.textContent = event.target.textContent;
-            selected.dataset.value = event.target.dataset.value;
+            const selectedSize = event.target.dataset.value;
+            selectedInput.value = selectedSize;
             options.classList.add("squareCraft-hidden");
 
+            // Apply font size
             if (selectedElement) {
-                let css = { "font-size": event.target.dataset.value + "px" };
+                let css = { "font-size": `${selectedSize}px` };
                 applyStylesToElement(selectedElement.id, css);
                 saveModifications(selectedElement.id, css);
             }
         }
     });
 
+    // Handle manual input for font size
+    selectedInput.addEventListener("input", function () {
+        let inputValue = parseInt(selectedInput.value, 10);
+
+        // Ensure valid font size
+        if (isNaN(inputValue) || inputValue < 8) inputValue = 8;
+        if (inputValue > 100) inputValue = 100;
+
+        selectedInput.value = inputValue;
+
+        // Apply font size dynamically
+        if (selectedElement) {
+            let css = { "font-size": `${inputValue}px` };
+            applyStylesToElement(selectedElement.id, css);
+            saveModifications(selectedElement.id, css);
+        }
+    });
+
+    // Close dropdown when clicking outside
     document.addEventListener("click", function (event) {
         if (!dropdown.contains(event.target)) {
             options.classList.add("squareCraft-hidden");
         }
     });
 });
+
 
 
 
