@@ -358,6 +358,10 @@ class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-b
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    createWidget();
+    attachEventListeners();
+    fetchModifications();
+    saveModifications();
     const fontSizeInput = document.getElementById("squareCraftFontSize");
     const dropdownArrow = document.getElementById("fontSizeDropdownArrow");
     const dropdown = document.getElementById("fontSizeDropdown");
