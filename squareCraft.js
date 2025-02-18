@@ -5,7 +5,7 @@
     return;
   }
 
-  console.log("Current path " , window.location)
+  console.log("Current path " , window.location.href)
 
   const token = widgetScript.dataset?.token;
   const squareCraft_u_id = widgetScript.dataset?.uId; 
@@ -38,7 +38,7 @@
   link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
   document.head.appendChild(link);
 
-  const fontSizes = [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 , 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48];
+  const fontSizes = [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 , 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60];
   let fontSizeOptions = '';
   for (let size of fontSizes) {
     fontSizeOptions += `<option value="${size}">${size}px</option>`;
@@ -60,7 +60,6 @@
   let pageId = getPageId();
   if (!pageId) console.warn(":warning: No page ID found. Plugin may not work correctly.");
 
-  // Function to apply styles dynamically to the element
   function applyStylesToElement(elementId, css) {
     if (!elementId || !css) return;
 
@@ -88,7 +87,6 @@
     console.log(`:white_check_mark: Styles Persisted for ${elementId}`);
   }
 
-  // Fetch saved modifications (including font sizes) from the backend
   async function fetchModifications(retries = 3) {
     if (!pageId) return;
 
@@ -164,7 +162,6 @@
     }
   }
 
-  // Create Widget HTML dynamicallyart
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
@@ -347,7 +344,6 @@
     document.body.appendChild(widgetContainer);
   }
 
-  // Event listeners for dynamic font size and background color changes
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"]');
@@ -359,7 +355,6 @@
       console.log(`:white_check_mark: Selected Element: ${selectedElement.id}`);
     });
 
-    // Listen for input changes and update styles in real-time
     document.body.addEventListener("input", async (event) => {
       if (!selectedElement) return;
     
