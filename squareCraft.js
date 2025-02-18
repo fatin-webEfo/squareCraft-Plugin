@@ -273,23 +273,18 @@ squareCraft-items-center squareCraft-h-full">
 squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-6px 
 squareCraft-w-16 squareCraft-h-full">
 
-    <!-- Dynamic Input for Font Size -->
-    <input type="number" id="squareCraftFontSizeInput" value="16" 
+    <input type="text" id="squareCraftFontSizeInput" value="16" 
         class="squareCraft-font-size-input squareCraft-text-sm squareCraft-text-color-white 
         squareCraft-bg-transparent squareCraft-w-full squareCraft-px-2 squareCraft-py-1px squareCraft-font-light">
     
-    <!-- Vertical Line -->
     <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
 
-    <!-- "px" Unit -->
     <div class="squareCraft-font-size-unit">px</div>
 
-    <!-- Dropdown Arrow (Corrected Position) -->
     <div id="squareCraftFontSizeDropdown" class="squareCraft-dropdown-arrow squareCraft-cursor-pointer">
-        <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" width="12px">
+        <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" class="squareCraft-rotate-180" width="12px">
     </div>
 
-    <!-- Dropdown Menu -->
     <div id="squareCraftFontSizeOptions" class="squareCraft-hidden squareCraft-font-sm squareCraft-bg-3f3f3f squareCraft-w-full 
         squareCraft-rounded-6px squareCraft-border squareCraft-border-585858 squareCraft-absolute 
         squareCraft-mt-1">
