@@ -381,7 +381,7 @@
 
     function createFloatingIcon() {
         const floatingIcon = document.createElement("img");
-        floatingIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; 
+        floatingIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; 
         floatingIcon.id = "floatingAdminIcon";
         floatingIcon.style.position = "fixed";
         floatingIcon.style.top = "10px";
