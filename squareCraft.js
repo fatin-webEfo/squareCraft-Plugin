@@ -450,7 +450,7 @@
 
     document.body.addEventListener("click", (event) => {
         let block = event.target.closest('[id]'); 
-        if (!block) return;
+        if (!block || block.id === "squarecraft-widget-container") return;
 
         selectedElement = block;
         positionWidgetNearElement(selectedElement);
@@ -466,6 +466,7 @@
     createFloatingIcon();
     createWidget();
 });
+
 
 
 
