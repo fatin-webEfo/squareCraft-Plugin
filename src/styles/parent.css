@@ -231,6 +231,10 @@ p {
   .squareCraft-pb-5{
     padding-bottom: 1.25rem !important; /* 20px */
   }
+  .squareCraft-border-r{
+    border-right-width: 1px !important;
+    border-right-style: solid !important;
+  }
   
   .squareCraft-top-0 {
     top: 0 !important;
