@@ -672,3 +672,55 @@ font-size: 12px !important;
 }
 
 
+/* Customizing the Select Box */
+.squareCraft-custom-select {
+  appearance: none; /* Removes default OS styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #494949;
+  color: white;
+  font-size: 14px;
+  border: 1px solid #585858;
+  border-radius: 6px;
+  padding: 8px 12px;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+}
+
+/* Adding a dropdown arrow manually */
+.squareCraft-custom-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.squareCraft-custom-select-wrapper::after {
+  content: "▼"; /* Unicode for down arrow */
+  font-size: 12px;
+  color: white;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Styling the dropdown options */
+.squareCraft-custom-select option {
+  background: #3f3f3f;
+  color: white;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* On Hover */
+.squareCraft-custom-select option:hover {
+  background: #585858 !important;
+}
+
+/* Remove default blue highlight in Chrome */
+.squareCraft-custom-select:focus {
+  border-color: #EF7C2F;
+  box-shadow: 0 0 5px rgba(239, 124, 47, 0.5);
+}
