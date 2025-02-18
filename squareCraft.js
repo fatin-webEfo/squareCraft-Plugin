@@ -36,7 +36,7 @@
   link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
   document.head.appendChild(link);
 
-  const fontSizes = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
+  const fontSizes = [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 , 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48];
   let fontSizeOptions = '';
   for (let size of fontSizes) {
     fontSizeOptions += `<option value="${size}">${size}px</option>`;
@@ -288,11 +288,11 @@
        </div>
     </div>
     
-        <div id="squareCraftFontSizeOptions" class="squareCraft-hidden squareCraft-font-sm squareCraft-bg-3f3f3f squareCraft-w-20
+        <div id="squareCraftFontSizeOptions" class="squareCraft-hidden squareCraft-h-24 squareCraft-font-sm squareCraft-bg-3f3f3f squareCraft-w-20
             squareCraft-rounded-6px squareCraft-border squareCraft-border-585858 squareCraft-absolute 
             squareCraft-mt-1">
             ${fontSizes?.map(size => `
-                <div class="squareCraft-dropdown-item squareCraft-py-1px  squareCraft-text-sm" 
+                <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-text-center  squareCraft-text-sm" 
                     data-value="${size}">${size}</div>
             `).join('')}
         </div>
