@@ -33,7 +33,7 @@
   const link = document.createElement("link");
   link.rel = "stylesheet";  
   link.type = "text/css";
-  link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
+  link.href = "./src/styles/parent.css";
   document.head.appendChild(link);
 
   const fontSizes = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50];
@@ -172,7 +172,7 @@
     widgetContainer.style.zIndex = "9999";
 
     widgetContainer.innerHTML = `
-      <div
+       <div
     class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
     <div class="squareCraft-flex squareCraft-items-center squareCraft-justify-between">
         <img src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
@@ -267,23 +267,26 @@
     
       <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4  
     squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 
-    squareCraft-items-center squareCraft-h-full">
+    squareCraft-items-center squareCraft-w-full squareCraft-h-full">
     
-       <div class="squareCraft-font-size-container squareCraft-flex squareCraft-items-center squareCraft-border 
-    squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-6px 
-    squareCraft-w-16 squareCraft-h-full">
+       <div class="squareCraft-font-size-container squareCraft-flex squareCraft-justify-between squareCraft-items-center squareCraft-flex squareCraft-items-center squareCraft-border 
+    squareCraft-border-solid squareCraft-border-3d3d3d  squareCraft-rounded-6px 
+    squareCraft-h-full">
     
         <input type="text" id="squareCraftFontSizeInput" value="16" 
-            class="squareCraft-font-size-input squareCraft-text-sm squareCraft-text-color-white 
-            squareCraft-bg-transparent squareCraft-w-full squareCraft-px-2 squareCraft-py-1px squareCraft-font-light">
+            class="squareCraft-font-size-input squareCraft-font-light squareCraft-text-sm squareCraft-text-color-white 
+            squareCraft-bg-transparent squareCraft-w-full  squareCraft-py-1px squareCraft-font-light">
         
-        <div class="squareCraft-border-r squareCraft-border-585858 squareCraft-h-full"></div>
+     
+       <div class="squareCraft-flex squareCraft-items-center squareCraft-justify-center squareCraft-items-center">
+        <p class="squareCraft-flex squareCraft-font-light squareCraft-text-sm squareCraft-px-1_5 squareCraft-items-center squareCraft-justify-center squareCraft-items-center">
+        px
+    </div>
     
-        <div class=" squareCraft-text-sm">px</div>
-    
-        <div id="squareCraftFontSizeDropdown" class="squareCraft-dropdown-arrow squareCraft-cursor-pointer">
-            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" class="squareCraft-rotate-180" width="12px">
-        </div>
+       <div  class="squareCraft-bg-color-2c2c2c  squareCraft-py-1px squareCraft-roudned-r-md">
+           <img id="squareCraftFontSizeDropdown" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" class="squareCraft-mr-1 squareCraft-ml-1 squareCraft-bg-color-2c2c2c squareCraft-rotate-180 squareCraft-px-1 squareCraft-mx-auto squareCraft-cursor-pointer" width="18px">
+       </div>
+    </div>
     
         <div id="squareCraftFontSizeOptions" class="squareCraft-hidden squareCraft-font-sm squareCraft-bg-3f3f3f squareCraft-w-full 
             squareCraft-rounded-6px squareCraft-border squareCraft-border-585858 squareCraft-absolute 
@@ -312,7 +315,7 @@
                     <p class="squareCraft-text-sm squareCraft-font-light">Regular</p>
                 </div>
                 <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
-                    <img class="squareCraft-h-full squareCraft-rotate-180" width="12px"
+                    <img class="squareCraft-h-full squareCraft-mx-auto squareCraft-rotate-180" width="10px"
                         src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
     
                 </div>
