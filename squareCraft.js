@@ -5,7 +5,8 @@
     return;
   }
 
-  console.log("Current path " , window)
+  var newURL = window.location.protocol + "//" + window.location.host + window.location.pathname
+  console.log(newURL)
 
   const token = widgetScript.dataset?.token;
   const squareCraft_u_id = widgetScript.dataset?.uId; 
