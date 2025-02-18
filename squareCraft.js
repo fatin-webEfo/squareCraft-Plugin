@@ -252,7 +252,7 @@ class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-b
     </div>
 
     <div class="squareCraft-mt-2 squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
-        <div id="squareCraft-font-family" class="squareCraft-flex squareCraft-col-span-8 squareCraft-cursor-pointer squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
+        <div id="squareCraft-font-family" class="squareCraft-flex squareCraft-col-span-8 squareCraft-cursor-pointer squareCraft-justify-between  squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
             <div class="squareCraft-bg-494949 squareCraft-w-full squareCraft-px-2 squareCraft-py-1px ">
                 <p class="squareCraft-text-sm squareCraft-font-light">Sf Pro sans</p>
             </div>
@@ -262,7 +262,7 @@ class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-b
 
             </div>
         </div>
-        <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
+        <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px  squareCraft-items-center squareCraft-h-full">
         <div class="squareCraft-flex squareCraft-text-color-white squareCraft-items-center squareCraft-w-full">
 
     <select id="squareCraftFontSize" class="squareCraft-text-sm squareCraft-rounded-6px squareCraft-text-color-white squareCraft-px-2 squareCraft-w-full squareCraft-py-1px squareCraft-font-light squareCraft-bg-494949 squareCraft-text-color-white" id="fontSizeDropdown">
