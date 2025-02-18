@@ -325,14 +325,13 @@
         selectedElement.style.outline = "2px dashed #EF7C2F";
         console.log(`:white_check_mark: Selected Element: ${selectedElement.id}`);
       });
-  
-      // Listen for input changes and update styles in real-time
+   
       document.body.addEventListener("input", async (event) => {
         if (!selectedElement) return;
       
         let css = {};
         if (event.target.id === "squareCraftFontSize") {
-          css["font-size"] = event.target.value + "px";  // This applies the font size instantly
+          css["font-size"] = event.target.value + "px";  
         } else if (event.target.id === "squareCraftBgColor") {
           css["background-color"] = event.target.value;
         } else if (event.target.id === "squareCraftBorderRadius") {
