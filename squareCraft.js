@@ -395,7 +395,6 @@
       }
   }
 
-  // Run the check initially and every second (handles AJAX navigation changes)
   checkURL();
   setInterval(checkURL, 1000);
     createWidget();
