@@ -161,7 +161,7 @@
       console.error(":x: Error saving modifications:", error);
     }
   }
-
+console.log(fontSizes.map(sizes => sizes));
   // Create Widget HTML dynamicallyart
   function createWidget() {
     const widgetContainer = document.createElement("div");
