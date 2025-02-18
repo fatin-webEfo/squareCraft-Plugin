@@ -381,6 +381,9 @@ squareCraft-w-16 squareCraft-h-full">
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    createWidget();
+    attachEventListeners();
+    fetchModifications();
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
     const dropdownOptions = document.getElementById("squareCraftFontSizeOptions");
