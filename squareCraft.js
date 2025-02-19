@@ -63,9 +63,8 @@
     if (!elementId || !newCss) return;
 
     let styleTag = document.getElementById(`style-${elementId}`);
+    
     let existingStyles = {};
-
-    // Retrieve existing styles before modifying
     if (styleTag) {
         let currentCssText = styleTag.innerHTML;
         currentCssText.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
@@ -73,10 +72,9 @@
             existingStyles[prop.trim()] = value.trim();
         });
 
-        styleTag.remove(); // Remove the old styles before adding new ones
+        styleTag.remove(); 
     }
 
-    // Merge old styles with new styles (preserve previous changes)
     let mergedStyles = { ...existingStyles, ...newCss };
 
     styleTag = document.createElement("style");
@@ -92,7 +90,6 @@
     styleTag.innerHTML = cssText;
     console.log(`✅ Styles Updated for ${elementId}:`, mergedStyles);
 }
-
 
 
   async function fetchModifications(retries = 3) {
@@ -305,8 +302,8 @@ async function saveModifications(elementId, css) {
         px
     </div>
     
-       <div  class="squareCraft-bg-3f3f3f  squareCraft-roudned-r-md">
-           <img  id="squareCraftFontSizeDropdown" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" class="squareCraft-mr-1 squareCraft-mb-1 squareCraft-ml-1  squareCraft-rotate-180 squareCraft-px-1 squareCraft-mx-auto squareCraft-cursor-pointer" width="18px">
+       <div  class="squareCraft-bg-color-2c2c2c  squareCraft-roudned-r-md">
+           <img id="squareCraftFontSizeDropdown" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" class="squareCraft-mr-1 squareCraft-mb-1 squareCraft-ml-1 squareCraft-bg-color-2c2c2c squareCraft-rotate-180 squareCraft-px-1 squareCraft-mx-auto squareCraft-cursor-pointer" width="18px">
        </div>
     </div>
     
@@ -505,28 +502,16 @@ async function saveModifications(elementId, css) {
     // Text Alignment Handling
     document.querySelectorAll(".alignment-icon").forEach(icon => {
       icon.addEventListener("click", async function () {
-          if (!selectedElement) return;
-          const alignment = this.getAttribute("data-align");
-  
-          // Get currently applied styles
-          let computedStyles = window.getComputedStyle(selectedElement);
-          let currentFontSize = computedStyles.fontSize;
-          let currentLetterSpacing = computedStyles.letterSpacing;
-  
-          // Ensure alignment change keeps font size & letter spacing
-          let css = { 
-              "text-align": alignment,
-              "font-size": currentFontSize,  // Preserve font size
-              "letter-spacing": currentLetterSpacing // Preserve letter spacing
-          };
-  
-          applyStylesToElement(selectedElement.id, css);
-          await saveModifications(selectedElement.id, css);
-  
-          console.log(`✅ Applied text alignment: ${alignment} to ${selectedElement.id}, keeping font-size: ${currentFontSize}, letter-spacing: ${currentLetterSpacing}`);
+        if (!selectedElement) return;
+        const alignment = this.getAttribute("data-align");
+
+        let css = { "text-align": alignment };
+        applyStylesToElement(selectedElement.id, css);
+        await saveModifications(selectedElement.id, css);
+
+        console.log(`✅ Applied text alignment: ${alignment} to ${selectedElement.id}`);
       });
-  });
-  
+    });
   }
 
 
@@ -534,34 +519,33 @@ async function saveModifications(elementId, css) {
 
   document.addEventListener("DOMContentLoaded", function () {
     function insertCustomAdminIcon() {
-        const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
+      const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
 
-        if (!adminNavbar) {
-            console.warn("Admin navbar not found. Retrying...");
-            setTimeout(insertCustomAdminIcon, 1000); // Retry in case the page hasn't fully loaded
-            return;
-        }
+      if (!adminNavbar) {
+          console.warn("Admin navbar not found. Retrying...");
+          setTimeout(insertCustomAdminIcon, 1000); // Retry in case the page hasn't fully loaded
+          return;
+      }
 
-        if (document.getElementById("customAdminIcon")) return;
+      if (document.getElementById("customAdminIcon")) return;
 
-        const customIcon = document.createElement("img");
-        customIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Your icon URL
-        customIcon.id = "customAdminIcon";
-        customIcon.style.cursor = "pointer";
-        customIcon.style.marginLeft = "15px"; // Adjust spacing
-        customIcon.style.width = "32px"; // Icon size
-        customIcon.style.height = "32px";
+      const customIcon = document.createElement("img");
+      customIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Your icon URL
+      customIcon.id = "customAdminIcon";
+      customIcon.style.cursor = "pointer";
+      customIcon.style.marginLeft = "15px"; // Adjust spacing
+      customIcon.style.width = "32px"; // Icon size
+      customIcon.style.height = "32px";
+      
+      customIcon.addEventListener("click", function () {
+          alert("Custom Plugin Clicked!");
+      });
 
-        customIcon.addEventListener("click", function () {
-            alert("Custom Plugin Clicked!");
-        });
+      adminNavbar.appendChild(customIcon);
+      console.log("✅ Custom admin icon added!");
+  }
 
-        adminNavbar.appendChild(customIcon);
-        console.log("✅ Custom admin icon added!");
-    }
-
-    insertCustomAdminIcon();
-
+  insertCustomAdminIcon();
     function checkURL() {
         const currentURL = window.location.href;
         const widgetContainer = document.getElementById("squarecraft-widget-container");
@@ -616,23 +600,9 @@ async function saveModifications(elementId, css) {
     fetchModifications();
     setTimeout(makeWidgetDraggable, 500); // Ensure dragging works after widget is created
 
-    let selectedElement = null;
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
-    const fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");
-    const fontSizeOptions = document.getElementById("squareCraftFontSizeOptions");
-    const letterSpacingInput = document.getElementById("squareCraftLetterSpacingInput");
-    const letterSpacingDropdown = document.getElementById("squareCraftLetterSpacingDropdown");
-    const letterSpacingOptions = document.getElementById("squareCraftLetterSpacingOptions");
-
-    // Ensure elements exist before proceeding
-    if (!fontSizeInput || !fontSizeDropdown || !fontSizeOptions) {
-        console.error("❌ Font size elements not found! Check your HTML structure.");
-        return;
-    }
-    if (!letterSpacingInput || !letterSpacingDropdown || !letterSpacingOptions) {
-        console.error("❌ Letter spacing elements not found! Check your HTML structure.");
-        return;
-    }
+    const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
+    const dropdownOptions = document.getElementById("squareCraftFontSizeOptions");
 
     document.body.addEventListener("click", (event) => {
         let block = event.target.closest('[id^="block-"]');
@@ -643,25 +613,18 @@ async function saveModifications(elementId, css) {
         selectedElement.style.outline = "2px dashed #EF7C2F";
 
         let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
-        let computedLetterSpacing = window.getComputedStyle(selectedElement).letterSpacing;
-
-        fontSizeInput.value = parseInt(computedFontSize, 10);
-        letterSpacingInput.value = computedLetterSpacing ? parseFloat(computedLetterSpacing) : "0";  // Convert to number
+        fontSizeInput.value = parseInt(computedFontSize, 10); 
     });
 
-    // Font Size Dropdown Handling
-    fontSizeDropdown.addEventListener("click", function (event) {
+    dropdownArrow.addEventListener("click", function (event) {
         event.stopPropagation();
-        fontSizeOptions.classList.toggle("squareCraft-hidden");
-
-        // Close other dropdowns when font size dropdown is opened
-        letterSpacingOptions.classList.add("squareCraft-hidden");
+        dropdownOptions.classList.toggle("squareCraft-hidden");
     });
 
-    fontSizeOptions.addEventListener("click", function (event) {
+    dropdownOptions.addEventListener("click", function (event) {
         if (event.target.classList.contains("squareCraft-dropdown-item")) {
             fontSizeInput.value = event.target.dataset.value;
-            fontSizeOptions.classList.add("squareCraft-hidden");
+            dropdownOptions.classList.add("squareCraft-hidden");
 
             if (selectedElement) {
                 let css = { "font-size": `${event.target.dataset.value}px` };
@@ -671,45 +634,12 @@ async function saveModifications(elementId, css) {
         }
     });
 
-    // Letter Spacing Dropdown Handling
-    letterSpacingDropdown.addEventListener("click", function (event) {
-        event.stopPropagation();
-        letterSpacingOptions.classList.toggle("squareCraft-hidden");
-
-        // Close other dropdowns when letter spacing dropdown is opened
-        fontSizeOptions.classList.add("squareCraft-hidden");
-    });
-
-    letterSpacingOptions.addEventListener("click", function (event) {
-        if (event.target.classList.contains("squareCraft-dropdown-item")) {
-            letterSpacingInput.value = event.target.dataset.value;
-            letterSpacingOptions.classList.add("squareCraft-hidden");
-
-            if (selectedElement) {
-                let css = { "letter-spacing": `${event.target.dataset.value}px` };
-                applyStylesToElement(selectedElement.id, css);
-                saveModifications(selectedElement.id, css);
-            }
-        }
-    });
-
-    // Close both dropdowns when clicking outside
     document.addEventListener("click", function (event) {
-        if (
-            !fontSizeDropdown.contains(event.target) &&
-            !fontSizeOptions.contains(event.target)
-        ) {
-            fontSizeOptions.classList.add("squareCraft-hidden");
-        }
-        if (
-            !letterSpacingDropdown.contains(event.target) &&
-            !letterSpacingOptions.contains(event.target)
-        ) {
-            letterSpacingOptions.classList.add("squareCraft-hidden");
+        if (!dropdownArrow.contains(event.target) && !dropdownOptions.contains(event.target)) {
+            dropdownOptions.classList.add("squareCraft-hidden");
         }
     });
 
-    // Update font size on input change
     fontSizeInput.addEventListener("input", function () {
         if (selectedElement) {
             let css = { "font-size": `${fontSizeInput.value}px` };
@@ -717,19 +647,7 @@ async function saveModifications(elementId, css) {
             saveModifications(selectedElement.id, css);
         }
     });
-
-    // Update letter spacing on input change
-    letterSpacingInput.addEventListener("input", function () {
-        if (selectedElement) {
-            let css = { "letter-spacing": `${letterSpacingInput.value}px` };
-            applyStylesToElement(selectedElement.id, css);
-            saveModifications(selectedElement.id, css);
-        }
-    });
-
-    console.log("✅ Font Size and Letter Spacing Dropdowns Working Properly!");
 });
-
 
 
 
