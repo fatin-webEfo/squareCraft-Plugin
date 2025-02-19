@@ -97,6 +97,28 @@
     console.log(`✅ Styles Updated for ${elementId}:`, existingStyles);
 }
 
+function updateElementStyle(property, value) {
+  if (!selectedElement) return;
+
+  let computedStyles = window.getComputedStyle(selectedElement);
+  let currentStyles = {};
+
+  // Get all existing styles
+  Object.keys(computedStyles).forEach((key) => {
+      let prop = computedStyles[key];
+      if (prop && isNaN(key)) {
+          currentStyles[prop] = computedStyles.getPropertyValue(prop);
+      }
+  });
+
+  // Preserve all styles and update only the modified one
+  currentStyles[property] = value;
+
+  applyStylesToElement(selectedElement.id, currentStyles);
+  saveModifications(selectedElement.id, currentStyles);
+
+  console.log(`✅ Updated ${property} for ${selectedElement.id}, while preserving other styles.`);
+}
 
 
   async function fetchModifications(retries = 3) {
@@ -470,12 +492,19 @@ async function saveModifications(elementId, css) {
     });
 
     fontSizeInput.addEventListener("input", function () {
-      if (selectedElement) {
-        let css = { "font-size": `${fontSizeInput.value}px` };
-        applyStylesToElement(selectedElement.id, css);
-        saveModifications(selectedElement.id, css);
-      }
-    });
+      updateElementStyle("font-size", `${fontSizeInput.value}px`);
+  });
+  
+  letterSpacingInput.addEventListener("input", function () {
+      updateElementStyle("letter-spacing", `${letterSpacingInput.value}px`);
+  });
+  
+  document.querySelectorAll(".alignment-icon").forEach(icon => {
+      icon.addEventListener("click", function () {
+          updateElementStyle("text-align", this.getAttribute("data-align"));
+      });
+  });
+  
 
     // Letter-Spacing Handling (NEW FEATURE!)
     const letterSpacingInput = document.getElementById("squareCraftLetterSpacingInput");
