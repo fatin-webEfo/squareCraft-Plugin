@@ -171,7 +171,7 @@
     widgetContainer.style.zIndex = "9999";
 
     widgetContainer.innerHTML = `
-       <div
+      <div
     class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
     <div class="squareCraft-flex squareCraft-items-center squareCraft-justify-between">
         <img src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
@@ -336,22 +336,22 @@
             <div class="squareCraft-mt-2 squareCraft-grid squareCraft-px-2 squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 ">
             <div class="squareCraft-flex squareCraft-col-span-5 squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
            <div
-                        class="squareCraft-flex squareCraft-items-center  squareCraft-justify-between squareCraft-w-full squareCraft-gap-2">
+               class="squareCraft-flex squareCraft-items-center squareCraft-justify-between squareCraft-w-full ">
                         <img id="squareCraftTextAlignLeft" data-align="left"
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (1).svg"
-                            class="squareCraft-cursor-pointer alignment-icon squareCraft-ml-1 squareCraft-w-full squareCraft-px-1px  squareCraft-mx-auto"  alt="">
+                            class="squareCraft-cursor-pointer alignment-icon   squareCraft-mx-auto"  alt="">
                             <div class="squareCraft-v-line"></div>
                         <img id="squareCraftTextAlignCenter" data-align="center"
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg"
-                            class="squareCraft-cursor-pointer alignment-icon squareCraft-w-full squareCraft-px-1px  squareCraft-mx-auto"  alt="">
+                            class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
                              <div class="squareCraft-v-line"></div>
                         <img id="squareCraftTextAlignRight" data-align="right"
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg"
-                            class="squareCraft-cursor-pointer alignment-icon squareCraft-w-full squareCraft-px-1px  squareCraft-mx-auto"  alt="">
+                            class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
                              <div class="squareCraft-v-line"></div>
                         <img id="squareCraftTextAlignJustify" data-align="justify"
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (4).svg"
-                            class="squareCraft-cursor-pointer alignment-icon squareCraft-w-full squareCraft-px-1px squareCraft-mr-1 squareCraft-mx-auto "  alt="">
+                            class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto "  alt="">
                     </div>
 
             </div>
@@ -385,13 +385,6 @@
               `).join('')}
             </div>
           </div>
-
-
-
-
-
-
-
 
 
 
