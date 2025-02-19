@@ -68,25 +68,27 @@
     let computedStyles = window.getComputedStyle(element);
     let existingStyles = {};
 
-    let storedStyleTag = document.getElementById(`style-${elementId}`);
-    if (storedStyleTag) {
-        let storedCssText = storedStyleTag.innerHTML;
-        storedCssText.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
-            let [prop, value] = rule.split(':');
-            existingStyles[prop.trim()] = value.trim();
-        });
+    // Get all computed styles and store them
+    for (let i = 0; i < computedStyles.length; i++) {
+        let prop = computedStyles[i];
+        existingStyles[prop] = computedStyles.getPropertyValue(prop);
     }
 
+    // Preserve existing styles, only update changed properties
     Object.keys(newCss).forEach((prop) => {
-        existingStyles[prop] = newCss[prop]; 
+        existingStyles[prop] = newCss[prop];
     });
 
+    // Remove previous style tag if exists
+    let storedStyleTag = document.getElementById(`style-${elementId}`);
     if (storedStyleTag) storedStyleTag.remove();
 
+    // Create new style tag
     let newStyleTag = document.createElement("style");
     newStyleTag.id = `style-${elementId}`;
     document.head.appendChild(newStyleTag);
 
+    // Generate CSS text
     let cssText = `#${elementId} { `;
     Object.keys(existingStyles).forEach(prop => {
         cssText += `${prop}: ${existingStyles[prop]} !important; `;
@@ -97,28 +99,31 @@
     console.log(`✅ Styles Updated for ${elementId}:`, existingStyles);
 }
 
+// ✅ Fixing `updateElementStyle`
 function updateElementStyle(property, value) {
-  if (!selectedElement) return;
+    if (!selectedElement) return;
 
-  let computedStyles = window.getComputedStyle(selectedElement);
-  let currentStyles = {};
+    let computedStyles = window.getComputedStyle(selectedElement);
+    let currentStyles = {};
 
-  // Get all existing styles
-  Object.keys(computedStyles).forEach((key) => {
-      let prop = computedStyles[key];
-      if (prop && isNaN(key)) {
-          currentStyles[prop] = computedStyles.getPropertyValue(prop);
-      }
-  });
+    // Fetch stored styles before modifying
+    let storedStyleTag = document.getElementById(`style-${selectedElement.id}`);
+    if (storedStyleTag) {
+        storedStyleTag.innerHTML.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
+            let [prop, val] = rule.split(':');
+            currentStyles[prop.trim()] = val.trim();
+        });
+    }
 
-  // Preserve all styles and update only the modified one
-  currentStyles[property] = value;
+    // Preserve existing styles while updating only the modified one
+    currentStyles[property] = value;
 
-  applyStylesToElement(selectedElement.id, currentStyles);
-  saveModifications(selectedElement.id, currentStyles);
+    applyStylesToElement(selectedElement.id, currentStyles);
+    saveModifications(selectedElement.id, currentStyles);
 
-  console.log(`✅ Updated ${property} for ${selectedElement.id}, while preserving other styles.`);
+    console.log(`✅ Updated ${property} for ${selectedElement.id}, while preserving other styles.`);
 }
+
 
 
   async function fetchModifications(retries = 3) {
@@ -453,102 +458,40 @@ async function saveModifications(elementId, css) {
 
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
-      let block = event.target.closest('[id^="block-"]');
-      if (!block) return;
-  
-      if (selectedElement) selectedElement.style.outline = "";
-      selectedElement = block;
-      selectedElement.style.outline = "2px dashed #EF7C2F";
-  
-      let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
-      fontSizeInput.value = parseInt(computedFontSize, 10); 
-  
-      let computedLetterSpacing = window.getComputedStyle(selectedElement).letterSpacing;
-      letterSpacingInput.value = computedLetterSpacing ? parseFloat(computedLetterSpacing) : "0";  // Convert to number
-  
-      console.log(`✅ Selected Element: ${selectedElement.id}, Font Size: ${computedFontSize}, Letter Spacing: ${computedLetterSpacing}`);
-  });
-  
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
 
-    // Font Size Handling
-    const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
-    const fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");
-    const fontSizeOptions = document.getElementById("squareCraftFontSizeOptions");
+        if (selectedElement) selectedElement.style.outline = "";
+        selectedElement = block;
+        selectedElement.style.outline = "2px dashed #EF7C2F";
 
-    fontSizeDropdown.addEventListener("click", function () {
-      fontSizeOptions.classList.toggle("squareCraft-hidden");
+        let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
+        fontSizeInput.value = parseInt(computedFontSize, 10); 
+
+        let computedLetterSpacing = window.getComputedStyle(selectedElement).letterSpacing;
+        letterSpacingInput.value = computedLetterSpacing ? parseFloat(computedLetterSpacing) : "0";  
+
+        console.log(`✅ Selected Element: ${selectedElement.id}, Font Size: ${computedFontSize}, Letter Spacing: ${computedLetterSpacing}`);
     });
 
-    fontSizeOptions.addEventListener("click", function (event) {
-      if (!event.target.classList.contains("squareCraft-dropdown-item")) return;
-      fontSizeInput.value = event.target.dataset.value;
-      fontSizeOptions.classList.add("squareCraft-hidden");
-
-      if (selectedElement) {
-        let css = { "font-size": `${event.target.dataset.value}px` };
-        applyStylesToElement(selectedElement.id, css);
-        saveModifications(selectedElement.id, css);
-      }
-    });
-
+    // ✅ Font Size Input Listener
     fontSizeInput.addEventListener("input", function () {
-      updateElementStyle("font-size", `${fontSizeInput.value}px`);
-  });
-  
-  letterSpacingInput.addEventListener("input", function () {
-      updateElementStyle("letter-spacing", `${letterSpacingInput.value}px`);
-  });
-  
-  document.querySelectorAll(".alignment-icon").forEach(icon => {
-      icon.addEventListener("click", function () {
-          updateElementStyle("text-align", this.getAttribute("data-align"));
-      });
-  });
-  
-
-    // Letter-Spacing Handling (NEW FEATURE!)
-    const letterSpacingInput = document.getElementById("squareCraftLetterSpacingInput");
-    const letterSpacingDropdown = document.getElementById("squareCraftLetterSpacingDropdown");
-    const letterSpacingOptions = document.getElementById("squareCraftLetterSpacingOptions");
-
-    letterSpacingDropdown.addEventListener("click", function () {
-      letterSpacingOptions.classList.toggle("squareCraft-hidden");
+        updateElementStyle("font-size", `${fontSizeInput.value}px`);
     });
 
-    letterSpacingOptions.addEventListener("click", function (event) {
-      if (!event.target.classList.contains("squareCraft-dropdown-item")) return;
-      letterSpacingInput.value = event.target.dataset.value;
-      letterSpacingOptions.classList.add("squareCraft-hidden");
-
-      if (selectedElement) {
-        let css = { "letter-spacing": `${event.target.dataset.value}px` };
-        applyStylesToElement(selectedElement.id, css);
-        saveModifications(selectedElement.id, css);
-      }
-    });
-
+    // ✅ Letter Spacing Input Listener
     letterSpacingInput.addEventListener("input", function () {
-      if (selectedElement) {
-        let css = { "letter-spacing": `${letterSpacingInput.value}px` };
-        applyStylesToElement(selectedElement.id, css);
-        saveModifications(selectedElement.id, css);
-      }
+        updateElementStyle("letter-spacing", `${letterSpacingInput.value}px`);
     });
 
-    // Text Alignment Handling
+    // ✅ Text Alignment Click Handlers
     document.querySelectorAll(".alignment-icon").forEach(icon => {
-      icon.addEventListener("click", async function () {
-        if (!selectedElement) return;
-        const alignment = this.getAttribute("data-align");
-
-        let css = { "text-align": alignment };
-        applyStylesToElement(selectedElement.id, css);
-        await saveModifications(selectedElement.id, css);
-
-        console.log(`✅ Applied text alignment: ${alignment} to ${selectedElement.id}`);
-      });
+        icon.addEventListener("click", function () {
+            updateElementStyle("text-align", this.getAttribute("data-align"));
+        });
     });
-  }
+}
+
 
 
 
