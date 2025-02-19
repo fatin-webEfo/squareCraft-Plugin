@@ -59,48 +59,37 @@
   let pageId = getPageId();
   if (!pageId) console.warn(":warning: No page ID found. Plugin may not work correctly.");
 
- function applyStylesToElement(elementId, newCss) {
+  function applyStylesToElement(elementId, newCss) {
     if (!elementId || !newCss) return;
 
-    let element = document.getElementById(elementId);
-    if (!element) return;
-
-    // Get computed styles for the element
-    let computedStyles = window.getComputedStyle(element);
+    let styleTag = document.getElementById(`style-${elementId}`);
+    
     let existingStyles = {};
-
-    // Extract only relevant CSS properties that were already applied
-    let storedStyleTag = document.getElementById(`style-${elementId}`);
-    if (storedStyleTag) {
-        let storedCssText = storedStyleTag.innerHTML;
-        storedCssText.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
+    if (styleTag) {
+        let currentCssText = styleTag.innerHTML;
+        currentCssText.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
             let [prop, value] = rule.split(':');
             existingStyles[prop.trim()] = value.trim();
         });
+
+        styleTag.remove(); 
     }
 
-    // Merge computed styles with existing styles (preserving all properties)
-    Object.keys(newCss).forEach((prop) => {
-        existingStyles[prop] = newCss[prop]; // Update only the changed property
-    });
+    let mergedStyles = { ...existingStyles, ...newCss };
 
-    // Create a new style tag or update existing one
-    if (storedStyleTag) storedStyleTag.remove();
+    styleTag = document.createElement("style");
+    styleTag.id = `style-${elementId}`;
+    document.head.appendChild(styleTag);
 
-    let newStyleTag = document.createElement("style");
-    newStyleTag.id = `style-${elementId}`;
-    document.head.appendChild(newStyleTag);
-
-    let cssText = `#${elementId} { `;
-    Object.keys(existingStyles).forEach(prop => {
-        cssText += `${prop}: ${existingStyles[prop]} !important; `;
+    let cssText = `#${elementId}, #${elementId} * { `;
+    Object.keys(mergedStyles).forEach(prop => {
+        cssText += `${prop}: ${mergedStyles[prop]} !important; `;
     });
     cssText += "}";
 
-    newStyleTag.innerHTML = cssText;
-    console.log(`✅ Styles Updated for ${elementId}:`, existingStyles);
+    styleTag.innerHTML = cssText;
+    console.log(`✅ Styles Updated for ${elementId}:`, mergedStyles);
 }
-
 
 
   async function fetchModifications(retries = 3) {
@@ -144,54 +133,40 @@
 }
 
 
-async function saveModifications(elementId, css) {
-  if (!pageId || !elementId || !css) {
+  async function saveModifications(elementId, css) {
+    if (!pageId || !elementId || !css) {
       console.warn(":warning: Missing required data to save modifications.");
       return;
-  }
+    }
 
-  let styleTag = document.getElementById(`style-${elementId}`);
-  let allStyles = {};
-  if (styleTag) {
-      let currentCssText = styleTag.innerHTML;
-      currentCssText.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
-          let [prop, value] = rule.split(':');
-          allStyles[prop.trim()] = value.trim();
-      });
-  }
+    applyStylesToElement(elementId, css);
+    console.log(":satellite_antenna: Saving modifications for:", { pageId, elementId, css });
 
-  let modificationData = {
+    const modificationData = {
       userId,
       token,
       widgetId,
-      modifications: [{ 
-          pageId, 
-          elements: [{ 
-              elementId, 
-              css: { ...allStyles, ...css } 
-          }] 
-      }],
-  };
+      modifications: [{ pageId, elements: [{ elementId, css }] }],
+    };
 
-  try {
+    try {
       const response = await fetch("https://webefo-backend.vercel.app/api/v1/modifications", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-              "userId": userId,
-              "pageId": pageId,
-              "widget-id": widgetId,
-          },
-          body: JSON.stringify(modificationData),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+          "userId": userId,
+          "pageId": pageId,
+          "widget-id": widgetId,
+        },
+        body: JSON.stringify(modificationData),
       });
 
       console.log(":white_check_mark: Changes Saved Successfully!", await response.json());
-  } catch (error) {
+    } catch (error) {
       console.error(":x: Error saving modifications:", error);
+    }
   }
-}
-
 
   function createWidget() {
     const widgetContainer = document.createElement("div");
