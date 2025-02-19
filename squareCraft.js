@@ -406,12 +406,20 @@
     document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"]');
       if (!block) return;
-
+  
       if (selectedElement) selectedElement.style.outline = "";
       selectedElement = block;
       selectedElement.style.outline = "2px dashed #EF7C2F";
-      console.log(`✅ Selected Element: ${selectedElement.id}`);
-    });
+  
+      let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
+      fontSizeInput.value = parseInt(computedFontSize, 10); 
+  
+      let computedLetterSpacing = window.getComputedStyle(selectedElement).letterSpacing;
+      letterSpacingInput.value = computedLetterSpacing ? parseFloat(computedLetterSpacing) : "0";  // Convert to number
+  
+      console.log(`✅ Selected Element: ${selectedElement.id}, Font Size: ${computedFontSize}, Letter Spacing: ${computedLetterSpacing}`);
+  });
+  
 
     // Font Size Handling
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
