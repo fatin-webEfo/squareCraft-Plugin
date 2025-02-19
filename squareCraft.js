@@ -62,34 +62,41 @@
   function applyStylesToElement(elementId, newCss) {
     if (!elementId || !newCss) return;
 
-    let styleTag = document.getElementById(`style-${elementId}`);
-    
+    let element = document.getElementById(elementId);
+    if (!element) return;
+
+    let computedStyles = window.getComputedStyle(element);
     let existingStyles = {};
-    if (styleTag) {
-        let currentCssText = styleTag.innerHTML;
-        currentCssText.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
+
+    let storedStyleTag = document.getElementById(`style-${elementId}`);
+    if (storedStyleTag) {
+        let storedCssText = storedStyleTag.innerHTML;
+        storedCssText.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
             let [prop, value] = rule.split(':');
             existingStyles[prop.trim()] = value.trim();
         });
-
-        styleTag.remove(); 
     }
 
-    let mergedStyles = { ...existingStyles, ...newCss };
+    Object.keys(newCss).forEach((prop) => {
+        existingStyles[prop] = newCss[prop]; 
+    });
 
-    styleTag = document.createElement("style");
-    styleTag.id = `style-${elementId}`;
-    document.head.appendChild(styleTag);
+    if (storedStyleTag) storedStyleTag.remove();
 
-    let cssText = `#${elementId}, #${elementId} * { `;
-    Object.keys(mergedStyles).forEach(prop => {
-        cssText += `${prop}: ${mergedStyles[prop]} !important; `;
+    let newStyleTag = document.createElement("style");
+    newStyleTag.id = `style-${elementId}`;
+    document.head.appendChild(newStyleTag);
+
+    let cssText = `#${elementId} { `;
+    Object.keys(existingStyles).forEach(prop => {
+        cssText += `${prop}: ${existingStyles[prop]} !important; `;
     });
     cssText += "}";
 
-    styleTag.innerHTML = cssText;
-    console.log(`✅ Styles Updated for ${elementId}:`, mergedStyles);
+    newStyleTag.innerHTML = cssText;
+    console.log(`✅ Styles Updated for ${elementId}:`, existingStyles);
 }
+
 
 
   async function fetchModifications(retries = 3) {
