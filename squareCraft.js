@@ -355,47 +355,47 @@
 
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
-      let block = event.target.closest('[id^="block-"]');
-      if (!block) return;
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
 
-      if (selectedElement) selectedElement.style.outline = "";
-      selectedElement = block;
-      selectedElement.style.outline = "2px dashed #EF7C2F";
-      console.log(`:white_check_mark: Selected Element: ${selectedElement.id}`);
+        if (selectedElement) selectedElement.style.outline = "";
+        selectedElement = block;
+        selectedElement.style.outline = "2px dashed #EF7C2F";
+        console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
 
     document.body.addEventListener("input", async (event) => {
-      if (!selectedElement) return;
-    
-      let css = {};
-      if (event.target.id === "squareCraftFontSize") {
-        css["font-size"] = event.target.value + "px";  // This applies the font size instantly
-      } else if (event.target.id === "squareCraftBgColor") {
-        css["background-color"] = event.target.value;
-      } else if (event.target.id === "squareCraftBorderRadius") {
-        css["border-radius"] = event.target.value + "px";
-      }
-      else if (event.target.id === "squareCraftTextAlignLeft") {
-        css["text-align"] = "left";
-      }
-      else if (event.target.id === "squareCraftTextAlignCenter") {
-        css["text-align"] = "center";
-      }
-      else if (event.target.id === "squareCraftTextAlignRight") {
-        css["text-align"] = "right";
-      }
-      else if (event.target.id === "squareCraftTextAlignJustify") {
-        css["text-align"] = "justify";
-      }
+        if (!selectedElement) return;
 
-    
-      if (Object.keys(css).length > 0) {
-        applyStylesToElement(selectedElement.id, css);  // Apply styles instantly to the selected element
-        await saveModifications(selectedElement.id, css);  // Save the styles in the backend
-      }
+        let css = {};
+        if (event.target.id === "squareCraftFontSize") {
+            css["font-size"] = event.target.value + "px";
+        } else if (event.target.id === "squareCraftBgColor") {
+            css["background-color"] = event.target.value;
+        } else if (event.target.id === "squareCraftBorderRadius") {
+            css["border-radius"] = event.target.value + "px";
+        }
+
+        if (Object.keys(css).length > 0) {
+            applyStylesToElement(selectedElement.id, css);
+            await saveModifications(selectedElement.id, css);  // 🔥 Instant changes & API save
+        }
     });
-    
-  }
+
+    document.querySelectorAll(".alignment-icon").forEach(icon => {
+        icon.addEventListener("click", async function () {
+            if (!selectedElement) return;
+            const alignment = this.dataset.align;
+            
+            let css = { "text-align": alignment };
+            applyStylesToElement(selectedElement.id, css);
+            await saveModifications(selectedElement.id, css);  // 🔥 Instantly updates & saves to database
+            
+            console.log(`✅ Applied text alignment: ${alignment} to ${selectedElement.id}`);
+        });
+    });
+}
+
 
   document.addEventListener("DOMContentLoaded", function () {
     function insertCustomAdminIcon() {
