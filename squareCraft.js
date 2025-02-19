@@ -63,8 +63,9 @@
     if (!elementId || !newCss) return;
 
     let styleTag = document.getElementById(`style-${elementId}`);
-    
     let existingStyles = {};
+
+    // Retrieve existing styles before modifying
     if (styleTag) {
         let currentCssText = styleTag.innerHTML;
         currentCssText.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
@@ -72,9 +73,10 @@
             existingStyles[prop.trim()] = value.trim();
         });
 
-        styleTag.remove(); 
+        styleTag.remove(); // Remove the old styles before adding new ones
     }
 
+    // Merge old styles with new styles (preserve previous changes)
     let mergedStyles = { ...existingStyles, ...newCss };
 
     styleTag = document.createElement("style");
@@ -90,6 +92,7 @@
     styleTag.innerHTML = cssText;
     console.log(`✅ Styles Updated for ${elementId}:`, mergedStyles);
 }
+
 
 
   async function fetchModifications(retries = 3) {
@@ -502,16 +505,28 @@ async function saveModifications(elementId, css) {
     // Text Alignment Handling
     document.querySelectorAll(".alignment-icon").forEach(icon => {
       icon.addEventListener("click", async function () {
-        if (!selectedElement) return;
-        const alignment = this.getAttribute("data-align");
-
-        let css = { "text-align": alignment };
-        applyStylesToElement(selectedElement.id, css);
-        await saveModifications(selectedElement.id, css);
-
-        console.log(`✅ Applied text alignment: ${alignment} to ${selectedElement.id}`);
+          if (!selectedElement) return;
+          const alignment = this.getAttribute("data-align");
+  
+          // Get currently applied styles
+          let computedStyles = window.getComputedStyle(selectedElement);
+          let currentFontSize = computedStyles.fontSize;
+          let currentLetterSpacing = computedStyles.letterSpacing;
+  
+          // Ensure alignment change keeps font size & letter spacing
+          let css = { 
+              "text-align": alignment,
+              "font-size": currentFontSize,  // Preserve font size
+              "letter-spacing": currentLetterSpacing // Preserve letter spacing
+          };
+  
+          applyStylesToElement(selectedElement.id, css);
+          await saveModifications(selectedElement.id, css);
+  
+          console.log(`✅ Applied text alignment: ${alignment} to ${selectedElement.id}, keeping font-size: ${currentFontSize}, letter-spacing: ${currentLetterSpacing}`);
       });
-    });
+  });
+  
   }
 
 
