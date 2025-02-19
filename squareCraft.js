@@ -33,7 +33,7 @@
   const link = document.createElement("link");
   link.rel = "stylesheet";  
   link.type = "text/css";
-  link.href = "./src/styles/parent.css";
+  link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
   document.head.appendChild(link);
 
   const script = document.createElement("script");
