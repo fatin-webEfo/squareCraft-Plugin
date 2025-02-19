@@ -59,15 +59,17 @@
   let pageId = getPageId();
   if (!pageId) console.warn(":warning: No page ID found. Plugin may not work correctly.");
 
-  function applyStylesToElement(elementId, newCss) {
+ function applyStylesToElement(elementId, newCss) {
     if (!elementId || !newCss) return;
 
     let element = document.getElementById(elementId);
     if (!element) return;
 
+    // Get computed styles for the element
     let computedStyles = window.getComputedStyle(element);
     let existingStyles = {};
 
+    // Extract only relevant CSS properties that were already applied
     let storedStyleTag = document.getElementById(`style-${elementId}`);
     if (storedStyleTag) {
         let storedCssText = storedStyleTag.innerHTML;
@@ -77,10 +79,12 @@
         });
     }
 
+    // Merge computed styles with existing styles (preserving all properties)
     Object.keys(newCss).forEach((prop) => {
-        existingStyles[prop] = newCss[prop]; 
+        existingStyles[prop] = newCss[prop]; // Update only the changed property
     });
 
+    // Create a new style tag or update existing one
     if (storedStyleTag) storedStyleTag.remove();
 
     let newStyleTag = document.createElement("style");
