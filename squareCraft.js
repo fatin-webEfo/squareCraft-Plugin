@@ -535,9 +535,10 @@ async function saveModifications(elementId, css) {
   document.addEventListener("DOMContentLoaded", function () {
     function insertCustomAdminIcon() {
         const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
+
         if (!adminNavbar) {
             console.warn("Admin navbar not found. Retrying...");
-            setTimeout(insertCustomAdminIcon, 1000);
+            setTimeout(insertCustomAdminIcon, 1000); // Retry in case the page hasn't fully loaded
             return;
         }
 
@@ -547,8 +548,8 @@ async function saveModifications(elementId, css) {
         customIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Your icon URL
         customIcon.id = "customAdminIcon";
         customIcon.style.cursor = "pointer";
-        customIcon.style.marginLeft = "15px";
-        customIcon.style.width = "32px";
+        customIcon.style.marginLeft = "15px"; // Adjust spacing
+        customIcon.style.width = "32px"; // Icon size
         customIcon.style.height = "32px";
 
         customIcon.addEventListener("click", function () {
@@ -570,14 +571,14 @@ async function saveModifications(elementId, css) {
         if (currentURL.includes("/#")) {
             console.log("✅ Widget is VISIBLE on the Code Injection page.");
             if (widgetContainer) {
-                widgetContainer.style.display = "block";
+                widgetContainer.style.display = "block"; // Show Widget
             } else {
-                createWidget();
-                setTimeout(makeWidgetDraggable, 500);
+                createWidget(); // Ensure widget is created if not already
+                setTimeout(makeWidgetDraggable, 500); // Ensure it's draggable
             }
         } else {
             console.log("❌ Widget is HIDDEN on other pages.");
-            if (widgetContainer) widgetContainer.style.display = "none";
+            if (widgetContainer) widgetContainer.style.display = "none"; // Hide Widget
         }
     }
 
@@ -591,7 +592,7 @@ async function saveModifications(elementId, css) {
             isDragging = true;
             offsetX = event.clientX - widget.getBoundingClientRect().left;
             offsetY = event.clientY - widget.getBoundingClientRect().top;
-            widget.style.transition = "none";
+            widget.style.transition = "none"; // Disable transition for smooth dragging
         });
 
         document.addEventListener("mousemove", (event) => {
@@ -604,7 +605,7 @@ async function saveModifications(elementId, css) {
 
         document.addEventListener("mouseup", () => {
             isDragging = false;
-            widget.style.transition = "0.2s ease-out";
+            widget.style.transition = "0.2s ease-out"; // Smooth release
         });
     }
 
@@ -613,7 +614,7 @@ async function saveModifications(elementId, css) {
     createWidget();
     attachEventListeners();
     fetchModifications();
-    setTimeout(makeWidgetDraggable, 500);
+    setTimeout(makeWidgetDraggable, 500); // Ensure dragging works after widget is created
 
     let selectedElement = null;
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
@@ -623,6 +624,7 @@ async function saveModifications(elementId, css) {
     const letterSpacingDropdown = document.getElementById("squareCraftLetterSpacingDropdown");
     const letterSpacingOptions = document.getElementById("squareCraftLetterSpacingOptions");
 
+    // Ensure elements exist before proceeding
     if (!fontSizeInput || !fontSizeDropdown || !fontSizeOptions) {
         console.error("❌ Font size elements not found! Check your HTML structure.");
         return;
@@ -640,42 +642,19 @@ async function saveModifications(elementId, css) {
         selectedElement = block;
         selectedElement.style.outline = "2px dashed #EF7C2F";
 
-        let computedStyles = window.getComputedStyle(selectedElement);
-        fontSizeInput.value = parseInt(computedStyles.fontSize, 10);
-        letterSpacingInput.value = parseFloat(computedStyles.letterSpacing) || 0;
+        let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
+        let computedLetterSpacing = window.getComputedStyle(selectedElement).letterSpacing;
+
+        fontSizeInput.value = parseInt(computedFontSize, 10);
+        letterSpacingInput.value = computedLetterSpacing ? parseFloat(computedLetterSpacing) : "0";  // Convert to number
     });
 
-    function applyStylesToElement(elementId, newCss) {
-        if (!elementId || !newCss) return;
-
-        let existingStyles = {};
-        let computedStyles = window.getComputedStyle(document.getElementById(elementId));
-
-        existingStyles["font-size"] = computedStyles.fontSize;
-        existingStyles["letter-spacing"] = computedStyles.letterSpacing;
-
-        let mergedStyles = { ...existingStyles, ...newCss };
-
-        let styleTag = document.getElementById(`style-${elementId}`);
-        if (styleTag) styleTag.remove();
-
-        styleTag = document.createElement("style");
-        styleTag.id = `style-${elementId}`;
-        document.head.appendChild(styleTag);
-
-        let cssText = `#${elementId} { `;
-        Object.keys(mergedStyles).forEach(prop => {
-            cssText += `${prop}: ${mergedStyles[prop]} !important; `;
-        });
-        cssText += "}";
-
-        styleTag.innerHTML = cssText;
-        console.log(`✅ Styles Updated for ${elementId}:`, mergedStyles);
-    }
-
+    // Font Size Dropdown Handling
     fontSizeDropdown.addEventListener("click", function (event) {
         event.stopPropagation();
         fontSizeOptions.classList.toggle("squareCraft-hidden");
+
+        // Close other dropdowns when font size dropdown is opened
         letterSpacingOptions.classList.add("squareCraft-hidden");
     });
 
@@ -692,9 +671,12 @@ async function saveModifications(elementId, css) {
         }
     });
 
+    // Letter Spacing Dropdown Handling
     letterSpacingDropdown.addEventListener("click", function (event) {
         event.stopPropagation();
         letterSpacingOptions.classList.toggle("squareCraft-hidden");
+
+        // Close other dropdowns when letter spacing dropdown is opened
         fontSizeOptions.classList.add("squareCraft-hidden");
     });
 
@@ -711,6 +693,7 @@ async function saveModifications(elementId, css) {
         }
     });
 
+    // Close both dropdowns when clicking outside
     document.addEventListener("click", function (event) {
         if (
             !fontSizeDropdown.contains(event.target) &&
@@ -726,6 +709,7 @@ async function saveModifications(elementId, css) {
         }
     });
 
+    // Update font size on input change
     fontSizeInput.addEventListener("input", function () {
         if (selectedElement) {
             let css = { "font-size": `${fontSizeInput.value}px` };
@@ -734,6 +718,7 @@ async function saveModifications(elementId, css) {
         }
     });
 
+    // Update letter spacing on input change
     letterSpacingInput.addEventListener("input", function () {
         if (selectedElement) {
             let css = { "letter-spacing": `${letterSpacingInput.value}px` };
@@ -742,9 +727,8 @@ async function saveModifications(elementId, css) {
         }
     });
 
-    console.log("✅ Font Size & Letter Spacing Working Properly!");
+    console.log("✅ Font Size and Letter Spacing Dropdowns Working Properly!");
 });
-
 
 
 
