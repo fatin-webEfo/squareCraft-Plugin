@@ -90,6 +90,9 @@ p {
   .squareCraft-col-span-5{
   grid-column: span 5 / span 5;
   }
+  .squareCraft-col-span-6{
+    grid-column: span 6 / span 6;
+  }
   .squareCraft-col-span-4{
     grid-column: span 4 / span 4;
   }
@@ -792,3 +795,12 @@ font-size: 12px !important;
   margin-bottom: 0.15rem !important; /* 4px */
 }
 
+.squareCraft-v-line{
+  height: 28px !important;
+  width: 1px;
+  background-color: rgb(95, 94, 94) !important;
+}
+.squareCraft-px-1px{
+  padding-left: 0.20rem !important; /* 4px */
+  padding-right: 0.20rem !important; /* 4px */
+}
