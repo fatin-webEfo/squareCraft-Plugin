@@ -59,32 +59,38 @@
   let pageId = getPageId();
   if (!pageId) console.warn(":warning: No page ID found. Plugin may not work correctly.");
 
-  function applyStylesToElement(elementId, css) {
-    if (!elementId || !css) return;
+  function applyStylesToElement(elementId, newCss) {
+    if (!elementId || !newCss) return;
 
     let styleTag = document.getElementById(`style-${elementId}`);
+    
+    let existingStyles = {};
     if (styleTag) {
-      styleTag.remove();  // Remove the old styles before adding new ones
+        let currentCssText = styleTag.innerHTML;
+        currentCssText.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
+            let [prop, value] = rule.split(':');
+            existingStyles[prop.trim()] = value.trim();
+        });
+
+        styleTag.remove(); 
     }
+
+    let mergedStyles = { ...existingStyles, ...newCss };
 
     styleTag = document.createElement("style");
     styleTag.id = `style-${elementId}`;
     document.head.appendChild(styleTag);
 
     let cssText = `#${elementId}, #${elementId} * { `;
-    Object.keys(css).forEach(prop => {
-      cssText += `${prop}: ${css[prop]} !important; `;
+    Object.keys(mergedStyles).forEach(prop => {
+        cssText += `${prop}: ${mergedStyles[prop]} !important; `;
     });
     cssText += "}";
 
-    if (css["border-radius"]) {
-      cssText += `#${elementId} { overflow: hidden !important; }`;
-    }
-
     styleTag.innerHTML = cssText;
-    appliedStyles.add(elementId);
-    console.log(`:white_check_mark: Styles Persisted for ${elementId}`);
-  }
+    console.log(`✅ Styles Updated for ${elementId}:`, mergedStyles);
+}
+
 
   async function fetchModifications(retries = 3) {
     if (!pageId) return;
@@ -127,40 +133,54 @@
 }
 
 
-  async function saveModifications(elementId, css) {
-    if (!pageId || !elementId || !css) {
+async function saveModifications(elementId, css) {
+  if (!pageId || !elementId || !css) {
       console.warn(":warning: Missing required data to save modifications.");
       return;
-    }
+  }
 
-    applyStylesToElement(elementId, css);
-    console.log(":satellite_antenna: Saving modifications for:", { pageId, elementId, css });
+  let styleTag = document.getElementById(`style-${elementId}`);
+  let allStyles = {};
+  if (styleTag) {
+      let currentCssText = styleTag.innerHTML;
+      currentCssText.match(/([\w-]+):\s?([^;]+)/g)?.forEach(rule => {
+          let [prop, value] = rule.split(':');
+          allStyles[prop.trim()] = value.trim();
+      });
+  }
 
-    const modificationData = {
+  let modificationData = {
       userId,
       token,
       widgetId,
-      modifications: [{ pageId, elements: [{ elementId, css }] }],
-    };
+      modifications: [{ 
+          pageId, 
+          elements: [{ 
+              elementId, 
+              css: { ...allStyles, ...css } 
+          }] 
+      }],
+  };
 
-    try {
+  try {
       const response = await fetch("https://webefo-backend.vercel.app/api/v1/modifications", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-          "userId": userId,
-          "pageId": pageId,
-          "widget-id": widgetId,
-        },
-        body: JSON.stringify(modificationData),
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+              "userId": userId,
+              "pageId": pageId,
+              "widget-id": widgetId,
+          },
+          body: JSON.stringify(modificationData),
       });
 
       console.log(":white_check_mark: Changes Saved Successfully!", await response.json());
-    } catch (error) {
+  } catch (error) {
       console.error(":x: Error saving modifications:", error);
-    }
   }
+}
+
 
   function createWidget() {
     const widgetContainer = document.createElement("div");
