@@ -350,15 +350,7 @@
     `;
     document.body.appendChild(widgetContainer);
 
-    document.querySelectorAll(".alignment-icon").forEach(icon => {
-      icon.addEventListener("click", function () {
-        if (selectedElement) {
-          const alignment = this.dataset.align;
-          applyStylesToElement(selectedElement.id, { "text-align": alignment });
-          saveModifications(selectedElement.id, { "text-align": alignment });
-        }
-      });
-    });
+  
   }
 
   function attachEventListeners() {
@@ -383,7 +375,19 @@
       } else if (event.target.id === "squareCraftBorderRadius") {
         css["border-radius"] = event.target.value + "px";
       }
-      
+      else if (event.target.id === "squareCraftTextAlignLeft") {
+        css["text-align"] = "left";
+      }
+      else if (event.target.id === "squareCraftTextAlignCenter") {
+        css["text-align"] = "center";
+      }
+      else if (event.target.id === "squareCraftTextAlignRight") {
+        css["text-align"] = "right";
+      }
+      else if (event.target.id === "squareCraftTextAlignJustify") {
+        css["text-align"] = "justify";
+      }
+
     
       if (Object.keys(css).length > 0) {
         applyStylesToElement(selectedElement.id, css);  // Apply styles instantly to the selected element
@@ -405,7 +409,6 @@
 
       if (document.getElementById("customAdminIcon")) return;
 
-      // Create the custom icon element
       const customIcon = document.createElement("img");
       customIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Your icon URL
       customIcon.id = "customAdminIcon";
@@ -414,13 +417,10 @@
       customIcon.style.width = "32px"; // Icon size
       customIcon.style.height = "32px";
       
-      // Click action (you can modify this)
       customIcon.addEventListener("click", function () {
           alert("Custom Plugin Clicked!");
-          // You can also redirect or open a settings panel
       });
 
-      // Append to the navbar
       adminNavbar.appendChild(customIcon);
       console.log("✅ Custom admin icon added!");
   }
