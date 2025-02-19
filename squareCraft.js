@@ -306,7 +306,7 @@ async function saveModifications(elementId, css) {
     </div>
     
        <div  class="squareCraft-bg-color-2c2c2c  squareCraft-roudned-r-md">
-           <img id="squareCraftFontSizeDropdown" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" class="squareCraft-mr-1 squareCraft-mb-1 squareCraft-ml-1 squareCraft-bg-color-2c2c2c squareCraft-rotate-180 squareCraft-px-1 squareCraft-mx-auto squareCraft-cursor-pointer" width="18px">
+           <img  id="squareCraftFontSizeDropdown" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" class="squareCraft-mr-1 squareCraft-mb-1 squareCraft-ml-1 squareCraft-bg-3f3f3f squareCraft-rotate-180 squareCraft-px-1 squareCraft-mx-auto squareCraft-cursor-pointer" width="18px">
        </div>
     </div>
     
