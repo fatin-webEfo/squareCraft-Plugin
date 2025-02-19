@@ -738,7 +738,17 @@ font-size: 12px !important;
   width: 38px !important;
   border-right: #4d4d4d solid 1px !important;
 }
-
+.squareCraft-Letter-spacing-input{
+  outline: none !important;
+  border: none !important;
+  background: transparent !important;
+  color: #fff !important;
+  padding: 4px 8px !important;
+  font-size: 12px !important;
+  text-align: center !important;
+  width: 42px !important;
+  border-right: #4d4d4d solid 1px !important;
+}
 .squareCraft-font-size-input:focus {
   box-shadow: none !important;
 }
