@@ -5,38 +5,42 @@
     return;
   }
 
-
-
   const token = widgetScript.dataset?.token;
   const squareCraft_u_id = widgetScript.dataset?.uId; 
   const squareCraft_w_id = widgetScript.dataset?.wId; 
   const userId = localStorage.getItem("squareCraft_u_id");
   const widgetId = localStorage.getItem("squareCraft_w_id");
   
-  if (token) {
-      console.log("🔑 Token received:", token);
-      localStorage.setItem("squareCraft_auth_token", token);
-      document.cookie = `squareCraft_auth_token=${token}; path=.squarespace.com;`;
-  }
+  // if (token) {
+  //     console.log("🔑 Token received:", token);
+  //     localStorage.setItem("squareCraft_auth_token", token);
+  //     document.cookie = `squareCraft_auth_token=${token}; path=.squarespace.com;`;
+  // }
 
-  if (squareCraft_u_id) {
-      console.log("👤 User ID received:", squareCraft_u_id);
-      localStorage.setItem("squareCraft_u_id", squareCraft_u_id);
-      document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;
+  // if (squareCraft_u_id) {
+  //     console.log("👤 User ID received:", squareCraft_u_id);
+  //     localStorage.setItem("squareCraft_u_id", squareCraft_u_id);
+  //     document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;
 
-  }
+  // }
 
-  if (squareCraft_w_id) {
-      console.log("🛠️ Widget ID received:", squareCraft_w_id);
-      localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
-      document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
-  }
+  // if (squareCraft_w_id) {
+  //     console.log("🛠️ Widget ID received:", squareCraft_w_id);
+  //     localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
+  //     document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
+  // }
   
   const link = document.createElement("link");
   link.rel = "stylesheet";  
   link.type = "text/css";
-  link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
+  link.href = "./src/styles/parent.css";
   document.head.appendChild(link);
+
+  const script = document.createElement("script");
+    script.src = "https://fatin-webefo.github.io/squareCraft-Plugin/src/credentials/setToken.js";
+    script.type = "text/javascript";
+    script.async = true;
+    document.body.appendChild(script);
 
   const fontSizes = [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 , 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60];
   let fontSizeOptions = '';
@@ -333,7 +337,16 @@
                     </div>
                 </div>
             
-            
+            <div class="squareCraft-mt-2 squareCraft-grid squareCraft-px-2 squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 ">
+            <div class="squareCraft-flex squareCraft-col-span-5 squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
+           <div class="squareCraft-flex squareCraft-items-center squareCraft-px-1_5 squareCraft-py-1 squareCraft-justify-between squareCraft-w-full squareCraft-gap-2">
+            <img src="./public/alignment (1).svg" class="squareCraft-cursor-pointer" alt="">
+            <img src="./public/alignment (2).svg" class="squareCraft-cursor-pointer" alt="">
+            <img src="./public/alignment (3).svg" class="squareCraft-cursor-pointer" alt="">
+            <img src="./public/alignment (4).svg" class="squareCraft-cursor-pointer" alt="">
+           </div>
+            </div>
+        </div>
             
                 <div class="squareCraft-mt-2"> </div>
         </div>
