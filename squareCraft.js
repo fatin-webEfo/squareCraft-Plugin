@@ -340,10 +340,10 @@
             <div class="squareCraft-mt-2 squareCraft-grid squareCraft-px-2 squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 ">
             <div class="squareCraft-flex squareCraft-col-span-5 squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
            <div class="squareCraft-flex squareCraft-items-center squareCraft-px-1_5 squareCraft-py-1 squareCraft-justify-between squareCraft-w-full squareCraft-gap-2">
-            <img src="./public/alignment (1).svg" class="squareCraft-cursor-pointer" alt="">
-            <img src="./public/alignment (2).svg" class="squareCraft-cursor-pointer" alt="">
-            <img src="./public/alignment (3).svg" class="squareCraft-cursor-pointer" alt="">
-            <img src="./public/alignment (4).svg" class="squareCraft-cursor-pointer" alt="">
+            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (1).svg" class="squareCraft-cursor-pointer" alt="">
+            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg" class="squareCraft-cursor-pointer" alt="">
+            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg" class="squareCraft-cursor-pointer" alt="">
+            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (4).svg" class="squareCraft-cursor-pointer" alt="">
            </div>
             </div>
         </div>
