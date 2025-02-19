@@ -89,41 +89,42 @@
     if (!pageId) return;
 
     try {
-      const response = await fetch(
-        `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-          },
+        const response = await fetch(
+            `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+                },
+            }
+        );
+
+        const data = await response.json();
+
+        if (!data.modifications || data.modifications.length === 0) {
+            console.warn("⚠️ No styles found for this page.");
+            return;
         }
-      );
 
-      const data = await response.json();
-
-      if (!data.modifications || data.modifications.length === 0) {
-        console.warn(":warning: No styles found for this page.");
-        return;
-      }
-
-      console.log(":inbox_tray: Applying stored modifications...", data);
-      data.modifications.forEach(({ pageId: storedPageId, elements }) => {
-        if (storedPageId === pageId) {
-          elements.forEach(({ elementId, css }) => {
-            applyStylesToElement(elementId, css);
-          });
-        }
-      });
+        console.log("📥 Applying stored modifications...", data);
+        data.modifications.forEach(({ pageId: storedPageId, elements }) => {
+            if (storedPageId === pageId) {
+                elements.forEach(({ elementId, css }) => {
+                    applyStylesToElement(elementId, css);
+                });
+            }
+        });
 
     } catch (error) {
-      console.error(":x: Error fetching modifications:", error);
-      if (retries > 0) {
-        console.log(`:arrows_counterclockwise: Retrying fetch... (${retries} left)`);
-        setTimeout(() => fetchModifications(retries - 1), 2000);
-      }
+        console.error("❌ Error fetching modifications:", error);
+        if (retries > 0) {
+            console.log(`🔄 Retrying fetch... (${retries} left)`);
+            setTimeout(() => fetchModifications(retries - 1), 2000);
+        }
     }
-  }
+}
+
 
   async function saveModifications(elementId, css) {
     if (!pageId || !elementId || !css) {
@@ -333,12 +334,13 @@
             
             <div class="squareCraft-mt-2 squareCraft-grid squareCraft-px-2 squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 ">
             <div class="squareCraft-flex squareCraft-col-span-5 squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
-           <div class="squareCraft-flex squareCraft-items-center squareCraft-px-1_5 squareCraft-py-1 squareCraft-justify-between squareCraft-w-full squareCraft-gap-2">
-            <img id="squareCraftTextAlignLeft data-align="left"    src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (1).svg" class="squareCraft-cursor-pointer" alt="">
-            <img id="squareCraftTextAlignCenter" data-align="center"  src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg" class="squareCraft-cursor-pointer" alt="">
-            <img  id="squareCraftTextAlignRight" data-align="right"  src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg" class="squareCraft-cursor-pointer" alt="">
-            <img id="squareCraftTextAlignJustify" data-align="justify" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (4).svg" class="squareCraft-cursor-pointer" alt="">
-           </div>
+         <div class="squareCraft-flex squareCraft-items-center squareCraft-px-1_5 squareCraft-py-1 squareCraft-justify-between squareCraft-w-full squareCraft-gap-2">
+    <img id="squareCraftTextAlignLeft" data-align="left" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (1).svg" class="squareCraft-cursor-pointer alignment-icon" alt="">
+    <img id="squareCraftTextAlignCenter" data-align="center" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg" class="squareCraft-cursor-pointer alignment-icon" alt="">
+    <img id="squareCraftTextAlignRight" data-align="right" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg" class="squareCraft-cursor-pointer alignment-icon" alt="">
+    <img id="squareCraftTextAlignJustify" data-align="justify" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (4).svg" class="squareCraft-cursor-pointer alignment-icon" alt="">
+</div>
+
             </div>
         </div>
             
@@ -378,23 +380,25 @@
 
         if (Object.keys(css).length > 0) {
             applyStylesToElement(selectedElement.id, css);
-            await saveModifications(selectedElement.id, css);  // 🔥 Instant changes & API save
+            await saveModifications(selectedElement.id, css);  // 🔥 Save instantly
         }
     });
 
+    // 🎯 FIXED: Add alignment event listeners properly
     document.querySelectorAll(".alignment-icon").forEach(icon => {
         icon.addEventListener("click", async function () {
             if (!selectedElement) return;
-            const alignment = this.dataset.align;
-            
+            const alignment = this.getAttribute("data-align");
+
             let css = { "text-align": alignment };
             applyStylesToElement(selectedElement.id, css);
             await saveModifications(selectedElement.id, css);  // 🔥 Instantly updates & saves to database
-            
+
             console.log(`✅ Applied text alignment: ${alignment} to ${selectedElement.id}`);
         });
     });
 }
+
 
 
   document.addEventListener("DOMContentLoaded", function () {
