@@ -334,10 +334,10 @@
             <div class="squareCraft-mt-2 squareCraft-grid squareCraft-px-2 squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 ">
             <div class="squareCraft-flex squareCraft-col-span-5 squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
            <div class="squareCraft-flex squareCraft-items-center squareCraft-px-1_5 squareCraft-py-1 squareCraft-justify-between squareCraft-w-full squareCraft-gap-2">
-            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (1).svg" class="squareCraft-cursor-pointer" alt="">
-            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg" class="squareCraft-cursor-pointer" alt="">
-            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg" class="squareCraft-cursor-pointer" alt="">
-            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (4).svg" class="squareCraft-cursor-pointer" alt="">
+            <img id="squareCraftTextAlignLeft data-align="left"    src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (1).svg" class="squareCraft-cursor-pointer" alt="">
+            <img id="squareCraftTextAlignCenter" data-align="center"  src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg" class="squareCraft-cursor-pointer" alt="">
+            <img  id="squareCraftTextAlignRight" data-align="right"  src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg" class="squareCraft-cursor-pointer" alt="">
+            <img id="squareCraftTextAlignJustify" data-align="justify" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (4).svg" class="squareCraft-cursor-pointer" alt="">
            </div>
             </div>
         </div>
@@ -349,6 +349,16 @@
     </div>
     `;
     document.body.appendChild(widgetContainer);
+
+    document.querySelectorAll(".alignment-icon").forEach(icon => {
+      icon.addEventListener("click", function () {
+        if (selectedElement) {
+          const alignment = this.dataset.align;
+          applyStylesToElement(selectedElement.id, { "text-align": alignment });
+          saveModifications(selectedElement.id, { "text-align": alignment });
+        }
+      });
+    });
   }
 
   function attachEventListeners() {
@@ -373,6 +383,7 @@
       } else if (event.target.id === "squareCraftBorderRadius") {
         css["border-radius"] = event.target.value + "px";
       }
+      
     
       if (Object.keys(css).length > 0) {
         applyStylesToElement(selectedElement.id, css);  // Apply styles instantly to the selected element
