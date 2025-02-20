@@ -162,6 +162,8 @@
     }
   }
 
+
+
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
@@ -395,9 +397,40 @@
     </div>
     `;
     document.body.appendChild(widgetContainer);
+    makeWidgetDraggable();
+    setInterval(makeWidgetDraggable, 1000);
+
 
   
   }
+  setInterval(makeWidgetDraggable, 1000);
+
+  function makeWidgetDraggable() {
+    const widget = document.getElementById("squarecraft-widget-container");
+    if (!widget) return;
+
+    let offsetX, offsetY, isDragging = false;
+
+    widget.addEventListener("mousedown", (event) => {
+        isDragging = true;
+        offsetX = event.clientX - widget.getBoundingClientRect().left;
+        offsetY = event.clientY - widget.getBoundingClientRect().top;
+        widget.style.transition = "none"; // Disable transition for smooth dragging
+    });
+
+    document.addEventListener("mousemove", (event) => {
+        if (!isDragging) return;
+        const x = event.clientX - offsetX;
+        const y = event.clientY - offsetY;
+        widget.style.left = `${x}px`;
+        widget.style.top = `${y}px`;
+    });
+
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+        widget.style.transition = "0.2s ease-out"; // Smooth release
+    });
+}
 
   async function loadFontsWithPagination(page = 1, perPage = 20) {
     try {
@@ -579,6 +612,7 @@ setTimeout(() => {
 
 
   document.addEventListener("DOMContentLoaded", function () {
+    makeWidgetDraggable();
     function insertCustomAdminIcon() {
       const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
 
@@ -634,39 +668,16 @@ setTimeout(() => {
 }
 
 
-    function makeWidgetDraggable() {
-        const widget = document.getElementById("squarecraft-widget-container");
-        if (!widget) return;
-
-        let offsetX, offsetY, isDragging = false;
-
-        widget.addEventListener("mousedown", (event) => {
-            isDragging = true;
-            offsetX = event.clientX - widget.getBoundingClientRect().left;
-            offsetY = event.clientY - widget.getBoundingClientRect().top;
-            widget.style.transition = "none"; // Disable transition for smooth dragging
-        });
-
-        document.addEventListener("mousemove", (event) => {
-            if (!isDragging) return;
-            const x = event.clientX - offsetX;
-            const y = event.clientY - offsetY;
-            widget.style.left = `${x}px`;
-            widget.style.top = `${y}px`;
-        });
-
-        document.addEventListener("mouseup", () => {
-            isDragging = false;
-            widget.style.transition = "0.2s ease-out"; // Smooth release
-        });
-    }
+  
 
     checkURL();
     setInterval(checkURL, 1000);
+    setInterval(makeWidgetDraggable, 1000);
+
     createWidget();
+    makeWidgetDraggable();
     attachEventListeners();
     fetchModifications();
-    setTimeout(makeWidgetDraggable, 500); // Ensure dragging works after widget is created
     makeWidgetDraggable();
 
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
