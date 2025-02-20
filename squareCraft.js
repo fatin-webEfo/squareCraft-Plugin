@@ -419,21 +419,6 @@ function closeAllDropdowns() {
   document.getElementById("squareCraftLetterSpacingOptions")?.classList.add("squareCraft-hidden");
 }
 
-fontSizeDropdown.addEventListener("click", function (event) {
-  event.stopPropagation();
-  closeAllDropdowns();
-  fontSizeOptions.classList.toggle("squareCraft-hidden");
-});
-
-letterSpacingDropdown.addEventListener("click", function (event) {
-  event.stopPropagation();
-  closeAllDropdowns();
-  letterSpacingOptions.classList.toggle("squareCraft-hidden");
-});
-
-document.addEventListener("click", function (event) {
-  closeAllDropdowns();
-});
 
 
 
@@ -459,10 +444,26 @@ document.addEventListener("click", function (event) {
   
 
     // Font Size Handling
-    var fontSizeInput = document.getElementById("squareCraftFontSizeInput");
-    var fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");
-    var fontSizeOptions = document.getElementById("squareCraftFontSizeOptions");
+    const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
+    const fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");
+    const fontSizeOptions = document.getElementById("squareCraftFontSizeOptions");
 
+    fontSizeDropdown.addEventListener("click", function (event) {
+      event.stopPropagation();
+      closeAllDropdowns();
+      fontSizeOptions.classList.toggle("squareCraft-hidden");
+    });
+    
+    letterSpacingDropdown.addEventListener("click", function (event) {
+      event.stopPropagation();
+      closeAllDropdowns();
+      letterSpacingOptions.classList.toggle("squareCraft-hidden");
+    });
+    
+    document.addEventListener("click", function (event) {
+      closeAllDropdowns();
+    });
+    
     fontSizeDropdown.addEventListener("click", function () {
       fontSizeOptions.classList.toggle("squareCraft-hidden");
     });
