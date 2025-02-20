@@ -341,14 +341,18 @@
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (1).svg"
                             class="squareCraft-cursor-pointer alignment-icon   squareCraft-mx-auto"  alt="">
                             <div class="squareCraft-v-line"></div>
-                        <img id="squareCraftTextAlignCenter" data-align="center"
-                            src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg"
-                            class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
-                             <div class="squareCraft-v-line"></div>
-                        <img id="squareCraftTextAlignRight" data-align="right"
+                            <img id="squareCraftTextAlignRight" data-align="right"
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg"
                             class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
-                             <div class="squareCraft-v-line"></div>
+                             <div class="squareCraft-v-line">
+                       
+                             </div>
+                         <img id="squareCraftTextAlignCenter" data-align="center"
+                            src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg"
+                            class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
+                             <div class="squareCraft-v-line">
+                             <div class="squareCraft-v-line">
+                             </div>
                         <img id="squareCraftTextAlignJustify" data-align="justify"
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (4).svg"
                             class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto "  alt="">
