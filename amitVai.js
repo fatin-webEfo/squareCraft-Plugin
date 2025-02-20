@@ -44,6 +44,49 @@
     let pageId = getPageId();
     if (!pageId) console.warn("⚠️ No page ID found. Plugin may not work correctly.");
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
   function applyStylesToElement(elementId, css) {
     if (!elementId || !css || appliedStyles.has(elementId)) return;
   
