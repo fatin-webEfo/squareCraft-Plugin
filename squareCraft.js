@@ -406,10 +406,20 @@
   let currentPage = 1;
   const fontsPerPage = 20;
   
-  document.getElementById("squareCraft-font-family").addEventListener("click", function () {
-      console.log("📢 Font dropdown clicked! Fetching fonts...");
-      fontfamilies(); // Calls function on click
-  });
+  document.addEventListener("DOMContentLoaded", function () {
+    const fontDropdown = document.getElementById("squareCraft-font-family");
+    if (!fontDropdown) {
+        console.error("❌ Font dropdown not found! Delaying initialization...");
+        setTimeout(squareCraft, 500); // Retry in 500ms
+        return;
+    }
+
+    fontDropdown.addEventListener("click", function () {
+        console.log("📢 Font dropdown clicked! Fetching fonts...");
+        fontfamilies(); // Calls fontfamilies() function on click
+    });
+});
+
   
   async function fontfamilies() {
       let fontDropdown = document.getElementById("squareCraft-font-family");
