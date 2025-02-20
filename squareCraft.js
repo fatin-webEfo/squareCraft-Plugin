@@ -345,12 +345,14 @@
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg"
                             class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
                              <div class="squareCraft-v-line">
-                       
-                             </div>
-                         <img id="squareCraftTextAlignCenter" data-align="center"
+                        <img id="squareCraftTextAlignCenter" data-align="center"
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg"
                             class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
                              <div class="squareCraft-v-line">
+                             </div>
+                        <img id="squareCraftTextAlignRight" data-align="right"
+                            src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg"
+                            class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
                              <div class="squareCraft-v-line">
                              </div>
                         <img id="squareCraftTextAlignJustify" data-align="justify"
@@ -402,9 +404,7 @@
     </div>
     `;
     document.body.appendChild(widgetContainer);
-    setTimeout(() => {
-      makeWidgetDraggable();
-  }, 100);
+
   
   }
 
