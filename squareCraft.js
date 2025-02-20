@@ -402,10 +402,6 @@
   
   }
 
-
-  
-
-
   function fontfamilies() {
     console.log("⏳ Initializing Font Family Dropdown...");
 
@@ -423,23 +419,24 @@
         if (!fontList) {
             fontList = document.createElement("div");
             fontList.id = "squareCraft-font-list";
-            fontList.classList.add("squareCraft-hidden"); // Uses display: none from CSS
+            fontList.classList.add("squareCraft-hidden");
             fontDropdown.appendChild(fontList);
         }
 
         fontDropdown.addEventListener("click", async (event) => {
             event.stopPropagation();
-            fontList.classList.toggle("squareCraft-hidden"); // Show/hide the dropdown
+            fontList.classList.toggle("squareCraft-hidden");
 
-            if (fontList.children.length === 0) {
-                console.log("📥 Loading fonts...");
-                await loadMoreFonts();
-            }
+            // Clear previous options to prevent duplicates
+            fontList.innerHTML = "";
+
+            console.log("📥 Loading fonts...");
+            await loadMoreFonts();
         });
 
         document.addEventListener("click", (event) => {
             if (!fontDropdown.contains(event.target)) {
-                fontList.classList.add("squareCraft-hidden"); // Hide when clicking outside
+                fontList.classList.add("squareCraft-hidden");
             }
         });
 
@@ -453,6 +450,8 @@ async function loadMoreFonts(page = 1, perPage = 20) {
         console.log("📄 Available Font Families:", data);
 
         let fontList = document.getElementById("squareCraft-font-list");
+        let fontDropdownText = document.querySelector("#squareCraft-font-family p");
+
         if (!fontList) return;
 
         data.items.slice((page - 1) * perPage, page * perPage).forEach(font => {
@@ -462,16 +461,16 @@ async function loadMoreFonts(page = 1, perPage = 20) {
             option.dataset.value = font.family;
 
             option.addEventListener("click", function () {
-                let fontDropdownText = fontDropdown.querySelector("p");
                 fontDropdownText.textContent = font.family;
-
                 fontList.classList.add("squareCraft-hidden");
 
                 if (selectedElement) {
-                    let css = { "font-family": font.family };
+                    let css = { "font-family": `"${font.family}", sans-serif` };
                     applyStylesToElement(selectedElement.id, css);
                     saveModifications(selectedElement.id, css);
                 }
+
+                console.log(`✅ Applied font: ${font.family} to ${selectedElement?.id}`);
             });
 
             fontList.appendChild(option);
