@@ -613,25 +613,32 @@ fontfamilies();
   }
 
   insertCustomAdminIcon();
-    function checkURL() {
-        const currentURL = window.location.href;
-        const widgetContainer = document.getElementById("squarecraft-widget-container");
+  function checkURL() {
+    const currentURL = window.location.href;
+    let widgetContainer = document.getElementById("squarecraft-widget-container");
 
-        console.log("Current URL:", currentURL);
+    console.log("Current URL:", currentURL);
 
-        if (currentURL.includes("/#")) {
-            console.log("✅ Widget is VISIBLE on the Code Injection page.");
-            if (widgetContainer) {
-                widgetContainer.style.display = "block"; // Show Widget
-            } else {
-                createWidget(); // Ensure widget is created if not already
-                setTimeout(makeWidgetDraggable, 500); // Ensure it's draggable
-            }
+    if (currentURL.includes("/#")) {
+        console.log("✅ Widget is VISIBLE on the Code Injection page.");
+        
+        if (!widgetContainer) {
+            createWidget(); 
+            setTimeout(() => {
+                widgetContainer = document.getElementById("squarecraft-widget-container");
+                if (widgetContainer) makeWidgetDraggable(); 
+            }, 500); 
         } else {
-            console.log("❌ Widget is HIDDEN on other pages.");
-            if (widgetContainer) widgetContainer.style.display = "none"; // Hide Widget
+            widgetContainer.style.display = "block"; 
+            makeWidgetDraggable(); 
         }
+
+    } else {
+        console.log("❌ Widget is HIDDEN on other pages.");
+        if (widgetContainer) widgetContainer.style.display = "none"; 
     }
+}
+
 
     function makeWidgetDraggable() {
         const widget = document.getElementById("squarecraft-widget-container");
