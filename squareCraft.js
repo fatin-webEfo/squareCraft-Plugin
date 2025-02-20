@@ -400,6 +400,9 @@
     document.body.appendChild(widgetContainer);
 
   }
+  const letterSpacingInput = document.getElementById("squareCraftLetterSpacingInput");
+  const letterSpacingDropdown = document.getElementById("squareCraftLetterSpacingDropdown");
+  const letterSpacingOptions = document.getElementById("squareCraftLetterSpacingOptions");
   function updateElementStyle(property, value) {
     if (!selectedElement) return;
 
@@ -491,9 +494,7 @@ function closeAllDropdowns() {
     });
 
     // Letter-Spacing Handling (NEW FEATURE!)
-    const letterSpacingInput = document.getElementById("squareCraftLetterSpacingInput");
-    const letterSpacingDropdown = document.getElementById("squareCraftLetterSpacingDropdown");
-    const letterSpacingOptions = document.getElementById("squareCraftLetterSpacingOptions");
+
 
     letterSpacingDropdown.addEventListener("click", function () {
       letterSpacingOptions.classList.toggle("squareCraft-hidden");
