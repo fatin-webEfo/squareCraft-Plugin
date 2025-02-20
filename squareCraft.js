@@ -673,6 +673,7 @@ fontfamilies();
     attachEventListeners();
     fetchModifications();
     setTimeout(makeWidgetDraggable, 500); // Ensure dragging works after widget is created
+    makeWidgetDraggable();
 
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
