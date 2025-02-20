@@ -171,6 +171,7 @@
     widgetContainer.style.top = "100px";
     widgetContainer.style.left = "100px";
     widgetContainer.style.zIndex = "9999";
+    widgetContainer.style.display = "none";
 
     widgetContainer.innerHTML = `
       <div
@@ -400,9 +401,26 @@
     makeWidgetDraggable();
     setInterval(makeWidgetDraggable, 1000);
 
-
   
   }
+  function createWidgetIcon() {
+    const widgetIcon = document.createElement("img");
+    widgetIcon.id = "squarecraft-widget-icon";
+    widgetIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Icon URL
+    widgetIcon.style.position = "fixed";
+    widgetIcon.style.top = "20px";
+    widgetIcon.style.right = "20px";
+    widgetIcon.style.width = "40px";
+    widgetIcon.style.height = "40px";
+    widgetIcon.style.cursor = "pointer";
+    widgetIcon.style.zIndex = "9999";
+
+    widgetIcon.addEventListener("click", function () {
+        alert("Click on an element to open the widget.");
+    });
+
+    document.body.appendChild(widgetIcon);
+}
   setInterval(makeWidgetDraggable, 1000);
 
   function makeWidgetDraggable() {
@@ -434,9 +452,10 @@
     console.log("✅ Dragging enabled.");
 }
 
-// 🚀 Ensure the draggable function runs **only once** after the page loads
 window.addEventListener("load", () => {
     setTimeout(makeWidgetDraggable, 500); // Wait for the widget to load
+    createWidgetIcon();
+
 });
 
 
@@ -523,7 +542,6 @@ async function fontfamilies() {
 }
 
 
-// **Ensure createWidget() runs first, then call fontfamilies()**
 setTimeout(() => {
   fontfamilies();
 }, 1000);
@@ -540,10 +558,11 @@ setTimeout(() => {
       if (selectedElement) selectedElement.style.outline = "";
       selectedElement = block;
       selectedElement.style.outline = "2px dashed #EF7C2F";
-      console.log(`✅ Selected Element: ${selectedElement.id}`);
-    });
 
-    // Font Size Handling
+      const widget = document.getElementById("squarecraft-widget-container");
+      widget.style.display = "block"; 
+  });
+
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");
     const fontSizeOptions = document.getElementById("squareCraftFontSizeOptions");
@@ -572,7 +591,6 @@ setTimeout(() => {
       }
     });
 
-    // Letter-Spacing Handling (NEW FEATURE!)
     const letterSpacingInput = document.getElementById("squareCraftLetterSpacingInput");
     const letterSpacingDropdown = document.getElementById("squareCraftLetterSpacingDropdown");
     const letterSpacingOptions = document.getElementById("squareCraftLetterSpacingOptions");
@@ -620,6 +638,8 @@ setTimeout(() => {
 
 
   document.addEventListener("DOMContentLoaded", function () {
+    createWidgetIcon();
+
     makeWidgetDraggable();
     function insertCustomAdminIcon() {
       const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
