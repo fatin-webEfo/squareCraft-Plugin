@@ -412,8 +412,8 @@
     widgetIcon.style.top = "20px";
     widgetIcon.style.right = "20px";
     widgetIcon.style.width = "40px";
-    widgetIcon.style.padding = "10px";
-    widgetIcon.style.backgroundColor = "black";
+    widgetIcon.style.padding = "20px";
+    widgetIcon.style.background = "black";
     widgetIcon.style.height = "40px";
     widgetIcon.style.cursor = "pointer";
     widgetIcon.style.zIndex = "9999";
