@@ -399,19 +399,64 @@
     `;
     document.body.appendChild(widgetContainer);
 
-  
   }
+  function updateElementStyle(property, value) {
+    if (!selectedElement) return;
+
+    let elementId = selectedElement.id;
+
+    let storedStyles = JSON.parse(localStorage.getItem(`styles-${elementId}`)) || {};
+    storedStyles[property] = value;
+    applyStylesToElement(elementId, storedStyles);
+    localStorage.setItem(`styles-${elementId}`, JSON.stringify(storedStyles));
+    saveModifications(elementId, storedStyles);
+
+    console.log(`✅ Updated ${property} for ${elementId}, while preserving other styles.`);
+}
+
+function closeAllDropdowns() {  
+  document.getElementById("squareCraftFontSizeOptions")?.classList.add("squareCraft-hidden");
+  document.getElementById("squareCraftLetterSpacingOptions")?.classList.add("squareCraft-hidden");
+}
+
+fontSizeDropdown.addEventListener("click", function (event) {
+  event.stopPropagation();
+  closeAllDropdowns();
+  fontSizeOptions.classList.toggle("squareCraft-hidden");
+});
+
+letterSpacingDropdown.addEventListener("click", function (event) {
+  event.stopPropagation();
+  closeAllDropdowns();
+  letterSpacingOptions.classList.toggle("squareCraft-hidden");
+});
+
+document.addEventListener("click", function (event) {
+  closeAllDropdowns();
+});
+
+
+
 
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"]');
       if (!block) return;
-
+  
       if (selectedElement) selectedElement.style.outline = "";
       selectedElement = block;
       selectedElement.style.outline = "2px dashed #EF7C2F";
-      console.log(`✅ Selected Element: ${selectedElement.id}`);
-    });
+  
+      let elementId = selectedElement.id;
+      let storedStyles = JSON.parse(localStorage.getItem(`styles-${elementId}`)) || {};
+  
+      fontSizeInput.value = storedStyles["font-size"] ? parseInt(storedStyles["font-size"], 10) : 16;
+      letterSpacingInput.value = storedStyles["letter-spacing"] ? parseFloat(storedStyles["letter-spacing"]) : 0;
+  
+      console.log(`✅ Selected Element: ${elementId}`, storedStyles);
+  });
+  
+  
 
     // Font Size Handling
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
@@ -439,6 +484,8 @@
         let css = { "font-size": `${fontSizeInput.value}px` };
         applyStylesToElement(selectedElement.id, css);
         saveModifications(selectedElement.id, css);
+        updateElementStyle("font-size", `${fontSizeInput.value}px`);
+
       }
     });
 
@@ -468,6 +515,8 @@
         let css = { "letter-spacing": `${letterSpacingInput.value}px` };
         applyStylesToElement(selectedElement.id, css);
         saveModifications(selectedElement.id, css);
+        updateElementStyle("letter-spacing", `${letterSpacingInput.value}px`);
+
       }
     });
 
@@ -480,6 +529,8 @@
         let css = { "text-align": alignment };
         applyStylesToElement(selectedElement.id, css);
         await saveModifications(selectedElement.id, css);
+        updateElementStyle("text-align", this.getAttribute("data-align"));
+
 
         console.log(`✅ Applied text alignment: ${alignment} to ${selectedElement.id}`);
       });
