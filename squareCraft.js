@@ -459,9 +459,9 @@ document.addEventListener("click", function (event) {
   
 
     // Font Size Handling
-    const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
-    const fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");
-    const fontSizeOptions = document.getElementById("squareCraftFontSizeOptions");
+    var fontSizeInput = document.getElementById("squareCraftFontSizeInput");
+    var fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");
+    var fontSizeOptions = document.getElementById("squareCraftFontSizeOptions");
 
     fontSizeDropdown.addEventListener("click", function () {
       fontSizeOptions.classList.toggle("squareCraft-hidden");
