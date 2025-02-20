@@ -341,13 +341,12 @@
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (1).svg"
                             class="squareCraft-cursor-pointer alignment-icon   squareCraft-mx-auto"  alt="">
                             <div class="squareCraft-v-line"></div>
-                             <img id="squareCraftTextAlignRight" data-align="right"
-                            src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg"
-                            class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
-                       
-                             <div class="squareCraft-v-line"></div>
-                         <img id="squareCraftTextAlignCenter" data-align="center"
+                        <img id="squareCraftTextAlignCenter" data-align="center"
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg"
+                            class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
+                             <div class="squareCraft-v-line"></div>
+                        <img id="squareCraftTextAlignRight" data-align="right"
+                            src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg"
                             class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
                              <div class="squareCraft-v-line"></div>
                         <img id="squareCraftTextAlignJustify" data-align="justify"
@@ -403,121 +402,110 @@
   
   }
 
-  let currentPage = 1;
-  const fontsPerPage = 20;
-  
-  document.addEventListener("DOMContentLoaded", function () {
-    const fontDropdown = document.getElementById("squareCraft-font-family");
-    if (!fontDropdown) {
-        console.error("❌ Font dropdown not found! Delaying initialization...");
-        setTimeout(squareCraft, 500); // Retry in 500ms
-        return;
-    }
-
-    fontDropdown.addEventListener("click", function () {
-        console.log("📢 Font dropdown clicked! Fetching fonts...");
-        fontfamilies(); // Calls fontfamilies() function on click
-    });
-});
-
-  
   async function fontfamilies() {
-      let fontDropdown = document.getElementById("squareCraft-font-family");
-      let fontList = document.getElementById("squareCraft-font-list");
+    try {
+        const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=YOUR_GOOGLE_FONTS_API_KEY");
+        const data = await response.json();
+        console.log("Font fmailies",data);
   
-      if (!fontDropdown) {
-          console.error("❌ Font dropdown not found!");
-          return;
-      }
-  
-      if (!fontList) {
-          fontList = document.createElement("div");
-          fontList.id = "squareCraft-font-list";
-          fontList.classList.add("squareCraft-font-dropdown");
-          fontDropdown.appendChild(fontList);
-        
-          fontList.style.position = "absolute";
-          fontList.style.top = "100%";
-          fontList.style.left = "0";
-          fontList.style.width = "100%";
-          fontList.style.maxHeight = "250px";
-          fontList.style.overflowY = "auto";
-          fontList.style.zIndex = "9999";
-          fontList.style.border = "1px solid #585858";
-          fontList.style.borderRadius = "6px";
-          fontList.style.background = "#2c2c2c";
-          fontList.style.display = "none";
-      }
-  
-      fontList.innerHTML = `<p style="color:white; padding:8px; text-align:center;">Loading fonts...</p>`;
-  
-      try {
-          const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
-          const data = await response.json();
-  
-          console.log("📄 Available Font Families:", data);
-  
-          fontList.innerHTML = ""; // Clear loading text
-          loadFonts(data.items, currentPage);
-  
-          let loadMore = document.createElement("div");
-          loadMore.innerHTML = `<p style="color:white; padding:8px; text-align:center; cursor:pointer; background:#EF7C2F; border-radius:5px;">Load More</p>`;
-          loadMore.addEventListener("click", function () {
-              currentPage++;
-              loadFonts(data.items, currentPage);
-          });
-  
-          fontList.appendChild(loadMore);
-          fontList.style.display = "block"; // Show dropdown
-  
-      } catch (error) {
-          console.error("❌ Error fetching Google Fonts:", error);
-      }
-  }
-  
-  function loadFonts(fonts, page) {
-      let fontList = document.getElementById("squareCraft-font-list");
-      let startIndex = (page - 1) * fontsPerPage;
-      let endIndex = startIndex + fontsPerPage;
-      
-      fonts.slice(startIndex, endIndex).forEach(font => {
-          let option = document.createElement("div");
-          option.classList.add("squareCraft-dropdown-item");
-          option.textContent = font.family;
-          option.dataset.value = font.family;
-          
-          option.style.padding = "8px";
-          option.style.cursor = "pointer";
-          option.style.fontSize = "14px";
-          option.style.borderBottom = "1px solid #3d3d3d";
-          option.style.textAlign = "left";
-          option.style.color = "white";
-          option.style.background = "transparent";
-          option.style.transition = "background 0.3s ease";
-          option.onmouseover = () => (option.style.backgroundColor = "#EF7C2F");
-          option.onmouseout = () => (option.style.backgroundColor = "transparent");
-  
-          option.addEventListener("click", function () {
-              document.querySelector("#squareCraft-font-family p").textContent = font.family;
-              fontList.style.display = "none";
-  
-              if (selectedElement) {
-                  let css = { "font-family": `"${font.family}", sans-serif` };
-                  applyStylesToElement(selectedElement.id, css);
-                  saveModifications(selectedElement.id, css);
-              }
-  
-              console.log(`✅ Applied font: ${font.family} to ${selectedElement?.id}`);
-          });
-  
-          fontList.appendChild(option);
-      });
-  }
-  
-  
+        const fontDropdown = document.getElementById("squareCraft-font-family");
+        const fontWeightDropdown = document.getElementById("squareCraftFontWeight");
 
+        fontDropdown.innerHTML = ''; // Clear previous items
 
+        let selectedFont = "Select a Font";
+        const selectedFontText = document.createElement("p");
+        selectedFontText.textContent = selectedFont;
+        selectedFontText.style.flexGrow = "1"; 
+        selectedFontText.style.fontSize = "14px";
 
+        const dropdownArrow = document.createElement("img");
+        dropdownArrow.src = "https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg";
+        dropdownArrow.style.width = "12px";
+        dropdownArrow.style.height = "12px";
+        dropdownArrow.style.transform = "rotate(180deg)";
+
+        fontDropdown.appendChild(selectedFontText);
+        fontDropdown.appendChild(dropdownArrow);
+
+        const fontList = document.createElement("div");
+        fontList.style.position = "absolute";
+        fontList.style.top = "100%";
+        fontList.style.left = "0";
+        fontList.style.width = "100%";
+        fontList.style.background = "#2c2c2c";
+        fontList.style.border = "1px solid #585858";
+        fontList.style.borderRadius = "6px";
+        fontList.style.overflowY = "auto";
+        fontList.style.maxHeight = "200px";
+        fontList.style.display = "none";
+        fontList.style.zIndex = "1000";
+
+        data.items.forEach(font => {
+            const option = document.createElement("div");
+            option.textContent = font.family;
+            option.style.padding = "8px";
+            option.style.cursor = "pointer";
+            option.style.fontFamily = font.family;
+            option.style.color = "white";
+            option.style.fontSize = "14px";
+            option.classList.add("font-option");
+
+            option.addEventListener("mouseover", () => {
+                option.style.background = "#444";
+            });
+
+            option.addEventListener("mouseout", () => {
+                option.style.background = "transparent";
+            });
+
+            option.addEventListener("click", async () => {
+                selectedFont = font.family;
+                selectedFontText.textContent = selectedFont;
+                selectedFontText.style.fontFamily = selectedFont;
+                fontList.style.display = "none";
+
+                // Fetch font weights dynamically
+                updateFontWeightDropdown(font.variants);
+
+                if (selectedElement) {
+                    let css = { "font-family": selectedFont };
+                    await saveModifications(selectedElement.id, css);
+                    applyStylesToElement(selectedElement.id, css);
+                }
+            });
+
+            fontList.appendChild(option);
+        });
+
+        fontDropdown.appendChild(fontList);
+
+        fontDropdown.addEventListener("click", (event) => {
+            event.stopPropagation();
+            fontList.style.display = fontList.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", () => {
+            fontList.style.display = "none";
+        });
+
+        function updateFontWeightDropdown(variants) {
+            fontWeightDropdown.innerHTML = ""; 
+            variants.forEach(variant => {
+                let weight = variant === "regular" ? "400" : variant;
+                let option = document.createElement("option");
+                option.value = weight;
+                option.textContent = `Weight ${weight}`;
+                fontWeightDropdown.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error("❌ Error fetching Google Fonts:", error);
+    }
+}
+
+// Call the function
+fontfamilies();
 
 
   function attachEventListeners() {
