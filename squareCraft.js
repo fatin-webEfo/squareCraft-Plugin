@@ -442,57 +442,22 @@ function fontfamilies() {
           fontList.style.border = "1px solid #585858";
           fontList.style.borderRadius = "6px";
           fontList.style.background = "#2c2c2c";
-          fontList.style.color = "white";  // Ensure text is visible
           fontDropdown.appendChild(fontList);
       }
 
-      async function fetchFontsAndRender() {
-          console.log("📥 Loading fonts...");
-          const fonts = await loadMoreFonts();
-
-          fontList.innerHTML = '';
-
-          fonts.forEach(font => {
-              const option = document.createElement("div");
-              option.textContent = font.family;
-              option.style.fontFamily = font.family;
-              option.style.padding = "8px";
-              option.style.cursor = "pointer";
-              option.style.fontSize = "14px";
-              option.style.borderBottom = "1px solid #3d3d3d";
-              option.style.textAlign = "left";
-
-              option.addEventListener("mouseover", () => option.style.background = "#444");
-              option.addEventListener("mouseout", () => option.style.background = "transparent");
-
-              option.addEventListener("click", () => {
-                  document.querySelector("#squareCraft-font-family p").textContent = font.family;
-                  document.querySelector("#squareCraft-font-family p").style.fontFamily = font.family;
-                  fontList.style.display = "none";
-
-                  if (selectedElement) {
-                      let css = { "font-family": `"${font.family}", sans-serif` };
-                      applyStylesToElement(selectedElement.id, css);
-                      saveModifications(selectedElement.id, css);
-                  }
-              });
-
-              fontList.appendChild(option);
-          });
-      }
-
-      fontDropdown.addEventListener("click", (event) => {
+      fontDropdown.addEventListener("click", async (event) => {
           event.stopPropagation();
           fontList.style.display = fontList.style.display === "block" ? "none" : "block";
 
           if (fontList.children.length === 0) {
-              fetchFontsAndRender();
+              console.log("📥 Loading fonts...");
+              await loadMoreFonts();
           }
       });
 
       fontList.addEventListener("scroll", async () => {
           if (fontList.scrollTop + fontList.clientHeight >= fontList.scrollHeight) {
-              fetchFontsAndRender();
+              await loadMoreFonts();
           }
       });
 
@@ -502,9 +467,8 @@ function fontfamilies() {
           }
       });
 
-  }, 500);
+  }, 500); // Delay to allow widget creation
 }
-
 
 setTimeout(fontfamilies, 1000);
 
