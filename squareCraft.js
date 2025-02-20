@@ -359,11 +359,6 @@
             </div>
 
 
-
-
-
-
-
              <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-3 
             squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 
             squareCraft-items-center squareCraft-w-full squareCraft-h-full">
@@ -416,82 +411,76 @@
 }
 
 async function fontfamilies() {
-    let currentPage = 1;
-    const perPage = 20;
-    const fontDropdown = document.getElementById("squareCraft-font-family");
+  let currentPage = 1;
+  const perPage = 20;
+  const fontDropdown = document.getElementById("squareCraft-font-family");
 
-    // Ensure the dropdown container is created
-    let fontList = document.getElementById("squareCraft-font-list");
-    if (!fontList) {
-        fontList = document.createElement("div");
-        fontList.id = "squareCraft-font-list";
-        fontList.style.position = "absolute";
-        fontList.style.top = "100%";
-        fontList.style.left = "0";
-        fontList.style.width = "100%";
-        fontList.style.maxHeight = "200px";
-        fontList.style.overflowY = "auto";
-        fontList.style.display = "none";
-        fontList.style.zIndex = "1000";
-        fontList.style.border = "1px solid #585858";
-        fontList.style.borderRadius = "6px";
-        fontList.style.background = "#2c2c2c";
-        fontDropdown.appendChild(fontList);
-    }
+  // Ensure the dropdown container is created
+  let fontList = document.getElementById("squareCraft-font-list");
+  if (!fontList) {
+      fontList = document.createElement("div");
+      fontList.id = "squareCraft-font-list";
+      fontList.classList.add("squareCraft-absolute", "squareCraft-top-full", "squareCraft-left-0", 
+          "squareCraft-w-full", "squareCraft-max-h-200px", "squareCraft-overflow-y-auto", 
+          "squareCraft-hidden", "squareCraft-z-1000", "squareCraft-border", "squareCraft-border-585858", 
+          "squareCraft-rounded-6px", "squareCraft-bg-2c2c2c");
+      
+      fontDropdown.appendChild(fontList);
+  }
 
-    async function loadMoreFonts() {
-        const fonts = await loadFontsWithPagination(currentPage, perPage);
+  async function loadMoreFonts() {
+      const fonts = await loadFontsWithPagination(currentPage, perPage);
 
-        fonts.forEach(font => {
-            const option = document.createElement("div");
-            option.textContent = font.family;
-            option.style.fontFamily = font.family;
-            option.style.padding = "8px";
-            option.style.cursor = "pointer";
-            option.style.color = "white";
-            option.style.fontSize = "14px";
+      fonts.forEach(font => {
+          const option = document.createElement("div");
+          option.textContent = font.family;
+          option.style.fontFamily = font.family;
+          option.classList.add("squareCraft-py-1px", "squareCraft-text-white", "squareCraft-text-sm", 
+              "squareCraft-cursor-pointer", "squareCraft-px-2");
 
-            option.addEventListener("mouseover", () => option.style.background = "#444");
-            option.addEventListener("mouseout", () => option.style.background = "transparent");
+          option.addEventListener("mouseover", () => option.classList.add("squareCraft-bg-494949"));
+          option.addEventListener("mouseout", () => option.classList.remove("squareCraft-bg-494949"));
 
-            option.addEventListener("click", async () => {
-                document.querySelector("#squareCraft-font-family p").textContent = font.family;
-                document.querySelector("#squareCraft-font-family p").style.fontFamily = font.family;
-                fontList.style.display = "none";
+          option.addEventListener("click", async () => {
+              document.querySelector("#squareCraft-font-family p").textContent = font.family;
+              document.querySelector("#squareCraft-font-family p").style.fontFamily = font.family;
+              fontList.classList.add("squareCraft-hidden");
 
-                if (selectedElement) {
-                    let css = { "font-family": font.family };
-                    await saveModifications(selectedElement.id, css);
-                    applyStylesToElement(selectedElement.id, css);
-                }
-            });
+              if (selectedElement) {
+                  let css = { "font-family": font.family };
+                  await saveModifications(selectedElement.id, css);
+                  applyStylesToElement(selectedElement.id, css);
+              }
+          });
 
-            fontList.appendChild(option);
-        });
+          fontList.appendChild(option);
+      });
 
-        currentPage++;
-    }
+      currentPage++;
+  }
 
-    fontDropdown.addEventListener("click", (event) => {
-        event.stopPropagation(); // Prevents dropdown from closing immediately
-        fontList.style.display = fontList.style.display === "block" ? "none" : "block";
-        if (fontList.children.length === 0) {
-            loadMoreFonts();
-        }
-    });
+  fontDropdown.addEventListener("click", (event) => {
+      event.stopPropagation(); // Prevents dropdown from closing immediately
+      fontList.classList.toggle("squareCraft-hidden");
 
-    fontList.addEventListener("scroll", async () => {
-        if (fontList.scrollTop + fontList.clientHeight >= fontList.scrollHeight) {
-            await loadMoreFonts();
-        }
-    });
+      if (fontList.children.length === 0) {
+          loadMoreFonts();
+      }
+  });
 
-    document.addEventListener("click", (event) => {
-        if (!fontDropdown.contains(event.target)) {
-            fontList.style.display = "none";
-        }
-    });
+  fontList.addEventListener("scroll", async () => {
+      if (fontList.scrollTop + fontList.clientHeight >= fontList.scrollHeight) {
+          await loadMoreFonts();
+      }
+  });
+
+  document.addEventListener("click", (event) => {
+      if (!fontDropdown.contains(event.target)) {
+          fontList.classList.add("squareCraft-hidden");
+      }
+  });
 }
+
 
 // Call the function to initialize font dropdown
 fontfamilies();
