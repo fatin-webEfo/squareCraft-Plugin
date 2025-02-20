@@ -413,18 +413,27 @@
 async function fontfamilies() {
   let currentPage = 1;
   const perPage = 20;
+
+  // Wait for the widget to be created
   const fontDropdown = document.getElementById("squareCraft-font-family");
+  
+  if (!fontDropdown) {
+      console.error("❌ Font dropdown element not found! Make sure createWidget() is called first.");
+      return;
+  }
 
   // Ensure the dropdown container is created
   let fontList = document.getElementById("squareCraft-font-list");
   if (!fontList) {
       fontList = document.createElement("div");
       fontList.id = "squareCraft-font-list";
-      fontList.classList.add("squareCraft-absolute", "squareCraft-top-full", "squareCraft-left-0", 
+      fontList.classList.add(
+          "squareCraft-absolute", "squareCraft-top-full", "squareCraft-left-0", 
           "squareCraft-w-full", "squareCraft-max-h-200px", "squareCraft-overflow-y-auto", 
           "squareCraft-hidden", "squareCraft-z-1000", "squareCraft-border", "squareCraft-border-585858", 
-          "squareCraft-rounded-6px", "squareCraft-bg-2c2c2c");
-      
+          "squareCraft-rounded-6px", "squareCraft-bg-2c2c2c"
+      );
+
       fontDropdown.appendChild(fontList);
   }
 
@@ -460,7 +469,7 @@ async function fontfamilies() {
   }
 
   fontDropdown.addEventListener("click", (event) => {
-      event.stopPropagation(); // Prevents dropdown from closing immediately
+      event.stopPropagation();
       fontList.classList.toggle("squareCraft-hidden");
 
       if (fontList.children.length === 0) {
@@ -481,9 +490,11 @@ async function fontfamilies() {
   });
 }
 
+// **Ensure createWidget() runs first, then call fontfamilies()**
+setTimeout(() => {
+  fontfamilies();
+}, 1000);
 
-// Call the function to initialize font dropdown
-fontfamilies();
 
 
 
