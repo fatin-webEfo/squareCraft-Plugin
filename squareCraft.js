@@ -408,6 +408,7 @@
     widgetIcon.id = "squarecraft-widget-icon";
     widgetIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Icon URL
     widgetIcon.style.position = "fixed";
+    widgetIcon.style.borderRadius = "50px";
     widgetIcon.style.top = "20px";
     widgetIcon.style.right = "20px";
     widgetIcon.style.width = "40px";
