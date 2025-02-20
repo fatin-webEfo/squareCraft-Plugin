@@ -402,7 +402,9 @@
     </div>
     `;
     document.body.appendChild(widgetContainer);
-
+    setTimeout(() => {
+      makeWidgetDraggable();
+  }, 100);
   
   }
 
