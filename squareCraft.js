@@ -407,7 +407,9 @@
 
   function makeWidgetDraggable() {
     const widget = document.getElementById("squarecraft-widget-container");
-    if (!widget) return;
+    if (!widget || widget.dataset.draggable === "true") return; // Prevent multiple initializations
+
+    widget.dataset.draggable = "true"; // Mark as initialized
 
     let offsetX, offsetY, isDragging = false;
 
@@ -415,22 +417,28 @@
         isDragging = true;
         offsetX = event.clientX - widget.getBoundingClientRect().left;
         offsetY = event.clientY - widget.getBoundingClientRect().top;
-        widget.style.transition = "none"; // Disable transition for smooth dragging
+        widget.style.transition = "none";
     });
 
     document.addEventListener("mousemove", (event) => {
         if (!isDragging) return;
-        const x = event.clientX - offsetX;
-        const y = event.clientY - offsetY;
-        widget.style.left = `${x}px`;
-        widget.style.top = `${y}px`;
+        widget.style.left = `${event.clientX - offsetX}px`;
+        widget.style.top = `${event.clientY - offsetY}px`;
     });
 
     document.addEventListener("mouseup", () => {
         isDragging = false;
-        widget.style.transition = "0.2s ease-out"; // Smooth release
+        widget.style.transition = "0.2s ease-out";
     });
+
+    console.log("✅ Dragging enabled.");
 }
+
+// 🚀 Ensure the draggable function runs **only once** after the page loads
+window.addEventListener("load", () => {
+    setTimeout(makeWidgetDraggable, 500); // Wait for the widget to load
+});
+
 
   async function loadFontsWithPagination(page = 1, perPage = 20) {
     try {
