@@ -814,3 +814,34 @@ font-size: 12px !important;
   padding-left: 0.20rem !important; /* 4px */
   padding-right: 0.20rem !important; /* 4px */
 }
+
+#squareCraft-font-family {
+  position: relative !important;
+}
+
+#squareCraft-font-list {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  width: 100% !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+  z-index: 1000 !important;
+  border: 1px solid #585858 !important;
+  border-radius: 6px !important;
+  background: #2c2c2c !important;
+  display: none !important;
+}
+
+.squareCraft-dropdown-item {
+  padding: 8px !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  border-bottom: 1px solid #3d3d3d !important;
+  text-align: left !important;
+  color: white !important;
+}
+
+.squareCraft-dropdown-item:hover {
+  background-color: #444 !important;
+}
