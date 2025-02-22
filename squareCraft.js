@@ -442,10 +442,12 @@ function createWidgetIcon() {
     let offsetX, offsetY, isDragging = false;
 
     widget.addEventListener("mousedown", (event) => {
+        if (event.target.tagName === "INPUT" || event.target.tagName === "BUTTON") return; // Prevent drag from interfering with inputs
         isDragging = true;
         offsetX = event.clientX - widget.getBoundingClientRect().left;
         offsetY = event.clientY - widget.getBoundingClientRect().top;
         widget.style.transition = "none";
+        widget.style.userSelect = "none"; // Prevent text selection while dragging
     });
 
     document.addEventListener("mousemove", (event) => {
@@ -461,6 +463,7 @@ function createWidgetIcon() {
 
     console.log("✅ Dragging enabled.");
 }
+
 
 window.addEventListener("load", () => {
     setTimeout(makeWidgetDraggable, 500); // Wait for the widget to load
@@ -566,15 +569,18 @@ setTimeout(() => {
         const widget = document.getElementById("squarecraft-widget-container");
     
         if (block) {
-            if (selectedElement) selectedElement.classList.remove("squareCraft-outline");
+            if (!event.ctrlKey) { 
+                // Remove selection only if Ctrl is NOT held
+                document.querySelectorAll(".squareCraft-outline").forEach(el => el.classList.remove("squareCraft-outline"));
+            }
+            block.classList.add("squareCraft-outline");
             selectedElement = block;
-            selectedElement.classList.add("squareCraft-outline");
-    
-            widget.classList.remove("squareCraft-hidden"); // ✅ Show widget
+            widget.classList.remove("squareCraft-hidden"); // Show widget
         } else if (!widget.contains(event.target)) {
-            widget.classList.add("squareCraft-hidden"); // ✅ Hide widget when clicking outside
+            widget.classList.add("squareCraft-hidden"); // Hide widget when clicking outside
         }
     });
+    ;
     
 
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
