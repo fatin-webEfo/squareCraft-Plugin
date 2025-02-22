@@ -215,7 +215,7 @@
         <div class="squareCraft-flex squareCraft-p-2 squareCraft-items-center squareCraft-justify-between">
             <div class="squareCraft-flex squareCraft-gap-2 squareCraft-items-center"><img loading="lazy"
                     src="https://fatin-webefo.github.io/squareCraft-Plugin/public/T.svg" alt="">
-                <p>Typography</p>
+                <p class="squareCraft-universal">Typography</p>
             </div>
             <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" alt="">
         </div>
@@ -230,7 +230,7 @@
             </div>
             <div id="resetButton" 
             class="squareCraft-flex squareCraft-cursor-pointer squareCraft-items-center squareCraft-py-1px squareCraft-rounded-15px squareCraft-gap-2 squareCraft-bg-3f3f3f squareCraft-px-2">
-            <p class="squareCraft-text-sm">Reset</p>
+            <p class="squareCraft-text-sm squareCraft-universal">Reset</p>
             <img id="resetIcon" 
                 src="https://fatin-webefo.github.io/squareCraft-Plugin/public/reset.svg"
                 width="12px" />
