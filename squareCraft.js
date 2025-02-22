@@ -240,14 +240,14 @@
         <div class="squareCraft-h-1px  squareCraft-bg-3f3f3f"></div>
         <div class="squareCraft-mt-2">
             <div
-                class="squareCraft-flex squareCraft-px-2 squareCraft-w-full squareCraft-items-center squareCraft-justify-between squareCraft-gap-2">
-                <div
-                    class="squareCraft-cursor-pointer squareCraft-bg-color-EF7C2F  squareCraft-font-light squareCraft-flex squareCraft-items-center squareCraft-text-sm squareCraft-py-1px squareCraft-rounded-6px squareCraft-text-color-white squareCraft-justify-center">
-                    Normal</div>
-                <div
-                    class="squareCraft-cursor-pointer squareCraft-bg-3f3f3f  squareCraft-text-color-white squareCraft-font-light squareCraft-flex squareCraft-text-sm squareCraft-py-1px squareCraft-rounded-6px squareCraft-items-center squareCraft-justify-center">
-                    Hover</div>
-            </div>
+      class="squareCraft-flex squareCraft-px-2  squareCraft-items-center squareCraft-justify-between squareCraft-gap-2">
+      <div
+       class="squareCraft-cursor-pointer squareCraft-bg-color-EF7C2F squareCraft-w-full squareCraft-font-light squareCraft-flex squareCraft-items-center squareCraft-text-sm squareCraft-py-1px squareCraft-rounded-6px squareCraft-text-color-white squareCraft-justify-center">
+         Normal</div>
+        <div
+        class="squareCraft-cursor-pointer squareCraft-bg-3f3f3f squareCraft-w-full squareCraft-text-color-white squareCraft-font-light squareCraft-flex squareCraft-text-sm squareCraft-py-1px squareCraft-rounded-6px squareCraft-items-center squareCraft-justify-center">
+        Hover</div>
+        </div>
             <div class="squareCraft-px-4">
                 <div class="squareCraft-h-1px  squareCraft-mt-2 squareCraft-bg-3f3f3f"></div>
             </div>
