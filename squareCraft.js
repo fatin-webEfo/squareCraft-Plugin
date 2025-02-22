@@ -171,6 +171,7 @@
     widgetContainer.classList.add(
         "squareCraft-fixed",
         "squareCraft-universal",
+        "squareCraft-text-white",
         "squareCraft-hidden",
         "squareCraft-z-9999",
         "squareCraft-top-25",
