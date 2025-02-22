@@ -418,8 +418,7 @@ function createWidgetIcon() {
         "squareCraft-top-5", 
         "squareCraft-right-5",
         "squareCraft-w-40px", 
-        "squareCraft-h-40px", 
-        "squareCraft-px-3", 
+        "squareCraft-h-40px",  
         "squareCraft-cursor-pointer",
         "squareCraft-z-9999"
     );
