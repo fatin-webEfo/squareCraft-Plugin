@@ -253,15 +253,15 @@
             </div>
         </div>
     
-        <div class=" squareCraft-mt-2 squareCraft-px-2 squareCraft-universal squareCraft-flex squareCraft-justify-between">
+        <div class=" squareCraft-px-2  squareCraft-flex squareCraft-justify-between">
             <p class="squareCraft-text-sm ">Text</p>
             <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/eye.svg" width="12px" />
         </div>
     
-        <div class="squareCraft-mt-2 squareCraft-universal squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
-            <div id="squareCraft-font-family" class="squareCraft-flex squareCraft-col-span-8 squareCraft-cursor-pointer squareCraft-rounded-6px squareCraft-justify-between squareCraft-universal squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
+        <div class="squareCraft-mt-2  squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
+            <div id="squareCraft-font-family" class="squareCraft-flex squareCraft-col-span-8 squareCraft-cursor-pointer squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center squareCraft-h-full">
                 <div class="squareCraft-bg-494949 squareCraft-w-full squareCraft-px-2  ">
-                    <p class="squareCraft-text-sm squareCraft-font-light">Sf Pro sans</p>
+                    <p class="squareCraft-text-sm squareCraft-universal squareCraft-font-light">Sf Pro sans</p>
                 </div>
                 <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
                     <img class="squareCraft-h-full squareCraft-rotate-180" width="12px"
@@ -269,7 +269,7 @@
     
                 </div>
             </div>
-            <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-universal squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
+            <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center squareCraft-h-full">
             <div class="squareCraft-flex squareCraft-text-color-white squareCraft-items-center squareCraft-w-full">
     
       <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4  
