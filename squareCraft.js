@@ -104,12 +104,12 @@
 
         const data = await response.json();
 
+        console.log("📥 Get method", data);
         if (!data.modifications || data.modifications.length === 0) {
             console.warn("⚠️ No styles found for this page.");
             return;
         }
 
-        console.log("📥 Applying stored modifications...", data);
         data.modifications.forEach(({ pageId: storedPageId, elements }) => {
             if (storedPageId === pageId) {
                 elements.forEach(({ elementId, css }) => {
@@ -221,7 +221,7 @@
         </div>
         <div class="squareCraft-h-1px squareCraft-bg-3f3f3f"></div>
         <div
-            class="squareCraft-flex squareCraft-px-2 squareCraft-mt-2 squareCraft-items-center squareCraft-justify-between">
+            class="squareCraft-flex squareCraft-px-2 squareCraft-universal squareCraft-mt-2 squareCraft-items-center squareCraft-justify-between">
             <div class="squareCraft-flex squareCraft-gap-2 squareCraft-items-center">
                 <div class="toggle-container" id="toggleSwitch">
                     <div class="toggle-bullet"></div>
