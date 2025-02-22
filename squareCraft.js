@@ -586,17 +586,22 @@ setTimeout(() => {
         const widget = document.getElementById("squarecraft-widget-container");
     
         if (block) {
-            if (!event.ctrlKey) { 
-                // Remove selection only if Ctrl is NOT held
-                document.querySelectorAll(".squareCraft-outline").forEach(el => el.classList.remove("squareCraft-outline"));
-            }
+            document.querySelectorAll(".squareCraft-outline").forEach(el => {
+                el.classList.remove("squareCraft-outline");
+                el.style.outline = ""; 
+            });
+    
             block.classList.add("squareCraft-outline");
+            block.style.outline = "2px dashed #EF7C2F"; 
             selectedElement = block;
-            widget.classList.remove("squareCraft-hidden"); // Show widget
+    
+            widget.classList.remove("squareCraft-hidden");
+    
         } else if (!widget.contains(event.target)) {
-            widget.classList.add("squareCraft-hidden"); // Hide widget when clicking outside
+            widget.classList.add("squareCraft-hidden");
         }
     });
+    
     ;
     
 
