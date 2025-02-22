@@ -184,7 +184,7 @@
     <div class="squareCraft-flex squareCraft-universal squareCraft-items-center squareCraft-justify-between">
         <img class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
         <div
-            class="squareCraft-flex squareCraft-items-center squareCraft-rounded-15px squareCraft-gap-2 squareCraft-bg-color-3d3d3d squareCraft-px-2">
+            class="squareCraft-flex squareCraft-items-center squareCraft-rounded-15px squareCraft-gap-2 squareCraft-bg-color-3d3d3d squareCraft-py-1px squareCraft-px-2">
             <p class="squareCraft-text-sm squareCraft-p-0 squareCraft-universal">Auto Save</p>
             <img src="https://i.ibb.co.com/B2NjHwSq/redo-rectangle.png" width="16px" />
         </div>
