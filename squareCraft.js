@@ -170,9 +170,9 @@
     widgetContainer.id = "squarecraft-widget-container";
     widgetContainer.classList.add(
         "squareCraft-fixed",
-        "squareCraft-p-0-m-0",
-        "squareCraft-text-color-white",
+        "squareCraft-text-color-white", 
         "squareCraft-hidden",
+        "squareCraft-universal",
         "squareCraft-z-9999",
         "squareCraft-top-25",
         "squareCraft-left-25"
@@ -180,12 +180,12 @@
 
     widgetContainer.innerHTML = `
       <div
-    class="squareCraft-p-4 squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
-    <div class="squareCraft-flex squareCraft-items-center squareCraft-justify-between">
-        <img class="squareCraft-cursor-grabbing" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
+    class="squareCraft-p-4 squareCraft-universal squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
+    <div class="squareCraft-flex squareCraft-universal squareCraft-items-center squareCraft-justify-between">
+        <img class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
         <div
-            class="squareCraft-flex squareCraft-items-center  squareCraft-rounded-15px squareCraft-gap-2 squareCraft-bg-color-3d3d3d squareCraft-px-2">
-            <p class="squareCraft-text-sm squareCraft-p-0">Auto Save</p>
+            class="squareCraft-flex squareCraft-items-center squareCraft-universal squareCraft-rounded-15px squareCraft-gap-2 squareCraft-bg-color-3d3d3d squareCraft-px-2">
+            <p class="squareCraft-text-sm squareCraft-p-0 squareCraft-universal">Auto Save</p>
             <img src="https://i.ibb.co.com/B2NjHwSq/redo-rectangle.png" width="16px" />
         </div>
     
