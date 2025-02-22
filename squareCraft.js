@@ -14,8 +14,8 @@
   if (token) {
       console.log("🔑 Token received:", token);
       localStorage.setItem("squareCraft_auth_token", token);
-      document.cookie = `squareCraft_auth_token=${token}; path=.squarespace.com;`;
-  }
+      document.cookie = `squareCraft_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
+    }
 
   if (squareCraft_u_id) {
       console.log("👤 User ID received:", squareCraft_u_id);
@@ -452,9 +452,17 @@ function createWidgetIcon() {
 
     document.addEventListener("mousemove", (event) => {
         if (!isDragging) return;
-        widget.style.left = `${event.clientX - offsetX}px`;
-        widget.style.top = `${event.clientY - offsetY}px`;
+        let newX = event.clientX - offsetX;
+        let newY = event.clientY - offsetY;
+    
+        // Prevent dragging out of viewport
+        newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
+        newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
+    
+        widget.style.left = `${newX}px`;
+        widget.style.top = `${newY}px`;
     });
+    
 
     document.addEventListener("mouseup", () => {
         isDragging = false;
@@ -482,6 +490,7 @@ window.addEventListener("load", () => {
         return [];
     }
 }
+
 
 async function fontfamilies() {
   let currentPage = 1;
