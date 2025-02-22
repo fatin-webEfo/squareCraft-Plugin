@@ -167,11 +167,13 @@
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
-    widgetContainer.style.position = "fixed";
-    widgetContainer.style.top = "100px";
-    widgetContainer.style.left = "100px";
-    widgetContainer.style.zIndex = "9999";
-    widgetContainer.style.display = "none";
+    widgetContainer.classList.add(
+        "squareCraft-fixed",
+        "squareCraft-hidden",
+        "squareCraft-z-9999",
+        "squareCraft-top-25",
+        "squareCraft-left-25"
+    );
 
     widgetContainer.innerHTML = `
       <div
@@ -403,20 +405,25 @@
 
   
   }
-  function createWidgetIcon() {
+
+function createWidgetIcon() {
     const widgetIcon = document.createElement("img");
     widgetIcon.id = "squarecraft-widget-icon";
     widgetIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Icon URL
-    widgetIcon.style.position = "fixed";
-    widgetIcon.style.borderRadius = "50px";
-    widgetIcon.style.top = "20px";
-    widgetIcon.style.right = "20px";
-    widgetIcon.style.width = "40px";
-    widgetIcon.style.padding = "20px";
-    widgetIcon.style.background = "black";
-    widgetIcon.style.height = "40px";
-    widgetIcon.style.cursor = "pointer";
-    widgetIcon.style.zIndex = "9999";
+
+    // Apply custom SquareCraft class names
+    widgetIcon.classList.add(
+        "squareCraft-fixed", 
+        "squareCraft-rounded-full", 
+        "squareCraft-top-5", 
+        "squareCraft-right-5",
+        "squareCraft-w-40px", 
+        "squareCraft-h-40px", 
+        "squareCraft-px-3",
+        "squareCraft-bg-color-3d3d3d", 
+        "squareCraft-cursor-pointer",
+        "squareCraft-z-9999"
+    );
 
     widgetIcon.addEventListener("click", function () {
         alert("Click on an element to open the widget.");
@@ -424,6 +431,7 @@
 
     document.body.appendChild(widgetIcon);
 }
+
   setInterval(makeWidgetDraggable, 1000);
 
   function makeWidgetDraggable() {
@@ -555,16 +563,20 @@ setTimeout(() => {
 
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
-      let block = event.target.closest('[id^="block-"]');
-      if (!block) return;
-
-      if (selectedElement) selectedElement.style.outline = "";
-      selectedElement = block;
-      selectedElement.style.outline = "2px dashed #EF7C2F";
-
-      const widget = document.getElementById("squarecraft-widget-container");
-      widget.style.display = "block"; 
-  });
+        let block = event.target.closest('[id^="block-"]');
+        const widget = document.getElementById("squarecraft-widget-container");
+    
+        if (block) {
+            if (selectedElement) selectedElement.classList.remove("squareCraft-outline");
+            selectedElement = block;
+            selectedElement.classList.add("squareCraft-outline");
+    
+            widget.classList.remove("squareCraft-hidden"); // ✅ Show widget
+        } else if (!widget.contains(event.target)) {
+            widget.classList.add("squareCraft-hidden"); // ✅ Hide widget when clicking outside
+        }
+    });
+    
 
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");

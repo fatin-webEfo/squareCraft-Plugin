@@ -850,3 +850,47 @@ font-size: 12px !important;
 .squareCraft-dropdown-item:hover {
   background-color: #EF7C2F !important;
 }
+
+.squareCraft-fixed {
+  position: fixed !important;
+}
+.squareCraft-rounded-full {
+  border-radius: 50% !important;
+}
+.squareCraft-top-5 {
+  top: 20px !important;
+}
+.squareCraft-right-5 {
+  right: 20px !important;
+}
+.squareCraft-w-40px {
+  width: 40px !important;
+}
+.squareCraft-h-40px {
+  height: 40px !important;
+}
+.squareCraft-px-3 {
+  padding: 20px !important;
+}
+.squareCraft-bg-color-3d3d3d {
+  background: black !important;
+}
+.squareCraft-cursor-pointer {
+  cursor: pointer !important;
+}
+.squareCraft-z-9999 {
+  z-index: 9999 !important;
+}
+
+.squareCraft-hidden {
+  display: none !important;
+}
+.squareCraft-z-9999 {
+  z-index: 9999 !important;
+}
+.squareCraft-top-25 {
+  top: 100px !important;
+}
+.squareCraft-left-25 {
+  left: 100px !important;
+}
