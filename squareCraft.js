@@ -197,7 +197,7 @@
         class="squareCraft-mt-6  squareCraft-border-t squareCraft-border-dashed squareCraft-border-color-494949  squareCraft-w-full">
     </div>
     
-    <div class="squareCraft-mt-6 squareCraft-flex  squareCraft-items-center ">
+    <div class="squareCraft-mt-6 squareCraft-flex  squareCraft-items-center squareCraft-universal">
         <p class="squareCraft-text-sm squareCraft-px-4 squareCraft-cursor-pointer tabHeader ">Design</p>
         <p class="squareCraft-text-sm squareCraft-px-4 squareCraft-cursor-pointer tabHeader">Advanced</p>
         <p class="squareCraft-text-sm squareCraft-px-4 squareCraft-cursor-pointer tabHeader">Presets</p>
