@@ -272,10 +272,9 @@
             <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
             <div class="squareCraft-flex squareCraft-text-color-white squareCraft-items-center squareCraft-w-full">
     
-      <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4 squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center ">
+      <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4 squareCraft-rounded-6px squareCraft-border quareCraft-universal squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center ">
     
-       <div class="squareCraft-font-size-container squareCraft-flex squareCraft-justify-between squareCraft-items-center squareCraft-flex squareCraft-items-center squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d  squareCraft-rounded-6px 
-    squareCraft-h-full">
+       <div class="squareCraft-font-size-container squareCraft-flex squareCraft-justify-between squareCraft-items-center squareCraft-flex squareCraft-items-center squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d  squareCraft-rounded-6px ">
     
         <input type="text" id="squareCraftFontSizeInput" value="16" 
             class="squareCraft-font-size-input squareCraft-font-light squareCraft-text-sm squareCraft-text-color-white 
