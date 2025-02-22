@@ -162,6 +162,8 @@
     }
   }
 
+
+
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
@@ -169,6 +171,7 @@
     widgetContainer.style.top = "100px";
     widgetContainer.style.left = "100px";
     widgetContainer.style.zIndex = "9999";
+    widgetContainer.style.display = "none";
 
     widgetContainer.innerHTML = `
       <div
@@ -282,8 +285,8 @@
         px
     </div>
     
-       <div  class="squareCraft-bg-3f3f3f  squareCraft-roudned-r-md">
-           <img id="squareCraftFontSizeDropdown" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" class="squareCraft-mr-1 squareCraft-mb-1 squareCraft-ml-1 squareCraft-bg-3f3f3f squareCraft-rotate-180 squareCraft-px-1 squareCraft-mx-auto squareCraft-cursor-pointer" width="18px">
+       <div  class="squareCraft-bg-color-2c2c2c  squareCraft-roudned-r-md">
+           <img id="squareCraftFontSizeDropdown" src="https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg" class="squareCraft-mr-1 squareCraft-mb-1 squareCraft-ml-1 squareCraft-bg-color-2c2c2c squareCraft-rotate-180 squareCraft-px-1 squareCraft-mx-auto squareCraft-cursor-pointer" width="18px">
        </div>
     </div>
     
@@ -341,13 +344,15 @@
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (1).svg"
                             class="squareCraft-cursor-pointer alignment-icon   squareCraft-mx-auto"  alt="">
                             <div class="squareCraft-v-line"></div>
-                        <img id="squareCraftTextAlignCenter" data-align="center"
-                            src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg"
-                            class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
-                             <div class="squareCraft-v-line"></div>
-                        <img id="squareCraftTextAlignRight" data-align="right"
+                            <img id="squareCraftTextAlignRight" data-align="right"
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (3).svg"
                             class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
+                       
+                             <div class="squareCraft-v-line"></div>
+                        
+                             <img id="squareCraftTextAlignCenter" data-align="center"
+                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (2).svg"
+                             class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
                              <div class="squareCraft-v-line"></div>
                         <img id="squareCraftTextAlignJustify" data-align="justify"
                             src="https://fatin-webefo.github.io/squareCraft-Plugin/public/alignment (4).svg"
@@ -355,9 +360,6 @@
                     </div>
 
             </div>
-
-
-
 
 
              <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-3 
@@ -396,9 +398,160 @@
     </div>
     `;
     document.body.appendChild(widgetContainer);
+    makeWidgetDraggable();
+    setInterval(makeWidgetDraggable, 1000);
 
   
   }
+  function createWidgetIcon() {
+    const widgetIcon = document.createElement("img");
+    widgetIcon.id = "squarecraft-widget-icon";
+    widgetIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Icon URL
+    widgetIcon.style.position = "fixed";
+    widgetIcon.style.borderRadius = "50px";
+    widgetIcon.style.top = "20px";
+    widgetIcon.style.right = "20px";
+    widgetIcon.style.width = "40px";
+    widgetIcon.style.padding = "20px";
+    widgetIcon.style.background = "black";
+    widgetIcon.style.height = "40px";
+    widgetIcon.style.cursor = "pointer";
+    widgetIcon.style.zIndex = "9999";
+
+    widgetIcon.addEventListener("click", function () {
+        alert("Click on an element to open the widget.");
+    });
+
+    document.body.appendChild(widgetIcon);
+}
+  setInterval(makeWidgetDraggable, 1000);
+
+  function makeWidgetDraggable() {
+    const widget = document.getElementById("squarecraft-widget-container");
+    if (!widget || widget.dataset.draggable === "true") return; // Prevent multiple initializations
+
+    widget.dataset.draggable = "true"; // Mark as initialized
+
+    let offsetX, offsetY, isDragging = false;
+
+    widget.addEventListener("mousedown", (event) => {
+        isDragging = true;
+        offsetX = event.clientX - widget.getBoundingClientRect().left;
+        offsetY = event.clientY - widget.getBoundingClientRect().top;
+        widget.style.transition = "none";
+    });
+
+    document.addEventListener("mousemove", (event) => {
+        if (!isDragging) return;
+        widget.style.left = `${event.clientX - offsetX}px`;
+        widget.style.top = `${event.clientY - offsetY}px`;
+    });
+
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+        widget.style.transition = "0.2s ease-out";
+    });
+
+    console.log("✅ Dragging enabled.");
+}
+
+window.addEventListener("load", () => {
+    setTimeout(makeWidgetDraggable, 500); // Wait for the widget to load
+    createWidgetIcon();
+
+});
+
+
+  async function loadFontsWithPagination(page = 1, perPage = 20) {
+    try {
+        const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
+        const data = await response.json();
+        return data.items.slice((page - 1) * perPage, page * perPage); // Paginate fonts
+    } catch (error) {
+        console.error("❌ Error fetching Google Fonts:", error);
+        return [];
+    }
+}
+
+async function fontfamilies() {
+  let currentPage = 1;
+  const perPage = 20;
+  const fontDropdown = document.getElementById("squareCraft-font-family");
+
+  // Ensure the dropdown container is created
+  let fontList = document.getElementById("squareCraft-font-list");
+  if (!fontList) {
+      fontList = document.createElement("div");
+      fontList.id = "squareCraft-font-list";
+      fontList.classList.add("squareCraft-absolute", "squareCraft-top-full", "squareCraft-left-0", 
+          "squareCraft-w-full", "squareCraft-max-h-200px", "squareCraft-overflow-y-auto", 
+          "squareCraft-hidden", "squareCraft-z-1000", "squareCraft-border", "squareCraft-border-585858", 
+          "squareCraft-rounded-6px", "squareCraft-bg-2c2c2c");
+      
+      fontDropdown.appendChild(fontList);
+  }
+
+  async function loadMoreFonts() {
+      const fonts = await loadFontsWithPagination(currentPage, perPage);
+
+      fonts.forEach(font => {
+          const option = document.createElement("div");
+          option.textContent = font.family;
+          option.style.fontFamily = font.family;
+          option.classList.add("squareCraft-py-1px", "squareCraft-text-white", "squareCraft-text-sm", 
+              "squareCraft-cursor-pointer", "squareCraft-px-2");
+
+          option.addEventListener("mouseover", () => option.classList.add("squareCraft-bg-494949"));
+          option.addEventListener("mouseout", () => option.classList.remove("squareCraft-bg-494949"));
+
+          option.addEventListener("click", async () => {
+              document.querySelector("#squareCraft-font-family p").textContent = font.family;
+              document.querySelector("#squareCraft-font-family p").style.fontFamily = font.family;
+              fontList.classList.add("squareCraft-hidden");
+
+              if (selectedElement) {
+                  let css = { "font-family": font.family };
+                  await saveModifications(selectedElement.id, css);
+                  applyStylesToElement(selectedElement.id, css);
+              }
+          });
+
+          fontList.appendChild(option);
+      });
+
+      currentPage++;
+  }
+
+  fontDropdown.addEventListener("click", (event) => {
+      event.stopPropagation(); // Prevents dropdown from closing immediately
+      fontList.classList.toggle("squareCraft-hidden");
+
+      if (fontList.children.length === 0) {
+          loadMoreFonts();
+      }
+  });
+
+  fontList.addEventListener("scroll", async () => {
+      if (fontList.scrollTop + fontList.clientHeight >= fontList.scrollHeight) {
+          await loadMoreFonts();
+      }
+  });
+
+  document.addEventListener("click", (event) => {
+      if (!fontDropdown.contains(event.target)) {
+          fontList.classList.add("squareCraft-hidden");
+      }
+  });
+}
+
+
+setTimeout(() => {
+  fontfamilies();
+}, 1000);
+
+
+
+
 
   function attachEventListeners() {
     document.body.addEventListener("click", (event) => {
@@ -408,10 +561,11 @@
       if (selectedElement) selectedElement.style.outline = "";
       selectedElement = block;
       selectedElement.style.outline = "2px dashed #EF7C2F";
-      console.log(`✅ Selected Element: ${selectedElement.id}`);
-    });
 
-    // Font Size Handling
+      const widget = document.getElementById("squarecraft-widget-container");
+      widget.style.display = "block"; 
+  });
+
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");
     const fontSizeOptions = document.getElementById("squareCraftFontSizeOptions");
@@ -440,7 +594,6 @@
       }
     });
 
-    // Letter-Spacing Handling (NEW FEATURE!)
     const letterSpacingInput = document.getElementById("squareCraftLetterSpacingInput");
     const letterSpacingDropdown = document.getElementById("squareCraftLetterSpacingDropdown");
     const letterSpacingOptions = document.getElementById("squareCraftLetterSpacingOptions");
@@ -488,6 +641,9 @@
 
 
   document.addEventListener("DOMContentLoaded", function () {
+    createWidgetIcon();
+
+    makeWidgetDraggable();
     function insertCustomAdminIcon() {
       const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
 
@@ -516,59 +672,44 @@
   }
 
   insertCustomAdminIcon();
-    function checkURL() {
-        const currentURL = window.location.href;
-        const widgetContainer = document.getElementById("squarecraft-widget-container");
+  function checkURL() {
+    const currentURL = window.location.href;
+    let widgetContainer = document.getElementById("squarecraft-widget-container");
 
-        console.log("Current URL:", currentURL);
+    console.log("Current URL:", currentURL);
 
-        if (currentURL.includes("/#")) {
-            console.log("✅ Widget is VISIBLE on the Code Injection page.");
-            if (widgetContainer) {
-                widgetContainer.style.display = "block"; // Show Widget
-            } else {
-                createWidget(); // Ensure widget is created if not already
-                setTimeout(makeWidgetDraggable, 500); // Ensure it's draggable
-            }
+    if (currentURL.includes("/#")) {
+        console.log("✅ Widget is VISIBLE on the Code Injection page.");
+        
+        if (!widgetContainer) {
+            createWidget(); 
+            setTimeout(() => {
+                widgetContainer = document.getElementById("squarecraft-widget-container");
+                if (widgetContainer) makeWidgetDraggable(); 
+            }, 500); 
         } else {
-            console.log("❌ Widget is HIDDEN on other pages.");
-            if (widgetContainer) widgetContainer.style.display = "none"; // Hide Widget
+            widgetContainer.style.display = "block"; 
+            makeWidgetDraggable(); 
         }
+
+    } else {
+        console.log("❌ Widget is HIDDEN on other pages.");
+        if (widgetContainer) widgetContainer.style.display = "none"; 
     }
+}
 
-    function makeWidgetDraggable() {
-        const widget = document.getElementById("squarecraft-widget-container");
-        if (!widget) return;
 
-        let offsetX, offsetY, isDragging = false;
-
-        widget.addEventListener("mousedown", (event) => {
-            isDragging = true;
-            offsetX = event.clientX - widget.getBoundingClientRect().left;
-            offsetY = event.clientY - widget.getBoundingClientRect().top;
-            widget.style.transition = "none"; // Disable transition for smooth dragging
-        });
-
-        document.addEventListener("mousemove", (event) => {
-            if (!isDragging) return;
-            const x = event.clientX - offsetX;
-            const y = event.clientY - offsetY;
-            widget.style.left = `${x}px`;
-            widget.style.top = `${y}px`;
-        });
-
-        document.addEventListener("mouseup", () => {
-            isDragging = false;
-            widget.style.transition = "0.2s ease-out"; // Smooth release
-        });
-    }
+  
 
     checkURL();
     setInterval(checkURL, 1000);
+    setInterval(makeWidgetDraggable, 1000);
+
     createWidget();
+    makeWidgetDraggable();
     attachEventListeners();
     fetchModifications();
-    setTimeout(makeWidgetDraggable, 500); // Ensure dragging works after widget is created
+    makeWidgetDraggable();
 
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
