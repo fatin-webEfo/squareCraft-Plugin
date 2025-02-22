@@ -60,13 +60,9 @@
   }
   .squareCraft-grid{
     display: grid !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
   }
   .squareCraft-grid-cols-12{
     grid-template-columns: repeat(12, 1fr);
-    margin: 0 auto;
-    padding: 0 !important;
   }
   .squareCraft-col-span-3{
     grid-column: span 3 / span 3;
