@@ -71,11 +71,12 @@
     styleTag.id = `style-${elementId}`;
     document.head.appendChild(styleTag);
 
-    let cssText = `#${elementId}, #${elementId} * { `;
+    let cssText = `#${elementId} { `;
     Object.keys(css).forEach(prop => {
-      cssText += `${prop}: ${css[prop]} !important; `;
+        cssText += `${prop}: ${css[prop]} !important; `;
     });
     cssText += "}";
+    
 
     if (css["border-radius"]) {
       cssText += `#${elementId} { overflow: hidden !important; }`;
