@@ -180,7 +180,7 @@
 
     widgetContainer.innerHTML = `
       <div
-    class="squareCraft-p-4 squareCraft-universal squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
+    class="squareCraft-p-4  squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
     <div class="squareCraft-flex squareCraft-universal squareCraft-items-center squareCraft-justify-between">
         <img class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
         <div
