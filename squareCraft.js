@@ -170,7 +170,7 @@
     widgetContainer.id = "squarecraft-widget-container";
     widgetContainer.classList.add(
         "squareCraft-fixed",
-        "squareCraft-universal",
+        ".squareCraft-p-0-m-0",
         "squareCraft-text-color-white",
         "squareCraft-hidden",
         "squareCraft-z-9999",

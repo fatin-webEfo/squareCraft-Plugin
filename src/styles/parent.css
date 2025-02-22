@@ -885,8 +885,7 @@ font-size: 12px !important;
   left: 100px !important;
 }
 
-.squareCraft-universal{
-  box-sizing: border-box !important;
+.squareCraft-p-0-m-0{
   margin: 0 !important;
   padding: 0 !important;
 }
