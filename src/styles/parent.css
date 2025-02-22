@@ -2,8 +2,9 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-
-
+.squareCraft-poppins{
+  font-family: 'Poppins', sans-serif !important;
+}
 .squareCraft-margin-0{
     margin: 0 !important;
 }
@@ -118,7 +119,7 @@
   }
   
   .squareCraft-bg-color-3d3d3d {
-    background-color: #b9b5b5 !important;
+    background-color: #3d3d3d !important;
   }
 
   .squareCraft-border-3d3d3d {
@@ -859,9 +860,7 @@ font-size: 12px !important;
 .squareCraft-px-3 {
   padding: 20px !important;
 }
-.squareCraft-bg-color-3d3d3d {
-  background: black !important;
-}
+
 .squareCraft-cursor-pointer {
   cursor: pointer !important;
 }
