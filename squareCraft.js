@@ -254,8 +254,8 @@
         </div>
     
         <div class=" squareCraft-mt-2 squareCraft-px-2 squareCraft-universal squareCraft-flex squareCraft-justify-between">
-            <p class="squareCraft-text-sm ">Text</p>
-            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/eye.svg" width="12px" />
+            <p class="squareCraft-text-sm squareCraft-universal">Text</p>
+            <img src="https://fatin-webefo.github.io/squareCraft-Plugin/public/eye.svg" class="squareCraft-universal" width="12px" />
         </div>
     
         <div class="squareCraft-mt-2 squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
