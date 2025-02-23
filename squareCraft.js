@@ -33,7 +33,7 @@
   const link = document.createElement("link");
   link.rel = "stylesheet";  
   link.type = "text/css";
-  link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
+  link.href = "./src/styles/parent.css";
   document.head.appendChild(link);
 
   const fontSizes = [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 , 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60];
@@ -172,6 +172,7 @@
         "squareCraft-fixed",
         "squareCraft-text-color-white", 
         "squareCraft-hidden",
+        "squareCraft-w-16",
         "squareCraft-universal",
         "squareCraft-z-9999",
         "squareCraft-top-25",
@@ -412,17 +413,14 @@ class="squareCraft-flex squareCraft-universal squareCraft-col-span-8 squareCraft
 function createWidgetIcon() {
     const widgetIcon = document.createElement("img");
     widgetIcon.id = "squarecraft-widget-icon";
-    widgetIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Icon URL
+    widgetIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Icon URL
 
-    // Apply custom SquareCraft class names
     widgetIcon.classList.add(
         "squareCraft-fixed", 
         "squareCraft-rounded-full", 
         "squareCraft-top-5", 
       
-        "squareCraft-right-5",
-        "squareCraft-w-40px", 
-        "squareCraft-h-40px",  
+        "squareCraft-right-5", 
         "squareCraft-cursor-pointer",
         "squareCraft-z-9999"
     );
