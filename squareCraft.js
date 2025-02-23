@@ -382,6 +382,7 @@ function createWidgetIcon() {
         "squareCraft-fixed", 
         "squareCraft-top-5", 
         "squareCraft-rounded-md",
+        "squareCraft-px-2",
       "squareCraft-bg-color-2c2c2c",
         "squareCraft-right-5",  
         "squareCraft-cursor-pointer",
