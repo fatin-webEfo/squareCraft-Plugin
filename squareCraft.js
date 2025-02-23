@@ -378,7 +378,7 @@
 function createWidgetIcon() {
     const widgetIcon = document.createElement("img");
     widgetIcon.id = "squarecraft-widget-icon";
-    widgetIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Icon URL
+    widgetIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Icon URL
 
     widgetIcon.classList.add(
         "squareCraft-fixed", 
