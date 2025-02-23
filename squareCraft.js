@@ -383,6 +383,8 @@ function createWidgetIcon() {
         "squareCraft-top-5", 
         "squareCraft-rounded-md",
         "squareCraft-px-2",
+        "squareCraft-w-16",
+        'squareCraft-py-1',
       "squareCraft-bg-color-2c2c2c",
         "squareCraft-right-5",  
         "squareCraft-cursor-pointer",
@@ -406,7 +408,6 @@ function createWidgetIcon() {
     
     let offsetX, offsetY, isDragging = false;
 
-    // When user clicks the drag handle (image), start dragging
     dragHandle.addEventListener("mousedown", (event) => {
         event.preventDefault(); // Prevent text selection
         isDragging = true;
