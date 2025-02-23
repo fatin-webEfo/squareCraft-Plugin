@@ -401,8 +401,9 @@ function createWidgetIcon() {
   setInterval(makeWidgetDraggable, 1000);
 
   function makeElementDraggable(element) {
-    let offsetX, offsetY;
+    let offsetX, offsetY, isDragging = false;
 
+    // Restore last saved position
     let lastX = localStorage.getItem(`${element.id}_X`);
     let lastY = localStorage.getItem(`${element.id}_Y`);
 
@@ -410,14 +411,15 @@ function createWidgetIcon() {
         element.style.left = `${lastX}px`;
         element.style.top = `${lastY}px`;
     } else {
-        element.style.left = "20px";
-        element.style.top = "20px";
+        element.style.left = "50px"; // Default starting position
+        element.style.top = "50px";
     }
 
     element.style.position = "absolute";
 
     element.addEventListener("mousedown", (event) => {
         event.preventDefault();
+        isDragging = true;
         offsetX = event.clientX - element.getBoundingClientRect().left;
         offsetY = event.clientY - element.getBoundingClientRect().top;
         element.style.transition = "none";
@@ -425,14 +427,18 @@ function createWidgetIcon() {
         element.style.zIndex = "99999";
 
         function moveAt(event) {
+            if (!isDragging) return;
+
             let newX = event.clientX - offsetX;
             let newY = event.clientY - offsetY;
 
+            // Allow dragging outside the window
             element.style.left = `${newX}px`;
             element.style.top = `${newY}px`;
         }
 
         function stopDrag() {
+            isDragging = false;
             document.removeEventListener("mousemove", moveAt);
             document.removeEventListener("mouseup", stopDrag);
 
@@ -446,6 +452,30 @@ function createWidgetIcon() {
         document.addEventListener("mouseup", stopDrag);
     });
 }
+
+// Apply draggable functionality to the widget and icon
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        let widget = document.getElementById("squarecraft-widget-container");
+        let widgetIcon = document.getElementById("squarecraft-widget-icon");
+
+        if (widget) makeElementDraggable(widget);
+        if (widgetIcon) makeElementDraggable(widgetIcon);
+    }, 500);
+});
+
+
+// Apply draggable functionality to the widget and icon
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        let widget = document.getElementById("squarecraft-widget-container");
+        let widgetIcon = document.getElementById("squarecraft-widget-icon");
+
+        if (widget) makeElementDraggable(widget);
+        if (widgetIcon) makeElementDraggable(widgetIcon);
+    }, 500);
+});
+
 
 window.addEventListener("load", () => {
     setTimeout(() => {
