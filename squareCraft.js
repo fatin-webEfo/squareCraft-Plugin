@@ -380,6 +380,8 @@
 
     widgetIcon.classList.add(
         "squareCraft-fixed", 
+        "squareCraft-rounded-full",
+        "squareCraft-px-1_5",
         "squareCraft-top-5", 
         "squareCraft-bg-color-2c2c2c",
         "squareCraft-right-5",  
