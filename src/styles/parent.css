@@ -47,7 +47,7 @@
     all: unset;
   }
   .squareCraft-h-9{
-    height: 2.10rem !important; /* 36px */
+    height: 1.8rem !important; /* 36px */
   }
   .squareCraft-h-44{
     height: 12rem !important; 
@@ -722,7 +722,7 @@ font-size: 12px !important;
   padding: 4px 8px !important;
   font-size: 12px !important;
   text-align: center !important;
-  width: 38px !important;
+  width: 35px !important;
   border-right: #4d4d4d solid 1px !important;
 }
 .squareCraft-Letter-spacing-input{
@@ -733,7 +733,7 @@ font-size: 12px !important;
   padding: 4px 8px !important;
   font-size: 12px !important;
   text-align: center !important;
-  width: 42px !important;
+  width: 28px !important;
   border-right: #4d4d4d solid 1px !important;
 }
 .squareCraft-font-size-input:focus {
@@ -886,3 +886,4 @@ font-size: 12px !important;
   margin: 0 !important;
   padding: 0 !important;
 }
+
