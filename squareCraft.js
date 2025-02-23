@@ -405,43 +405,73 @@
     makeWidgetDraggable(widgetIcon);
 }
 
-function makeWidgetDraggable(element) {
+function makeWidgetSuperDraggable(widget) {
     let offsetX, offsetY, isDragging = false;
 
-    element.addEventListener("mousedown", (event) => {
+    // Load last saved position
+    let lastX = localStorage.getItem("widgetX");
+    let lastY = localStorage.getItem("widgetY");
+
+    if (lastX && lastY) {
+        widget.style.left = `${lastX}px`;
+        widget.style.top = `${lastY}px`;
+    } else {
+        widget.style.left = "20px"; // Default position
+        widget.style.top = "20px";
+    }
+
+    // Make sure it's positioned absolutely
+    widget.style.position = "absolute";
+
+    // Start dragging
+    widget.addEventListener("mousedown", (event) => {
+        if (!event.target.classList.contains("squareCraft-cursor-grabbing")) return;
+
         event.preventDefault();
         isDragging = true;
-        offsetX = event.clientX - element.getBoundingClientRect().left;
-        offsetY = event.clientY - element.getBoundingClientRect().top;
-        element.style.transition = "none";
-        element.style.userSelect = "none";
+        offsetX = event.clientX - widget.getBoundingClientRect().left;
+        offsetY = event.clientY - widget.getBoundingClientRect().top;
+
+        widget.style.transition = "none";
+        widget.style.userSelect = "none";
+
+        // Move widget to the top layer to prevent other elements interfering
+        widget.style.zIndex = "999999";
     });
 
+    // Move the widget beyond the screen
     document.addEventListener("mousemove", (event) => {
         if (!isDragging) return;
 
         let newX = event.clientX - offsetX;
         let newY = event.clientY - offsetY;
 
-        // Ensure it doesn't go out of bounds
-        newX = Math.max(10, Math.min(window.innerWidth - element.offsetWidth - 10, newX));
-        newY = Math.max(10, Math.min(window.innerHeight - element.offsetHeight - 10, newY));
-
-        element.style.left = `${newX}px`;
-        element.style.top = `${newY}px`;
+        // No restrictions! Widget can go out of bounds
+        widget.style.left = `${newX}px`;
+        widget.style.top = `${newY}px`;
     });
 
+    // Stop dragging
     document.addEventListener("mouseup", () => {
         if (isDragging) {
             isDragging = false;
-            element.style.transition = "0.2s ease-out";
+            widget.style.transition = "0.2s ease-out";
 
             // Save the last position in localStorage
-            localStorage.setItem("widgetIconX", parseInt(element.style.left, 10));
-            localStorage.setItem("widgetIconY", parseInt(element.style.top, 10));
+            localStorage.setItem("widgetX", parseInt(widget.style.left, 10));
+            localStorage.setItem("widgetY", parseInt(widget.style.top, 10));
         }
     });
 }
+
+// Ensure the widget becomes super draggable
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        let widget = document.getElementById("squarecraft-widget-container");
+        if (widget) makeWidgetSuperDraggable(widget);
+    }, 500);
+});
+
 
 window.addEventListener("load", () => {
     createWidgetIcon();
