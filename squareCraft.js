@@ -400,7 +400,7 @@ function createWidgetIcon() {
 
   setInterval(makeWidgetDraggable, 1000);
 
-  function makeElementDraggable(element) {
+  function makeWidgetDraggable(element) {
     let offsetX, offsetY, isDragging = false;
 
     // Restore last saved position
@@ -459,8 +459,8 @@ window.addEventListener("load", () => {
         let widget = document.getElementById("squarecraft-widget-container");
         let widgetIcon = document.getElementById("squarecraft-widget-icon");
 
-        if (widget) makeElementDraggable(widget);
-        if (widgetIcon) makeElementDraggable(widgetIcon);
+        if (widget) makeWidgetDraggable(widget);
+        if (widgetIcon) makeWidgetDraggable(widgetIcon);
     }, 500);
 });
 
@@ -471,8 +471,8 @@ window.addEventListener("load", () => {
         let widget = document.getElementById("squarecraft-widget-container");
         let widgetIcon = document.getElementById("squarecraft-widget-icon");
 
-        if (widget) makeElementDraggable(widget);
-        if (widgetIcon) makeElementDraggable(widgetIcon);
+        if (widget) makeWidgetDraggable(widget);
+        if (widgetIcon) makeWidgetDraggable(widgetIcon);
     }, 500);
 });
 
@@ -482,8 +482,8 @@ window.addEventListener("load", () => {
         let widget = document.getElementById("squarecraft-widget-container");
         let widgetIcon = document.getElementById("squarecraft-widget-icon");
 
-        if (widget) makeElementDraggable(widget);
-        if (widgetIcon) makeElementDraggable(widgetIcon);
+        if (widget) makeWidgetDraggable(widget);
+        if (widgetIcon) makeWidgetDraggable(widgetIcon);
     }, 500);
 });
 
@@ -493,8 +493,8 @@ window.addEventListener("load", () => {
         let widget = document.getElementById("squarecraft-widget-container");
         let widgetIcon = document.getElementById("squarecraft-widget-icon");
 
-        if (widget) makeElementDraggable(widget);
-        if (widgetIcon) makeElementDraggable(widgetIcon);
+        if (widget) makeWidgetDraggable(widget);
+        if (widgetIcon) makeWidgetDraggable(widgetIcon);
     }, 500);
 });
 
