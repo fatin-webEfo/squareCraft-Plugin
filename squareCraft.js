@@ -382,9 +382,8 @@ function createWidgetIcon() {
 
     widgetIcon.classList.add(
         "squareCraft-fixed", 
-        "squareCraft-rounded-full", 
         "squareCraft-top-5", 
-      
+      "squareCraft-bg-color-2c2c2c",
         "squareCraft-right-5",  
         "squareCraft-cursor-pointer",
         "squareCraft-z-9999"
