@@ -402,44 +402,73 @@ function createWidgetIcon() {
 
   function makeWidgetDraggable() {
     const widget = document.getElementById("squarecraft-widget-container");
-    const dragHandle = document.querySelector(".squareCraft-cursor-grabbing"); // Select your image
+    const widgetIcon = document.getElementById("squarecraft-widget-icon");
 
-    if (!widget || !dragHandle) return;
-    
-    let offsetX, offsetY, isDragging = false;
+    if (!widget && !widgetIcon) return;
 
-    dragHandle.addEventListener("mousedown", (event) => {
-        event.preventDefault(); // Prevent text selection
-        isDragging = true;
-        offsetX = event.clientX - widget.getBoundingClientRect().left;
-        offsetY = event.clientY - widget.getBoundingClientRect().top;
-        widget.style.transition = "none";
-        widget.style.userSelect = "none"; // Prevent text selection while dragging
-    });
+    function enableDragging(element) {
+        let offsetX, offsetY, isDragging = false;
 
-    // Move the widget as user moves mouse
-    document.addEventListener("mousemove", (event) => {
-        if (!isDragging) return;
-        
-        let newX = event.clientX - offsetX;
-        let newY = event.clientY - offsetY;
-        
-        // Prevent dragging outside the viewport
-        newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
-        newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
+        element.addEventListener("mousedown", (event) => {
+            event.preventDefault();
+            isDragging = true;
+            offsetX = event.clientX - element.getBoundingClientRect().left;
+            offsetY = event.clientY - element.getBoundingClientRect().top;
+            element.style.transition = "none";
+            element.style.userSelect = "none";
+        });
 
-        widget.style.left = `${newX}px`;
-        widget.style.top = `${newY}px`;
-    });
+        function moveAt(event) {
+            if (!isDragging) return;
 
-    // Stop dragging when mouse is released
-    document.addEventListener("mouseup", () => {
-        isDragging = false;
-        widget.style.transition = "0.2s ease-out";
-    });
+            let newX = event.clientX - offsetX;
+            let newY = event.clientY - offsetY;
 
-    console.log("✅ Dragging enabled.");
+            // Allow full movement inside window bounds
+            newX = Math.max(0, Math.min(window.innerWidth - element.offsetWidth, newX));
+            newY = Math.max(0, Math.min(window.innerHeight - element.offsetHeight, newY));
+
+            element.style.left = `${newX}px`;
+            element.style.top = `${newY}px`;
+        }
+
+        function stopDragging() {
+            isDragging = false;
+            document.removeEventListener("mousemove", moveAt);
+            document.removeEventListener("mouseup", stopDragging);
+            
+            // Save position to localStorage
+            localStorage.setItem(`${element.id}_X`, element.style.left);
+            localStorage.setItem(`${element.id}_Y`, element.style.top);
+        }
+
+        document.addEventListener("mousemove", moveAt);
+        document.addEventListener("mouseup", stopDragging);
+
+        // Restore last position if available
+        let lastX = localStorage.getItem(`${element.id}_X`);
+        let lastY = localStorage.getItem(`${element.id}_Y`);
+        if (lastX && lastY) {
+            element.style.left = lastX;
+            element.style.top = lastY;
+        } else {
+            element.style.left = "50px"; // Default position
+            element.style.top = "50px";
+        }
+
+        element.style.position = "absolute";
+    }
+
+    if (widget) enableDragging(widget);
+    if (widgetIcon) enableDragging(widgetIcon);
+
+    console.log("✅ Dragging enabled on widget and icon.");
 }
+
+
+// Ensure it's defined before calling it
+makeWidgetDraggable();
+
 
 // Run after the widget is created
 setTimeout(makeWidgetDraggable, 1000);
