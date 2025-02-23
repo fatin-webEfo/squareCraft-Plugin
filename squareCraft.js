@@ -373,110 +373,70 @@
     setInterval(makeWidgetDraggable, 1000);
   }
 
-  function createWidgetIcon() {
+function createWidgetIcon() {
     const widgetIcon = document.createElement("img");
     widgetIcon.id = "squarecraft-widget-icon";
     widgetIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Icon URL
 
     widgetIcon.classList.add(
         "squareCraft-fixed", 
-        "squareCraft-rounded-full",
-        "squareCraft-px-1_5",
         "squareCraft-top-5", 
-        "squareCraft-bg-color-2c2c2c",
+      "squareCraft-bg-color-2c2c2c",
         "squareCraft-right-5",  
         "squareCraft-cursor-pointer",
         "squareCraft-z-9999"
     );
 
-    // Load last saved position
-    let lastX = localStorage.getItem("widgetIconX");
-    let lastY = localStorage.getItem("widgetIconY");
-
-    if (lastX && lastY) {
-        widgetIcon.style.left = `${lastX}px`;
-        widgetIcon.style.top = `${lastY}px`;
-    } else {
-        widgetIcon.style.left = "20px"; // Default position
-        widgetIcon.style.top = "20px";
-    }
+    widgetIcon.addEventListener("click", function () {
+        alert("Click on an element to open the widget.");
+    });
 
     document.body.appendChild(widgetIcon);
-    makeWidgetDraggable(widgetIcon);
 }
 
-function makeWidgetSuperDraggable(widget) {
+  setInterval(makeWidgetDraggable, 1000);
+
+  function makeWidgetDraggable() {
+    const widget = document.getElementById("squarecraft-widget-container");
+    const dragHandle = document.querySelector(".squareCraft-cursor-grabbing"); // Select your image
+
+    if (!widget || !dragHandle) return;
+    
     let offsetX, offsetY, isDragging = false;
 
-    // Load last saved position
-    let lastX = localStorage.getItem("widgetX");
-    let lastY = localStorage.getItem("widgetY");
-
-    if (lastX && lastY) {
-        widget.style.left = `${lastX}px`;
-        widget.style.top = `${lastY}px`;
-    } else {
-        widget.style.left = "20px"; // Default position
-        widget.style.top = "20px";
-    }
-
-    // Make sure it's positioned absolutely
-    widget.style.position = "absolute";
-
-    // Start dragging
-    widget.addEventListener("mousedown", (event) => {
-        if (!event.target.classList.contains("squareCraft-cursor-grabbing")) return;
-
-        event.preventDefault();
+    // When user clicks the drag handle (image), start dragging
+    dragHandle.addEventListener("mousedown", (event) => {
+        event.preventDefault(); // Prevent text selection
         isDragging = true;
         offsetX = event.clientX - widget.getBoundingClientRect().left;
         offsetY = event.clientY - widget.getBoundingClientRect().top;
-
         widget.style.transition = "none";
-        widget.style.userSelect = "none";
-
-        // Move widget to the top layer to prevent other elements interfering
-        widget.style.zIndex = "999999";
+        widget.style.userSelect = "none"; // Prevent text selection while dragging
     });
 
-    // Move the widget beyond the screen
+    // Move the widget as user moves mouse
     document.addEventListener("mousemove", (event) => {
         if (!isDragging) return;
-
+        
         let newX = event.clientX - offsetX;
         let newY = event.clientY - offsetY;
+        
+        // Prevent dragging outside the viewport
+        newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
+        newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
 
-        // No restrictions! Widget can go out of bounds
         widget.style.left = `${newX}px`;
         widget.style.top = `${newY}px`;
     });
 
-    // Stop dragging
+    // Stop dragging when mouse is released
     document.addEventListener("mouseup", () => {
-        if (isDragging) {
-            isDragging = false;
-            widget.style.transition = "0.2s ease-out";
-
-            // Save the last position in localStorage
-            localStorage.setItem("widgetX", parseInt(widget.style.left, 10));
-            localStorage.setItem("widgetY", parseInt(widget.style.top, 10));
-        }
+        isDragging = false;
+        widget.style.transition = "0.2s ease-out";
     });
+
+    console.log("✅ Dragging enabled.");
 }
-
-// Ensure the widget becomes super draggable
-window.addEventListener("load", () => {
-    setTimeout(() => {
-        let widget = document.getElementById("squarecraft-widget-container");
-        if (widget) makeWidgetSuperDraggable(widget);
-    }, 500);
-});
-
-
-window.addEventListener("load", () => {
-    createWidgetIcon();
-});
-
 
 // Run after the widget is created
 setTimeout(makeWidgetDraggable, 1000);
