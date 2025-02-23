@@ -371,11 +371,9 @@
     document.body.appendChild(widgetContainer);
     makeWidgetDraggable();
     setInterval(makeWidgetDraggable, 1000);
-
-  
   }
 
-function createWidgetIcon() {
+  function createWidgetIcon() {
     const widgetIcon = document.createElement("img");
     widgetIcon.id = "squarecraft-widget-icon";
     widgetIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Icon URL
@@ -383,62 +381,70 @@ function createWidgetIcon() {
     widgetIcon.classList.add(
         "squareCraft-fixed", 
         "squareCraft-top-5", 
-      "squareCraft-bg-color-2c2c2c",
+        "squareCraft-bg-color-2c2c2c",
         "squareCraft-right-5",  
         "squareCraft-cursor-pointer",
         "squareCraft-z-9999"
     );
 
-    widgetIcon.addEventListener("click", function () {
-        alert("Click on an element to open the widget.");
-    });
+    // Load last saved position
+    let lastX = localStorage.getItem("widgetIconX");
+    let lastY = localStorage.getItem("widgetIconY");
+
+    if (lastX && lastY) {
+        widgetIcon.style.left = `${lastX}px`;
+        widgetIcon.style.top = `${lastY}px`;
+    } else {
+        widgetIcon.style.left = "20px"; // Default position
+        widgetIcon.style.top = "20px";
+    }
 
     document.body.appendChild(widgetIcon);
+    makeWidgetDraggable(widgetIcon);
 }
 
-  setInterval(makeWidgetDraggable, 1000);
-
-  function makeWidgetDraggable() {
-    const widget = document.getElementById("squarecraft-widget-container");
-    const dragHandle = document.querySelector(".squareCraft-cursor-grabbing"); // Select your image
-
-    if (!widget || !dragHandle) return;
-    
+function makeWidgetDraggable(element) {
     let offsetX, offsetY, isDragging = false;
 
-    // When user clicks the drag handle (image), start dragging
-    dragHandle.addEventListener("mousedown", (event) => {
-        event.preventDefault(); // Prevent text selection
+    element.addEventListener("mousedown", (event) => {
+        event.preventDefault();
         isDragging = true;
-        offsetX = event.clientX - widget.getBoundingClientRect().left;
-        offsetY = event.clientY - widget.getBoundingClientRect().top;
-        widget.style.transition = "none";
-        widget.style.userSelect = "none"; // Prevent text selection while dragging
+        offsetX = event.clientX - element.getBoundingClientRect().left;
+        offsetY = event.clientY - element.getBoundingClientRect().top;
+        element.style.transition = "none";
+        element.style.userSelect = "none";
     });
 
-    // Move the widget as user moves mouse
     document.addEventListener("mousemove", (event) => {
         if (!isDragging) return;
-        
+
         let newX = event.clientX - offsetX;
         let newY = event.clientY - offsetY;
-        
-        // Prevent dragging outside the viewport
-        newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
-        newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
 
-        widget.style.left = `${newX}px`;
-        widget.style.top = `${newY}px`;
+        // Ensure it doesn't go out of bounds
+        newX = Math.max(10, Math.min(window.innerWidth - element.offsetWidth - 10, newX));
+        newY = Math.max(10, Math.min(window.innerHeight - element.offsetHeight - 10, newY));
+
+        element.style.left = `${newX}px`;
+        element.style.top = `${newY}px`;
     });
 
-    // Stop dragging when mouse is released
     document.addEventListener("mouseup", () => {
-        isDragging = false;
-        widget.style.transition = "0.2s ease-out";
-    });
+        if (isDragging) {
+            isDragging = false;
+            element.style.transition = "0.2s ease-out";
 
-    console.log("✅ Dragging enabled.");
+            // Save the last position in localStorage
+            localStorage.setItem("widgetIconX", parseInt(element.style.left, 10));
+            localStorage.setItem("widgetIconY", parseInt(element.style.top, 10));
+        }
+    });
 }
+
+window.addEventListener("load", () => {
+    createWidgetIcon();
+});
+
 
 // Run after the widget is created
 setTimeout(makeWidgetDraggable, 1000);
