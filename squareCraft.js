@@ -373,7 +373,10 @@
     setInterval(makeWidgetDraggable, 1000);
   }
 
-function createWidgetIcon() {
+  function createWidgetIcon() {
+    // Prevent duplicate icons
+    if (document.getElementById("squarecraft-widget-icon")) return;
+
     const widgetIcon = document.createElement("img");
     widgetIcon.id = "squarecraft-widget-icon";
     widgetIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Icon URL
@@ -384,8 +387,8 @@ function createWidgetIcon() {
         "squareCraft-rounded-md",
         "squareCraft-px-2",
         "squareCraft-w-16",
-        'squareCraft-py-1',
-      "squareCraft-bg-color-2c2c2c",
+        "squareCraft-py-1",
+        "squareCraft-bg-color-2c2c2c",
         "squareCraft-right-5",  
         "squareCraft-cursor-pointer",
         "squareCraft-z-9999"
@@ -398,6 +401,7 @@ function createWidgetIcon() {
     document.body.appendChild(widgetIcon);
 }
 
+
   setInterval(makeWidgetDraggable, 1000);
 
   function makeWidgetDraggable() {
@@ -407,15 +411,19 @@ function createWidgetIcon() {
     if (!widget && !widgetIcon) return;
 
     function enableDragging(element) {
-        let offsetX, offsetY, isDragging = false;
+        let offsetX = 0, offsetY = 0, isDragging = false;
 
         element.addEventListener("mousedown", (event) => {
             event.preventDefault();
             isDragging = true;
+
             offsetX = event.clientX - element.getBoundingClientRect().left;
             offsetY = event.clientY - element.getBoundingClientRect().top;
             element.style.transition = "none";
             element.style.userSelect = "none";
+
+            document.addEventListener("mousemove", moveAt);
+            document.addEventListener("mouseup", stopDragging);
         });
 
         function moveAt(event) {
@@ -424,7 +432,7 @@ function createWidgetIcon() {
             let newX = event.clientX - offsetX;
             let newY = event.clientY - offsetY;
 
-            // Allow full movement inside window bounds
+            // Prevent dragging outside the window bounds
             newX = Math.max(0, Math.min(window.innerWidth - element.offsetWidth, newX));
             newY = Math.max(0, Math.min(window.innerHeight - element.offsetHeight, newY));
 
@@ -436,14 +444,11 @@ function createWidgetIcon() {
             isDragging = false;
             document.removeEventListener("mousemove", moveAt);
             document.removeEventListener("mouseup", stopDragging);
-            
-            // Save position to localStorage
+
+            // Save position in localStorage
             localStorage.setItem(`${element.id}_X`, element.style.left);
             localStorage.setItem(`${element.id}_Y`, element.style.top);
         }
-
-        document.addEventListener("mousemove", moveAt);
-        document.addEventListener("mouseup", stopDragging);
 
         // Restore last position if available
         let lastX = localStorage.getItem(`${element.id}_X`);
@@ -462,8 +467,9 @@ function createWidgetIcon() {
     if (widget) enableDragging(widget);
     if (widgetIcon) enableDragging(widgetIcon);
 
-    console.log("✅ Dragging enabled on widget and icon.");
+    console.log("✅ Dragging enabled for widget and icon.");
 }
+
 
 
 // Ensure it's defined before calling it
