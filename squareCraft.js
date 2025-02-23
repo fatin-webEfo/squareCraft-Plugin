@@ -385,9 +385,7 @@ function createWidgetIcon() {
         "squareCraft-rounded-full", 
         "squareCraft-top-5", 
       
-        "squareCraft-right-5",
-        "squareCraft-w-40px", 
-        "squareCraft-h-40px",  
+        "squareCraft-right-5",  
         "squareCraft-cursor-pointer",
         "squareCraft-z-9999"
     );
