@@ -167,6 +167,7 @@
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
+    widgetContainer.style.display = "none"; // Hide the widget by default
 
 
     widgetContainer.innerHTML = `
@@ -442,8 +443,11 @@
     );
 
     widgetIcon.addEventListener("click", function () {
-        alert("Click on an element to open the widget.");
-    });
+      const widget = document.getElementById("squarecraft-widget-container");
+      if (widget) {
+          widget.style.display = widget.style.display === "none" ? "block" : "none"; // Toggle visibility
+      }
+  });
 
     document.body.appendChild(widgetIcon);
 }
