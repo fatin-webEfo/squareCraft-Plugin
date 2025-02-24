@@ -174,7 +174,7 @@
        <div
          class="squareCraft-p-4  squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
          <div class="squareCraft-flex squareCraft-poppins squareCraft-universal squareCraft-items-center squareCraft-justify-between">
-            <img class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
+            <img id="squareCraftDrag" class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
            
          </div>
          <p class="squareCraft-text-sm squareCraft-mt-6 squareCraft-poppins squareCraft-font-light">Lorem Ipsum is simply dummy text
@@ -456,7 +456,7 @@
   setInterval(makeWidgetDraggable, 1000);
 
   function makeWidgetDraggable() {
-    const widget = document.getElementById("squarecraft-widget-container");
+    const widget = document.getElementById("squareCraftDrag");
 
     if (!widget) {
         console.warn("❌ Widget not found.");
