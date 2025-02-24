@@ -65,6 +65,21 @@
   .squareCraft-grid-cols-12{
     grid-template-columns: repeat(12, 1fr);
   }
+.squareCraft-mx-2{
+  margin-left: 4px !important;
+  margin-right: 4px !important;
+}
+  .squareCraft-py-0{
+    padding-top: 0!important;
+    padding-bottom: 0!important;
+  }
+
+  .squareCraft-col-span-1{
+    grid-column: span 1 / span 1;
+  }
+  .squareCraft-col-span-2{
+    grid-column: span 2 / span 2;
+  }
   .squareCraft-col-span-3{
     grid-column: span 3 / span 3;
   }
