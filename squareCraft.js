@@ -4,7 +4,7 @@
     console.error(":x: Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
     return;
   }
-createWidget();
+
   const token = widgetScript.dataset?.token;
   const squareCraft_u_id = widgetScript.dataset?.uId; 
   const squareCraft_w_id = widgetScript.dataset?.wId; 
@@ -167,14 +167,14 @@ createWidget();
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
-
+    widgetContainer.style.display = "none"; // Hide the widget by default
 
 
     widgetContainer.innerHTML = `
        <div
          class="squareCraft-p-4  squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
          <div class="squareCraft-flex squareCraft-poppins squareCraft-universal squareCraft-items-center squareCraft-justify-between">
-            <img id="squareCraftDrag" class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
+            <img class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
            
          </div>
          <p class="squareCraft-text-sm squareCraft-mt-6 squareCraft-poppins squareCraft-font-light">Lorem Ipsum is simply dummy text
@@ -430,7 +430,7 @@ createWidget();
     widgetIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Icon URL
 
     widgetIcon.classList.add(
-        "squareCraft-fixed", 
+        "squareCraft-absolute", 
         "squareCraft-top-5", 
         "squareCraft-rounded-md",
         "squareCraft-px-2",
@@ -443,14 +443,10 @@ createWidget();
     );
 
     widgetIcon.addEventListener("click", function () {
-      const widget = document.getElementById("squarecraft-widget-container");
-     if (widget) {
-    widget.classList.toggle("squareCraft-hidden"); 
-}
+        alert("Click on an element to open the widget.");
+    });
 
-  });
-
-    document.documentElement.appendChild(widgetIcon)
+    document.body.appendChild(widgetIcon);
 }
 
 
@@ -458,18 +454,20 @@ createWidget();
 
   function makeWidgetDraggable() {
     const widget = document.getElementById("squarecraft-widget-container");
-    const dragHandle = document.getElementById("squareCraftDrag"); // Dragging should only happen when clicking this
 
-    if (!widget || !dragHandle) {
-        console.warn("❌ Widget or drag handle not found.");
+    if (!widget) {
+        console.warn("❌ Widget not found.");
         return;
     }
 
+    // Apply styles to allow free movement
+    widget.style.position = "fixed"; // Change from "absolute" to "fixed" for full-page dragging
+    widget.style.cursor = "grab";
+    widget.style.zIndex = "99999"; // Ensure it's above other elements
+
     let offsetX = 0, offsetY = 0, isDragging = false;
 
-    dragHandle.style.cursor = "grab"; // Ensure the drag handle looks draggable
-
-    dragHandle.addEventListener("mousedown", (event) => {
+    widget.addEventListener("mousedown", (event) => {
         event.preventDefault();
         isDragging = true;
 
@@ -478,7 +476,7 @@ createWidget();
 
         widget.style.transition = "none";
         widget.style.userSelect = "none";
-        dragHandle.style.cursor = "grabbing"; // Change cursor when dragging
+        widget.style.cursor = "grabbing";
 
         document.addEventListener("mousemove", moveAt);
         document.addEventListener("mouseup", stopDragging);
@@ -498,7 +496,7 @@ createWidget();
 
     function stopDragging() {
         isDragging = false;
-        dragHandle.style.cursor = "grab"; // Reset cursor
+        widget.style.cursor = "grab";
         document.removeEventListener("mousemove", moveAt);
         document.removeEventListener("mouseup", stopDragging);
 
@@ -506,7 +504,6 @@ createWidget();
         localStorage.setItem("widget_Y", widget.style.top);
     }
 
-    // Load last position
     let lastX = localStorage.getItem("widget_X");
     let lastY = localStorage.getItem("widget_Y");
     if (lastX && lastY) {
@@ -517,9 +514,8 @@ createWidget();
         widget.style.top = "50px";
     }
 
-    console.log("✅ Dragging enabled only on #squareCraftDrag.");
+    console.log("✅ Fully Flexible Widget Dragging Enabled.");
 }
-
 
 
 
