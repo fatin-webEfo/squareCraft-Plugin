@@ -187,11 +187,24 @@
   .squareCraft-border-solid{
     border-style: solid !important;
   }
+
+  .font-I{
+    font-family: 'Poppins', sans-serif !important;
+    font-style: italic !important;
+  }
   
   .squareCraft-border-dotted {
     border-style: dotted !important;
   }
-  
+  .squareCraft-font-bold{
+    font-weight: bolder !important;
+  }
+  .squareCraft-font-italic{
+    font-style: italic !important;
+  }
+  .squareCraft-font-underline{
+    text-decoration: underline !important;
+  }
   .squareCraft-border-color-494949 {
     border-color: #494949 !important;
   }
@@ -761,6 +774,10 @@ font-size: 12px !important;
 .squareCraft-ml-1{
   margin-left: 0.15rem !important; /* 4px */
 }
+.squareCraft-ml-2{
+  margin-left: 0.5rem !important; /* 6px */
+}
+
 .squareCraft-font-size-container {
   position: relative !important;
 }
