@@ -163,8 +163,6 @@
     }
   }
 
-
-
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
