@@ -444,9 +444,10 @@ createWidget();
 
     widgetIcon.addEventListener("click", function () {
       const widget = document.getElementById("squarecraft-widget-container");
-      if (widget) {
-          widget.style.display = widget.style.display === "none" ? "block" : "none"; 
-      }
+     if (widget) {
+    widget.classList.toggle("squareCraft-hidden"); 
+}
+
   });
 
     document.documentElement.appendChild(widgetIcon)
