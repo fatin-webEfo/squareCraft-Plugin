@@ -622,10 +622,10 @@ async function fontfamilies() {
 window.addEventListener("scroll", () => {
   const widget = document.getElementById("squarecraft-widget-container");
   if (widget) {
-      let scrollTop = window.scrollY || document.documentElement.scrollTop;
-      widget.style.top = `${parseInt(widget.style.top) + scrollTop}px`;
+      widget.style.position = "fixed"; // Ensure it's fixed
   }
 });
+
 
 setTimeout(() => {
   fontfamilies();
