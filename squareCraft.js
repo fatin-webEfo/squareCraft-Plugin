@@ -486,8 +486,6 @@
 
         let newX = event.clientX - offsetX;
         let newY = event.clientY - offsetY;
-
-        // Prevent dragging outside the viewport (ensure the widget remains visible)
         newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
         newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
 
@@ -496,18 +494,15 @@
     }
 
     function stopDragging() {
-      isDragging = false;
-      widget.style.cursor = "grab";
-  
-      widget.style.transition = "top 0.1s ease-out, left 0.1s ease-out";
-  
-      document.removeEventListener("mousemove", moveAt);
-      document.removeEventListener("mouseup", stopDragging);
+        isDragging = false;
+        widget.style.cursor = "grab";
+        document.removeEventListener("mousemove", moveAt);
+        document.removeEventListener("mouseup", stopDragging);
 
-      localStorage.setItem("widget_X", widget.style.left);
-      localStorage.setItem("widget_Y", widget.style.top);
-  }
-  
+        localStorage.setItem("widget_X", widget.style.left);
+        localStorage.setItem("widget_Y", widget.style.top);
+    }
+
     let lastX = localStorage.getItem("widget_X");
     let lastY = localStorage.getItem("widget_Y");
     if (lastX && lastY) {
