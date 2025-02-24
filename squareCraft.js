@@ -471,12 +471,9 @@
 }
 
 
-
-// Ensure it's defined before calling it
 makeWidgetDraggable();
 
 
-// Run after the widget is created
 setTimeout(makeWidgetDraggable, 1000);
 
 

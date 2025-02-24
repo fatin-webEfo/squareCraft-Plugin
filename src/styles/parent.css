@@ -195,7 +195,9 @@
   .squareCraft-border-color-494949 {
     border-color: #494949 !important;
   }
-  
+  .squareCraft-mt-4{
+    margin-top: 15px !important;
+  }
   .squareCraft-mt-5 {
     margin-top: 1.25rem !important; /* 20px */
   }
