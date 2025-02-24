@@ -606,12 +606,6 @@ async function fontfamilies() {
       }
   });
 
-  fontList.addEventListener("scroll", async () => {
-      if (fontList.scrollTop + fontList.clientHeight >= fontList.scrollHeight) {
-          await loadMoreFonts();
-      }
-  });
-
   document.addEventListener("click", (event) => {
       if (!fontDropdown.contains(event.target)) {
           fontList.classList.add("squareCraft-hidden");
