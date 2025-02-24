@@ -456,21 +456,19 @@
   setInterval(makeWidgetDraggable, 1000);
 
   function makeWidgetDraggable() {
-    const widget = document.getElementById("squareCraftDrag");
+    const widget = document.getElementById("squarecraft-widget-container");
+    const dragHandle = document.getElementById("squareCraftDrag"); // Dragging should only happen when clicking this
 
-    if (!widget) {
-        console.warn("❌ Widget not found.");
+    if (!widget || !dragHandle) {
+        console.warn("❌ Widget or drag handle not found.");
         return;
     }
 
-    // Apply styles to allow free movement
-    widget.style.position = "fixed"; // Change from "absolute" to "fixed" for full-page dragging
-    widget.style.cursor = "grab";
-    widget.style.zIndex = "99999"; // Ensure it's above other elements
-
     let offsetX = 0, offsetY = 0, isDragging = false;
 
-    widget.addEventListener("mousedown", (event) => {
+    dragHandle.style.cursor = "grab"; // Ensure the drag handle looks draggable
+
+    dragHandle.addEventListener("mousedown", (event) => {
         event.preventDefault();
         isDragging = true;
 
@@ -479,7 +477,7 @@
 
         widget.style.transition = "none";
         widget.style.userSelect = "none";
-        widget.style.cursor = "grabbing";
+        dragHandle.style.cursor = "grabbing"; // Change cursor when dragging
 
         document.addEventListener("mousemove", moveAt);
         document.addEventListener("mouseup", stopDragging);
@@ -499,7 +497,7 @@
 
     function stopDragging() {
         isDragging = false;
-        widget.style.cursor = "grab";
+        dragHandle.style.cursor = "grab"; // Reset cursor
         document.removeEventListener("mousemove", moveAt);
         document.removeEventListener("mouseup", stopDragging);
 
@@ -507,6 +505,7 @@
         localStorage.setItem("widget_Y", widget.style.top);
     }
 
+    // Load last position
     let lastX = localStorage.getItem("widget_X");
     let lastY = localStorage.getItem("widget_Y");
     if (lastX && lastY) {
@@ -517,8 +516,9 @@
         widget.style.top = "50px";
     }
 
-    console.log("✅ Fully Flexible Widget Dragging Enabled.");
+    console.log("✅ Dragging enabled only on #squareCraftDrag.");
 }
+
 
 
 
