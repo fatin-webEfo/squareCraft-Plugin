@@ -166,8 +166,8 @@
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
-    widgetContainer.classList.add("squareCraft-absolute", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
-    widgetContainer.style.position = "absolute";
+    widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
+
 
     widgetContainer.innerHTML = `
        <div
@@ -416,7 +416,7 @@
          </div>
       </div>
     `;
-    document.body.appendChild(widgetContainer);
+    document.documentElement.appendChild(widgetContainer);
     makeWidgetDraggable();
     setInterval(makeWidgetDraggable, 1000);
   }
@@ -459,8 +459,10 @@
         return;
     }
 
-    widget.style.position = "absolute"; // Ensure draggable positioning
+    // Apply styles to allow free movement
+    widget.style.position = "fixed"; // Change from "absolute" to "fixed" for full-page dragging
     widget.style.cursor = "grab";
+    widget.style.zIndex = "99999"; // Ensure it's above other elements
 
     let offsetX = 0, offsetY = 0, isDragging = false;
 
@@ -485,7 +487,7 @@
         let newX = event.clientX - offsetX;
         let newY = event.clientY - offsetY;
 
-        // Prevent out-of-bounds dragging
+        // Prevent dragging outside the viewport (ensure the widget remains visible)
         newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
         newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
 
@@ -494,17 +496,18 @@
     }
 
     function stopDragging() {
-        isDragging = false;
-        widget.style.cursor = "grab";
-        document.removeEventListener("mousemove", moveAt);
-        document.removeEventListener("mouseup", stopDragging);
+      isDragging = false;
+      widget.style.cursor = "grab";
+  
+      widget.style.transition = "top 0.1s ease-out, left 0.1s ease-out";
+  
+      document.removeEventListener("mousemove", moveAt);
+      document.removeEventListener("mouseup", stopDragging);
 
-        // Save position to localStorage
-        localStorage.setItem("widget_X", widget.style.left);
-        localStorage.setItem("widget_Y", widget.style.top);
-    }
-
-    // Restore position from localStorage if available
+      localStorage.setItem("widget_X", widget.style.left);
+      localStorage.setItem("widget_Y", widget.style.top);
+  }
+  
     let lastX = localStorage.getItem("widget_X");
     let lastY = localStorage.getItem("widget_Y");
     if (lastX && lastY) {
@@ -515,7 +518,7 @@
         widget.style.top = "50px";
     }
 
-    console.log("✅ Widget dragging enabled.");
+    console.log("✅ Fully Flexible Widget Dragging Enabled.");
 }
 
 
@@ -621,6 +624,13 @@ async function fontfamilies() {
   });
 }
 
+window.addEventListener("scroll", () => {
+  const widget = document.getElementById("squarecraft-widget-container");
+  if (widget) {
+      let scrollTop = window.scrollY || document.documentElement.scrollTop;
+      widget.style.top = `${parseInt(widget.style.top) + scrollTop}px`;
+  }
+});
 
 setTimeout(() => {
   fontfamilies();
