@@ -619,12 +619,7 @@ async function fontfamilies() {
   });
 }
 
-window.addEventListener("scroll", () => {
-  const widget = document.getElementById("squarecraft-widget-container");
-  if (widget) {
-      widget.style.position = "fixed"; // Ensure it's fixed
-  }
-});
+
 
 
 setTimeout(() => {
