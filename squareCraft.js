@@ -4,7 +4,7 @@
     console.error(":x: Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
     return;
   }
-
+createWidget();
   const token = widgetScript.dataset?.token;
   const squareCraft_u_id = widgetScript.dataset?.uId; 
   const squareCraft_w_id = widgetScript.dataset?.wId; 
@@ -167,7 +167,7 @@
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
-    widgetContainer.style.display = "none"; // Hide the widget by default
+
 
 
     widgetContainer.innerHTML = `
