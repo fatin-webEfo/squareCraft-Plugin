@@ -437,7 +437,7 @@
     widgetIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Icon URL
 
     widgetIcon.classList.add(
-        "squareCraft-fixed", 
+        "squareCraft-absolute", 
         "squareCraft-top-5", 
         "squareCraft-rounded-md",
         "squareCraft-px-2",
