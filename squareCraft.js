@@ -430,7 +430,7 @@
     widgetIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Icon URL
 
     widgetIcon.classList.add(
-        "squareCraft-absolute", 
+        "squareCraft-fixed", 
         "squareCraft-top-5", 
         "squareCraft-rounded-md",
         "squareCraft-px-2",
@@ -445,7 +445,7 @@
     widgetIcon.addEventListener("click", function () {
       const widget = document.getElementById("squarecraft-widget-container");
       if (widget) {
-          widget.style.display = widget.style.display === "none" ? "block" : "none"; // Toggle visibility
+          widget.style.display = widget.style.display === "none" ? "block" : "none"; 
       }
   });
 
