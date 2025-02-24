@@ -449,7 +449,7 @@
       }
   });
 
-    document.body.appendChild(widgetIcon);
+    document.documentElement.appendChild(widgetIcon)
 }
 
 
