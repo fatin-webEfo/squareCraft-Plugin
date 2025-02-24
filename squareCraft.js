@@ -169,7 +169,7 @@
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
     widgetContainer.classList.add(
-        "squareCraft-fixed",
+        "squareCraft-absolute",
         "squareCraft-text-color-white", 
         "squareCraft-hidden",
         "squareCraft-universal",
