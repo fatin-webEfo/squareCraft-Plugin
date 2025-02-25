@@ -620,31 +620,61 @@ setTimeout(() => {
 }, 1000);
 
 
-function attachEventListeners() {
+function attachFontSizeEventListeners() {
+   const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
+   const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
+   const dropdownOptions = document.getElementById("squareCraftFontSizeOptions");
+
+   if (!fontSizeInput || !dropdownArrow || !dropdownOptions) {
+       console.error("⚠️ Font size elements not found!");
+       return;
+   }
+
    document.body.addEventListener("click", (event) => {
-       let block = event.target.closest('[id^="block-"]'); 
-       const widget = document.getElementById("squarecraft-widget-container");
+       let block = event.target.closest('[id^="block-"]');
+       if (!block) return;
 
-       if (block) {
-           document.querySelectorAll(".squareCraft-outline").forEach(el => {
-               el.classList.remove("squareCraft-outline");
-           });
+       if (selectedElement) selectedElement.classList.remove("squareCraft-outline");
+       selectedElement = block;
+       selectedElement.classList.add("squareCraft-outline");
 
-           block.classList.add("squareCraft-outline");
+       let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
+       fontSizeInput.value = parseInt(computedFontSize, 10);
+   });
 
-           selectedElement = block;
-           let elementType = block.classList.contains("sqs-block-button") ? "Button" :
-                             block.classList.contains("sqs-block-image") ? "Image" :
-                             block.classList.contains("sqs-block-html") ? "Text" : "Other";
+   dropdownArrow.addEventListener("click", function (event) {
+       event.stopPropagation();
+       dropdownOptions.classList.toggle("squareCraft-hidden");
+   });
 
-           console.log(`🖱️ Clicked Element: ID=${block.id}, Type=${elementType}`);
+   dropdownOptions.addEventListener("click", function (event) {
+       if (event.target.classList.contains("squareCraft-dropdown-item")) {
+           fontSizeInput.value = event.target.dataset.value;
+           dropdownOptions.classList.add("squareCraft-hidden");
 
-           widget.classList.remove("squareCraft-hidden");
-       } else if (!widget.contains(event.target)) {
-           widget.classList.add("squareCraft-hidden");
+           if (selectedElement) {
+               let css = { "font-size": `${event.target.dataset.value}px` };
+               applyStylesToElement(selectedElement.id, css);
+               saveModifications(selectedElement.id, css);
+           }
+       }
+   });
+
+   document.addEventListener("click", function (event) {
+       if (!dropdownArrow.contains(event.target) && !dropdownOptions.contains(event.target)) {
+           dropdownOptions.classList.add("squareCraft-hidden");
+       }
+   });
+
+   fontSizeInput.addEventListener("input", function () {
+       if (selectedElement) {
+           let css = { "font-size": `${fontSizeInput.value}px` };
+           applyStylesToElement(selectedElement.id, css);
+           saveModifications(selectedElement.id, css);
        }
    });
 }
+
 
 
 
