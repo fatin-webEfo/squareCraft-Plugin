@@ -135,7 +135,7 @@
     }
 
     applyStylesToElement(elementId, css);
-    console.log(":satellite_antenna: Saving modifications for:", { pageId, elementId, css });
+    console.log(" Saving modifications for:", { pageId, elementId, css });
 
     const modificationData = {
       userId,
@@ -511,7 +511,6 @@
        widget.style.top = "50px";
    }
 
-   console.log("✅ Widget is draggable only via the designated handle (ID: squareCraft-cursor-grabbing).");
 }
 
 
@@ -671,8 +670,6 @@ function attachEventListeners() {
   function checkURL() {
     const currentURL = window.location.href;
     let widgetContainer = document.getElementById("squarecraft-widget-container");
-
-    console.log("Current URL:", currentURL);
 
     if (currentURL.includes("/#")) {
         console.log("✅ Widget is VISIBLE on the Code Injection page.");
