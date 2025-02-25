@@ -606,16 +606,28 @@ function attachFontSizeEventListeners() {
    }
 
    document.body.addEventListener("click", (event) => {
-       let block = event.target.closest('[id^="block-"]');
-       if (!block) return;
-
-       if (selectedElement) selectedElement.classList.remove("squareCraft-outline");
-       selectedElement = block;
-       selectedElement.classList.add("squareCraft-outline");
-
-       let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
-       fontSizeInput.value = parseInt(computedFontSize, 10);
-   });
+      if (event.target.closest("#squarecraft-widget-container")) return;
+  
+      let block = event.target.closest('[id^="block-"]');
+      if (!block) return;
+  
+      if (selectedElement) {
+          selectedElement.style.outline = "";
+          selectedElement.classList.remove("squareCraft-outline");
+      }
+  
+      selectedElement = block;
+      selectedElement.style.outline = "2px dashed #EF7C2F"; 
+      selectedElement.classList.add("squareCraft-outline");
+  
+      if (document.getElementById("squareCraftFontSizeInput")) {
+          let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
+          document.getElementById("squareCraftFontSizeInput").value = parseInt(computedFontSize, 10);
+      }
+      
+      console.log("✅ Selected Element:", selectedElement);
+  });
+  
 
    dropdownArrow.addEventListener("click", function (event) {
        event.stopPropagation();
