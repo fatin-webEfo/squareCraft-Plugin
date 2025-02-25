@@ -672,7 +672,6 @@ function attachEventListeners() {
     let widgetContainer = document.getElementById("squarecraft-widget-container");
 
     if (currentURL.includes("/#")) {
-        console.log("✅ Widget is VISIBLE on the Code Injection page.");
         
         if (!widgetContainer) {
             createWidget(); 
