@@ -435,7 +435,7 @@
     cursor: grab !important;
   }
   
-  .squareCraft-cursor-grabbing {
+  #squareCraft-cursor-grabbing {
     cursor: grabbing !important;
   }
   
