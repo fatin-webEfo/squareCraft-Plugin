@@ -121,7 +121,6 @@
     } catch (error) {
         console.error("❌ Error fetching modifications:", error);
         if (retries > 0) {
-            console.log(`🔄 Retrying fetch... (${retries} left)`);
             setTimeout(() => fetchModifications(retries - 1), 2000);
         }
     }
@@ -157,7 +156,7 @@
         body: JSON.stringify(modificationData),
       });
 
-      console.log(":white_check_mark: Changes Saved Successfully!", await response.json());
+      console.log("Changes Saved Successfully!", await response.json());
     } catch (error) {
       console.error(":x: Error saving modifications:", error);
     }
@@ -514,7 +513,6 @@
         widget.style.top = "50px";
     }
 
-    console.log("✅ Fully Flexible Widget Dragging Enabled.");
 }
 
 
@@ -678,7 +676,6 @@ function attachEventListeners() {
       });
 
       adminNavbar.appendChild(customIcon);
-      console.log("✅ Custom admin icon added!");
   }
 
   insertCustomAdminIcon();
@@ -686,10 +683,8 @@ function attachEventListeners() {
     const currentURL = window.location.href;
     let widgetContainer = document.getElementById("squarecraft-widget-container");
 
-    console.log("Current URL:", currentURL);
 
     if (currentURL.includes("/#")) {
-        console.log("✅ Widget is VISIBLE on the Code Injection page.");
         
         if (!widgetContainer) {
             createWidget(); 
@@ -703,7 +698,6 @@ function attachEventListeners() {
         }
 
     } else {
-        console.log("❌ Widget is HIDDEN on other pages.");
         if (widgetContainer) widgetContainer.style.display = "none"; 
     }
 }
