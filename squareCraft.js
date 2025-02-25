@@ -653,7 +653,8 @@ function attachFontSizeEventListeners() {
 
 window.addEventListener("load", () => {
    createWidget();
-   setTimeout(makeWidgetDraggable, 500); // Ensure draggable is applied after widget is created
+   setTimeout(makeWidgetDraggable, 500); 
+   setTimeout(attachFontSizeEventListeners, 1000);
 });
 
 
