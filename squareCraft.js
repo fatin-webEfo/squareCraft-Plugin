@@ -20,8 +20,7 @@
   if (squareCraft_u_id) {
       console.log("👤 User ID received:", squareCraft_u_id);
       localStorage.setItem("squareCraft_u_id", squareCraft_u_id);
-      document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;
-
+      document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;   
   }
 
   if (squareCraft_w_id) {
@@ -594,6 +593,31 @@ setTimeout(() => {
   fontfamilies();
 }, 1000);
 
+function attachEventListeners() {
+   document.body.addEventListener("click", (event) => {
+       let block = event.target.closest('[id^="block-"]'); 
+       const widget = document.getElementById("squarecraft-widget-container");
+
+       if (block) {
+           document.querySelectorAll(".squareCraft-outline").forEach(el => {
+               el.classList.remove("squareCraft-outline");
+               el.style.outline = "";
+           });
+
+           block.classList.add("squareCraft-outline");
+           block.style.outline = "2px dashed #EF7C2F";
+
+           selectedElement = block;
+           let elementType = block.classList.contains("sqs-block-button") ? "Button" :
+                             block.classList.contains("sqs-block-image") ? "Image" :
+                             block.classList.contains("sqs-block-html") ? "Text" : "Other";
+
+           widget.classList.remove("squareCraft-hidden");
+       } else if (!widget.contains(event.target)) {
+           widget.classList.add("squareCraft-hidden");
+       }
+   });
+}
 
 function attachFontSizeEventListeners() {
    const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
@@ -728,9 +752,6 @@ window.addEventListener("load", () => {
     }
 }
 
-
-  
-
     checkURL();
     setInterval(checkURL, 1000);
     createWidget();
@@ -743,7 +764,6 @@ window.addEventListener("load", () => {
     const dropdownOptions = document.getElementById("squareCraftFontSizeOptions");
 
     document.body.addEventListener("click", (event) => {
-      // Prevent clicking inside the widget from interfering
       if (event.target.closest("#squarecraft-widget-container")) return;
   
       // Find the nearest selectable element
