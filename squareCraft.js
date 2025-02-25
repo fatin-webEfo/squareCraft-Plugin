@@ -418,8 +418,7 @@
       </div>
     `;
     document.documentElement.appendChild(widgetContainer);
-    makeWidgetDraggable();
-    setInterval(makeWidgetDraggable, 1000);
+  
   }
 
   function createWidgetIcon() {
@@ -450,7 +449,6 @@
 }
 
 
-  setInterval(makeWidgetDraggable, 1000);
 
   function makeWidgetDraggable() {
    const widget = document.getElementById("squarecraft-widget-container");
@@ -516,32 +514,6 @@
    console.log("✅ Widget is draggable only via the designated handle (ID: squareCraft-cursor-grabbing).");
 }
 
-// Ensure the widget is created before making it draggable
-document.addEventListener("DOMContentLoaded", () => {
-   setTimeout(() => {
-       makeWidgetDraggable();
-   }, 500);
-});
-
-
-
-
-makeWidgetDraggable();
-
-
-setTimeout(makeWidgetDraggable, 1000);
-
-
-
-window.addEventListener("load", () => {
-    setTimeout(makeWidgetDraggable, 500); // Wait for the widget to load
-    createWidgetIcon();
-
-});
-window.addEventListener("load", () => {
-  createWidget();  // Ensure widget is created first
-  setTimeout(makeWidgetDraggable, 500); // Apply draggability after it's added to DOM
-});
 
 
   async function loadFontsWithPagination(page = 1, perPage = 20) {
@@ -668,7 +640,6 @@ function attachEventListeners() {
   document.addEventListener("DOMContentLoaded", function () {
     createWidgetIcon();
 
-    makeWidgetDraggable();
     function insertCustomAdminIcon() {
       const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
 
@@ -710,11 +681,11 @@ function attachEventListeners() {
             createWidget(); 
             setTimeout(() => {
                 widgetContainer = document.getElementById("squarecraft-widget-container");
-                if (widgetContainer) makeWidgetDraggable(); 
+               //  if (widgetContainer) makeWidgetDraggable(); 
             }, 500); 
         } else {
             widgetContainer.style.display = "block"; 
-            makeWidgetDraggable(); 
+            // makeWidgetDraggable(); 
         }
 
     } else {
@@ -728,13 +699,10 @@ function attachEventListeners() {
 
     checkURL();
     setInterval(checkURL, 1000);
-    setInterval(makeWidgetDraggable, 1000);
 
     createWidget();
-    makeWidgetDraggable();
     attachEventListeners();
     fetchModifications();
-    makeWidgetDraggable();
 
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
