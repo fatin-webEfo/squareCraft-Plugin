@@ -694,7 +694,7 @@ function attachEventListeners() {
 
     checkURL();
     setInterval(checkURL, 1000);
-
+makeWidgetDraggable(); 
     createWidget();
     attachEventListeners();
     fetchModifications();
