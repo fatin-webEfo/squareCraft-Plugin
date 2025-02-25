@@ -174,7 +174,7 @@
        <div
          class="squareCraft-p-4  squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
          <div class="squareCraft-flex squareCraft-poppins squareCraft-universal squareCraft-items-center squareCraft-justify-between">
-            <img class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
+            <img id="squareCraft-cursor-grabbing" class=" squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
            
          </div>
          <p class="squareCraft-text-sm squareCraft-mt-6 squareCraft-poppins squareCraft-font-light">Lorem Ipsum is simply dummy text
@@ -454,7 +454,7 @@
 
   function makeWidgetDraggable() {
    const widget = document.getElementById("squarecraft-widget-container");
-   const dragHandle = widget.querySelector(".squareCraft-cursor-grabbing");
+   const dragHandle = document.getElementById("squareCraft-cursor-grabbing"); // Use ID instead of class
 
    if (!widget || !dragHandle) {
        console.warn("❌ Widget or Drag Handle not found.");
@@ -462,8 +462,6 @@
    }
 
    let offsetX = 0, offsetY = 0, isDragging = false;
-
-   // Start dragging when the user clicks the image
    dragHandle.addEventListener("mousedown", (event) => {
        event.preventDefault();
        isDragging = true;
@@ -484,6 +482,8 @@
 
        let newX = event.clientX - offsetX;
        let newY = event.clientY - offsetY;
+       
+       // Prevent dragging outside the viewport
        newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
        newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
 
@@ -497,23 +497,32 @@
        document.removeEventListener("mousemove", moveAt);
        document.removeEventListener("mouseup", stopDragging);
 
+       // Save last position to localStorage
        localStorage.setItem("widget_X", widget.style.left);
        localStorage.setItem("widget_Y", widget.style.top);
    }
 
-   // Load stored position if available
+   // Load last position
    let lastX = localStorage.getItem("widget_X");
    let lastY = localStorage.getItem("widget_Y");
    if (lastX && lastY) {
        widget.style.left = lastX;
        widget.style.top = lastY;
    } else {
-       widget.style.left = "50px"; // Default position
+       widget.style.left = "50px"; 
        widget.style.top = "50px";
    }
 
-   console.log("✅ Widget is draggable only via the designated handle (image).");
+   console.log("✅ Widget is draggable only via the designated handle (ID: squareCraft-cursor-grabbing).");
 }
+
+// Ensure the widget is created before making it draggable
+document.addEventListener("DOMContentLoaded", () => {
+   setTimeout(() => {
+       makeWidgetDraggable();
+   }, 500);
+});
+
 
 
 
