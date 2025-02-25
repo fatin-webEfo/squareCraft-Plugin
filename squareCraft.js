@@ -634,7 +634,7 @@ setTimeout(() => {
 
 function attachEventListeners() {
    document.body.addEventListener("click", (event) => {
-       let block = event.target.closest('[id^="block-"]');
+       let block = event.target.closest('[id^="block-"]'); // Detect block elements
        const widget = document.getElementById("squarecraft-widget-container");
 
        if (block) {
@@ -648,17 +648,11 @@ function attachEventListeners() {
            selectedElement = block;
 
            // Identify the clicked element type
-           let elementType = block.tagName.toLowerCase();
-           let elementTypeName = "";
-           if (elementType === "button") {
-               elementTypeName = "Button";
-           } else if (elementType === "img") {
-               elementTypeName = "Image";
-           } else {
-               elementTypeName = "Text / Other Element";
-           }
+           let elementType = block.classList.contains("sqs-block-button") ? "Button" :
+                             block.classList.contains("sqs-block-image") ? "Image" :
+                             block.classList.contains("sqs-block-html") ? "Text" : "Other";
 
-           console.log(`🖱️ Clicked Element: ID=${block.id}, Type=${elementTypeName}`);
+           console.log(`🖱️ Clicked Element: ID=${block.id}, Type=${elementType}`);
 
            widget.classList.remove("squareCraft-hidden");
        } else if (!widget.contains(event.target)) {
@@ -666,6 +660,7 @@ function attachEventListeners() {
        }
    });
 }
+
 
 
 
