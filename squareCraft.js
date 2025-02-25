@@ -88,53 +88,44 @@
   }
 
   async function fetchModifications(retries = 3) {
-   if (!pageId) return;
+    if (!pageId) return;
 
-   try {
-       const response = await fetch(
-           `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
-           {
-               method: "GET",
-               headers: {
-                   "Content-Type": "application/json",
-                   "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-               },
-           }
-       );
+    try {
+        const response = await fetch(
+            `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+                },
+            }
+        );
 
-       if (!response.ok) {
-           console.error(`❌ API Error: ${response.status} - ${response.statusText}`);
-           if (retries > 0) {
-               console.log(`🔄 Retrying fetch... (${retries} left)`);
-               setTimeout(() => fetchModifications(retries - 1), 2000);
-           }
-           return;
-       }
+        const data = await response.json();
 
-       const data = await response.json();
+        console.log("📥 Get method", data);
+        if (!data.modifications || data.modifications.length === 0) {
+            console.warn("⚠️ No styles found for this page.");
+            return;
+        }
 
-       if (!data.modifications || data.modifications.length === 0) {
-           console.warn("⚠️ No styles found for this page.");
-           return;
-       }
+        data.modifications.forEach(({ pageId: storedPageId, elements }) => {
+            if (storedPageId === pageId) {
+                elements.forEach(({ elementId, css }) => {
+                    applyStylesToElement(elementId, css);
+                });
+            }
+        });
 
-       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
-           if (storedPageId === pageId) {
-               elements.forEach(({ elementId, css }) => {
-                   applyStylesToElement(elementId, css);
-               });
-           }
-       });
-
-   } catch (error) {
-       console.error("❌ Error fetching modifications:", error);
-       if (retries > 0) {
-           console.log(`🔄 Retrying fetch... (${retries} left)`);
-           setTimeout(() => fetchModifications(retries - 1), 2000);
-       }
-   }
+    } catch (error) {
+        console.error("❌ Error fetching modifications:", error);
+        if (retries > 0) {
+            console.log(`🔄 Retrying fetch... (${retries} left)`);
+            setTimeout(() => fetchModifications(retries - 1), 2000);
+        }
+    }
 }
-
 
 
   async function saveModifications(elementId, css) {
@@ -144,7 +135,7 @@
     }
 
     applyStylesToElement(elementId, css);
-    console.log(" Saving modifications for:", { pageId, elementId, css });
+    console.log(":satellite_antenna: Saving modifications for:", { pageId, elementId, css });
 
     const modificationData = {
       userId,
@@ -175,26 +166,15 @@
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
-    widgetContainer.classList.add(
-      "squareCraft-fixed",
-      "squareCraft-bottom-5",
-      "squareCraft-right-5",
-      "squareCraft-bg-color-2c2c2c",
-      "squareCraft-text-color-white",
-      "squareCraft-p-4",
-      "squareCraft-border",
-      "squareCraft-border-solid",
-      "squareCraft-border-3d3d3d",
-      "squareCraft-rounded-15px"
-  );
-   
+    widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
+    widgetContainer.style.display = "none"; // Hide the widget by default
 
 
     widgetContainer.innerHTML = `
        <div
          class="squareCraft-p-4  squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
          <div class="squareCraft-flex squareCraft-poppins squareCraft-universal squareCraft-items-center squareCraft-justify-between">
-            <img id="squareCraft-cursor-grabbing" class=" squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
+            <img class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
            
          </div>
          <p class="squareCraft-text-sm squareCraft-mt-6 squareCraft-poppins squareCraft-font-light">Lorem Ipsum is simply dummy text
@@ -438,7 +418,8 @@
       </div>
     `;
     document.documentElement.appendChild(widgetContainer);
-  
+    makeWidgetDraggable();
+    setInterval(makeWidgetDraggable, 1000);
   }
 
   function createWidgetIcon() {
@@ -469,13 +450,98 @@
 }
 
 
+  setInterval(makeWidgetDraggable, 1000);
+
+  function makeWidgetDraggable() {
+    const widget = document.getElementById("squarecraft-widget-container");
+
+    if (!widget) {
+        console.warn("❌ Widget not found.");
+        return;
+    }
+
+    // Apply styles to allow free movement
+    widget.style.position = "fixed"; // Change from "absolute" to "fixed" for full-page dragging
+    widget.style.cursor = "grab";
+    widget.style.zIndex = "99999"; // Ensure it's above other elements
+
+    let offsetX = 0, offsetY = 0, isDragging = false;
+
+    widget.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+        isDragging = true;
+
+        offsetX = event.clientX - widget.getBoundingClientRect().left;
+        offsetY = event.clientY - widget.getBoundingClientRect().top;
+
+        widget.style.transition = "none";
+        widget.style.userSelect = "none";
+        widget.style.cursor = "grabbing";
+
+        document.addEventListener("mousemove", moveAt);
+        document.addEventListener("mouseup", stopDragging);
+    });
+
+    function moveAt(event) {
+        if (!isDragging) return;
+
+        let newX = event.clientX - offsetX;
+        let newY = event.clientY - offsetY;
+        newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
+        newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
+
+        widget.style.left = `${newX}px`;
+        widget.style.top = `${newY}px`;
+    }
+
+    function stopDragging() {
+        isDragging = false;
+        widget.style.cursor = "grab";
+        document.removeEventListener("mousemove", moveAt);
+        document.removeEventListener("mouseup", stopDragging);
+
+        localStorage.setItem("widget_X", widget.style.left);
+        localStorage.setItem("widget_Y", widget.style.top);
+    }
+
+    let lastX = localStorage.getItem("widget_X");
+    let lastY = localStorage.getItem("widget_Y");
+    if (lastX && lastY) {
+        widget.style.left = lastX;
+        widget.style.top = lastY;
+    } else {
+        widget.style.left = "50px"; // Default position
+        widget.style.top = "50px";
+    }
+
+    console.log("✅ Fully Flexible Widget Dragging Enabled.");
+}
+
+
+
+makeWidgetDraggable();
+
+
+setTimeout(makeWidgetDraggable, 1000);
+
+
+
+window.addEventListener("load", () => {
+    setTimeout(makeWidgetDraggable, 500); // Wait for the widget to load
+    createWidgetIcon();
+
+});
+window.addEventListener("load", () => {
+  createWidget();  // Ensure widget is created first
+  setTimeout(makeWidgetDraggable, 500); // Apply draggability after it's added to DOM
+});
 
 
   async function loadFontsWithPagination(page = 1, perPage = 20) {
     try {
         const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
         const data = await response.json();
-        return data.items.slice((page - 1) * perPage, page * perPage); 
+        return data.items.slice((page - 1) * perPage, page * perPage); // Paginate fonts
     } catch (error) {
         console.error("❌ Error fetching Google Fonts:", error);
         return [];
@@ -488,6 +554,7 @@ async function fontfamilies() {
   const perPage = 20;
   const fontDropdown = document.getElementById("squareCraft-font-family");
 
+  // Ensure the dropdown container is created
   let fontList = document.getElementById("squareCraft-font-list");
   if (!fontList) {
       fontList = document.createElement("div");
@@ -558,35 +625,101 @@ setTimeout(() => {
 
 
 
-function attachEventListeners() {
-   document.body.addEventListener("click", (event) => {
-       let block = event.target.closest('[id^="block-"]'); // Detect block elements
-       const widget = document.getElementById("squarecraft-widget-container");
+  function attachEventListeners() {
+    document.body.addEventListener("click", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        const widget = document.getElementById("squarecraft-widget-container");
+    
+        if (block) {
+            document.querySelectorAll(".squareCraft-outline").forEach(el => {
+                el.classList.remove("squareCraft-outline");
+                el.style.outline = ""; 
+            });
+    
+            block.classList.add("squareCraft-outline");
+            block.style.outline = "2px dashed #EF7C2F"; 
+            selectedElement = block;
+    
+            widget.classList.remove("squareCraft-hidden");
+    
+        } else if (!widget.contains(event.target)) {
+            widget.classList.add("squareCraft-hidden");
+        }
+    });
+    
+    ;
+    
 
-       if (block) {
-           document.querySelectorAll(".squareCraft-outline").forEach(el => {
-               el.classList.remove("squareCraft-outline");
-               el.style.outline = "";
-           });
+    const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
+    const fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");
+    const fontSizeOptions = document.getElementById("squareCraftFontSizeOptions");
 
-           block.classList.add("squareCraft-outline");
-           block.style.outline = "2px dashed #EF7C2F";
-           selectedElement = block;
+    fontSizeDropdown.addEventListener("click", function () {
+      fontSizeOptions.classList.toggle("squareCraft-hidden");
+    });
 
-           // Identify the clicked element type
-           let elementType = block.classList.contains("sqs-block-button") ? "Button" :
-                             block.classList.contains("sqs-block-image") ? "Image" :
-                             block.classList.contains("sqs-block-html") ? "Text" : "Other";
+    fontSizeOptions.addEventListener("click", function (event) {
+      if (!event.target.classList.contains("squareCraft-dropdown-item")) return;
+      fontSizeInput.value = event.target.dataset.value;
+      fontSizeOptions.classList.add("squareCraft-hidden");
 
-           console.log(`🖱️ Clicked Element: ID=${block.id}, Type=${elementType}`);
+      if (selectedElement) {
+        let css = { "font-size": `${event.target.dataset.value}px` };
+        applyStylesToElement(selectedElement.id, css);
+        saveModifications(selectedElement.id, css);
+      }
+    });
 
-           widget.classList.remove("squareCraft-hidden");
-       } else if (!widget.contains(event.target)) {
-           widget.classList.add("squareCraft-hidden");
-       }
-   });
-}
+    fontSizeInput.addEventListener("input", function () {
+      if (selectedElement) {
+        let css = { "font-size": `${fontSizeInput.value}px` };
+        applyStylesToElement(selectedElement.id, css);
+        saveModifications(selectedElement.id, css);
+      }
+    });
 
+    const letterSpacingInput = document.getElementById("squareCraftLetterSpacingInput");
+    const letterSpacingDropdown = document.getElementById("squareCraftLetterSpacingDropdown");
+    const letterSpacingOptions = document.getElementById("squareCraftLetterSpacingOptions");
+
+    letterSpacingDropdown.addEventListener("click", function () {
+      letterSpacingOptions.classList.toggle("squareCraft-hidden");
+    });
+
+    letterSpacingOptions.addEventListener("click", function (event) {
+      if (!event.target.classList.contains("squareCraft-dropdown-item")) return;
+      letterSpacingInput.value = event.target.dataset.value;
+      letterSpacingOptions.classList.add("squareCraft-hidden");
+
+      if (selectedElement) {
+        let css = { "letter-spacing": `${event.target.dataset.value}px` };
+        applyStylesToElement(selectedElement.id, css);
+        saveModifications(selectedElement.id, css);
+      }
+    });
+
+    letterSpacingInput.addEventListener("input", function () {
+      if (selectedElement) {
+        let css = { "letter-spacing": `${letterSpacingInput.value}px` };
+        applyStylesToElement(selectedElement.id, css);
+        saveModifications(selectedElement.id, css);
+      }
+    });
+
+    // Text Alignment Handling
+    document.querySelectorAll(".alignment-icon").forEach(icon => {
+      icon.addEventListener("click", async function () {
+        if (!selectedElement) return;
+        const alignment = this.getAttribute("data-align");
+
+        let css = { "text-align": alignment };
+        applyStylesToElement(selectedElement.id, css);
+        await saveModifications(selectedElement.id, css);
+
+        console.log(`✅ Applied text alignment: ${alignment} to ${selectedElement.id}`);
+      });
+    });
+  }
 
 
 
@@ -594,67 +727,73 @@ function attachEventListeners() {
   document.addEventListener("DOMContentLoaded", function () {
     createWidgetIcon();
 
-    function insertCustomAdminIcon(retries = 5) {
-      const adminNavbar = document.querySelector("[data-test='editor-header']");
-  
-      if (!adminNavbar && retries > 0) {
-          console.warn(`⚠️ Admin navbar not found. Retrying... (${retries} attempts left)`);
-          setTimeout(() => insertCustomAdminIcon(retries - 1), 2000);
-          return;
-      } else if (!adminNavbar) {
-          console.error("❌ Admin navbar not found after multiple attempts.");
+    makeWidgetDraggable();
+    function insertCustomAdminIcon() {
+      const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
+
+      if (!adminNavbar) {
+          console.warn("Admin navbar not found. Retrying...");
+          setTimeout(insertCustomAdminIcon, 1000); // Retry in case the page hasn't fully loaded
           return;
       }
-  
+
       if (document.getElementById("customAdminIcon")) return;
-  
+
       const customIcon = document.createElement("img");
-      customIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg";
+      customIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Your icon URL
       customIcon.id = "customAdminIcon";
       customIcon.style.cursor = "pointer";
-      customIcon.style.marginLeft = "15px";
-      customIcon.style.width = "32px";
+      customIcon.style.marginLeft = "15px"; // Adjust spacing
+      customIcon.style.width = "32px"; // Icon size
       customIcon.style.height = "32px";
       
       customIcon.addEventListener("click", function () {
           alert("Custom Plugin Clicked!");
       });
-  
+
       adminNavbar.appendChild(customIcon);
       console.log("✅ Custom admin icon added!");
   }
-  
 
   insertCustomAdminIcon();
-function checkURL() {
+  function checkURL() {
     const currentURL = window.location.href;
     let widgetContainer = document.getElementById("squarecraft-widget-container");
 
+    console.log("Current URL:", currentURL);
+
     if (currentURL.includes("/#")) {
+        console.log("✅ Widget is VISIBLE on the Code Injection page.");
+        
         if (!widgetContainer) {
-            createWidget();
+            createWidget(); 
             setTimeout(() => {
                 widgetContainer = document.getElementById("squarecraft-widget-container");
-                if (widgetContainer) widgetContainer.classList.remove("squareCraft-hidden"); 
-            }, 500);
+                if (widgetContainer) makeWidgetDraggable(); 
+            }, 500); 
         } else {
-            widgetContainer.classList.remove("squareCraft-hidden"); 
+            widgetContainer.style.display = "block"; 
+            makeWidgetDraggable(); 
         }
+
     } else {
         console.log("❌ Widget is HIDDEN on other pages.");
-        if (widgetContainer) widgetContainer.classList.add("squareCraft-hidden");
+        if (widgetContainer) widgetContainer.style.display = "none"; 
     }
 }
-
 
 
   
 
     checkURL();
     setInterval(checkURL, 1000);
+    setInterval(makeWidgetDraggable, 1000);
+
     createWidget();
+    makeWidgetDraggable();
     attachEventListeners();
     fetchModifications();
+    makeWidgetDraggable();
 
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
