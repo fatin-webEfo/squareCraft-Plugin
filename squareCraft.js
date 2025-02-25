@@ -594,6 +594,31 @@ setTimeout(() => {
   fontfamilies();
 }, 1000);
 
+function attachEventListeners() {
+   document.body.addEventListener("click", (event) => {
+       let block = event.target.closest('[id^="block-"]'); 
+       const widget = document.getElementById("squarecraft-widget-container");
+
+       if (block) {
+           document.querySelectorAll(".squareCraft-outline").forEach(el => {
+               el.classList.remove("squareCraft-outline");
+           });
+
+           block.classList.add("squareCraft-outline");
+
+           selectedElement = block;
+           let elementType = block.classList.contains("sqs-block-button") ? "Button" :
+                             block.classList.contains("sqs-block-image") ? "Image" :
+                             block.classList.contains("sqs-block-html") ? "Text" : "Other";
+
+           console.log(`🖱️ Clicked Element: ID=${block.id}, Type=${elementType}`);
+
+           widget.classList.remove("squareCraft-hidden");
+       } else if (!widget.contains(event.target)) {
+           widget.classList.add("squareCraft-hidden");
+       }
+   });
+}
 
 function attachFontSizeEventListeners() {
    const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
