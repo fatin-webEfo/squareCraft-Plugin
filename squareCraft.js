@@ -167,7 +167,7 @@
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
-    widgetContainer.style.display = "none"; // Hide the widget by default
+    widgetContainer.style.display = "block";  
 
 
     widgetContainer.innerHTML = `
@@ -632,101 +632,40 @@ setTimeout(() => {
 
 
 
-  function attachEventListeners() {
-    document.body.addEventListener("click", (event) => {
-        let block = event.target.closest('[id^="block-"]');
-        const widget = document.getElementById("squarecraft-widget-container");
-    
-        if (block) {
-            document.querySelectorAll(".squareCraft-outline").forEach(el => {
-                el.classList.remove("squareCraft-outline");
-                el.style.outline = ""; 
-            });
-    
-            block.classList.add("squareCraft-outline");
-            block.style.outline = "2px dashed #EF7C2F"; 
-            selectedElement = block;
-    
-            widget.classList.remove("squareCraft-hidden");
-    
-        } else if (!widget.contains(event.target)) {
-            widget.classList.add("squareCraft-hidden");
-        }
-    });
-    
-    ;
-    
+function attachEventListeners() {
+   document.body.addEventListener("click", (event) => {
+       let block = event.target.closest('[id^="block-"]');
+       const widget = document.getElementById("squarecraft-widget-container");
 
-    const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
-    const fontSizeDropdown = document.getElementById("squareCraftFontSizeDropdown");
-    const fontSizeOptions = document.getElementById("squareCraftFontSizeOptions");
+       if (block) {
+           document.querySelectorAll(".squareCraft-outline").forEach(el => {
+               el.classList.remove("squareCraft-outline");
+               el.style.outline = "";
+           });
 
-    fontSizeDropdown.addEventListener("click", function () {
-      fontSizeOptions.classList.toggle("squareCraft-hidden");
-    });
+           block.classList.add("squareCraft-outline");
+           block.style.outline = "2px dashed #EF7C2F";
+           selectedElement = block;
 
-    fontSizeOptions.addEventListener("click", function (event) {
-      if (!event.target.classList.contains("squareCraft-dropdown-item")) return;
-      fontSizeInput.value = event.target.dataset.value;
-      fontSizeOptions.classList.add("squareCraft-hidden");
+           // Identify the clicked element type
+           let elementType = block.tagName.toLowerCase();
+           let elementTypeName = "";
+           if (elementType === "button") {
+               elementTypeName = "Button";
+           } else if (elementType === "img") {
+               elementTypeName = "Image";
+           } else {
+               elementTypeName = "Text / Other Element";
+           }
 
-      if (selectedElement) {
-        let css = { "font-size": `${event.target.dataset.value}px` };
-        applyStylesToElement(selectedElement.id, css);
-        saveModifications(selectedElement.id, css);
-      }
-    });
+           console.log(`🖱️ Clicked Element: ID=${block.id}, Type=${elementTypeName}`);
 
-    fontSizeInput.addEventListener("input", function () {
-      if (selectedElement) {
-        let css = { "font-size": `${fontSizeInput.value}px` };
-        applyStylesToElement(selectedElement.id, css);
-        saveModifications(selectedElement.id, css);
-      }
-    });
-
-    const letterSpacingInput = document.getElementById("squareCraftLetterSpacingInput");
-    const letterSpacingDropdown = document.getElementById("squareCraftLetterSpacingDropdown");
-    const letterSpacingOptions = document.getElementById("squareCraftLetterSpacingOptions");
-
-    letterSpacingDropdown.addEventListener("click", function () {
-      letterSpacingOptions.classList.toggle("squareCraft-hidden");
-    });
-
-    letterSpacingOptions.addEventListener("click", function (event) {
-      if (!event.target.classList.contains("squareCraft-dropdown-item")) return;
-      letterSpacingInput.value = event.target.dataset.value;
-      letterSpacingOptions.classList.add("squareCraft-hidden");
-
-      if (selectedElement) {
-        let css = { "letter-spacing": `${event.target.dataset.value}px` };
-        applyStylesToElement(selectedElement.id, css);
-        saveModifications(selectedElement.id, css);
-      }
-    });
-
-    letterSpacingInput.addEventListener("input", function () {
-      if (selectedElement) {
-        let css = { "letter-spacing": `${letterSpacingInput.value}px` };
-        applyStylesToElement(selectedElement.id, css);
-        saveModifications(selectedElement.id, css);
-      }
-    });
-
-    // Text Alignment Handling
-    document.querySelectorAll(".alignment-icon").forEach(icon => {
-      icon.addEventListener("click", async function () {
-        if (!selectedElement) return;
-        const alignment = this.getAttribute("data-align");
-
-        let css = { "text-align": alignment };
-        applyStylesToElement(selectedElement.id, css);
-        await saveModifications(selectedElement.id, css);
-
-        console.log(`✅ Applied text alignment: ${alignment} to ${selectedElement.id}`);
-      });
-    });
-  }
+           widget.classList.remove("squareCraft-hidden");
+       } else if (!widget.contains(event.target)) {
+           widget.classList.add("squareCraft-hidden");
+       }
+   });
+}
 
 
 
