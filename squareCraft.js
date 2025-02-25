@@ -463,6 +463,7 @@
 
    let offsetX = 0, offsetY = 0, isDragging = false;
 
+   // Start dragging when the user clicks the image
    dragHandle.addEventListener("mousedown", (event) => {
        event.preventDefault();
        isDragging = true;
@@ -500,6 +501,7 @@
        localStorage.setItem("widget_Y", widget.style.top);
    }
 
+   // Load stored position if available
    let lastX = localStorage.getItem("widget_X");
    let lastY = localStorage.getItem("widget_Y");
    if (lastX && lastY) {
@@ -510,9 +512,8 @@
        widget.style.top = "50px";
    }
 
-   console.log("✅ Widget is draggable only via the designated handle.");
+   console.log("✅ Widget is draggable only via the designated handle (image).");
 }
-
 
 
 
