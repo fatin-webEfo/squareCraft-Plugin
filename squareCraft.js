@@ -611,6 +611,8 @@ function attachEventListeners() {
            let elementType = block.classList.contains("sqs-block-button") ? "Button" :
                              block.classList.contains("sqs-block-image") ? "Image" :
                              block.classList.contains("sqs-block-html") ? "Text" : "Other";
+                             console.log(`Selected Element Type: ${elementType}`);
+
 
            widget.classList.remove("squareCraft-hidden");
        } else if (!widget.contains(event.target)) {
