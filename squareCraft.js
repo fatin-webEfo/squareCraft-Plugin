@@ -88,88 +88,79 @@
   }
 
   async function fetchModifications(retries = 3) {
-   if (!pageId || !userId) {
-     console.warn("⚠️ Missing `pageId` or `userId`. Cannot fetch modifications.");
-     return;
-   }
+    if (!pageId) return;
 
-   try {
-     const response = await fetch(
-       `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
-       {
-         method: "GET",
-         headers: {
-           "Content-Type": "application/json",
-           "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-         },
-       }
-     );
+    try {
+        const response = await fetch(
+            `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+                },
+            }
+        );
 
-     if (!response.ok) {
-       throw new Error(`HTTP error! Status: ${response.status}`);
-     }
+        const data = await response.json();
 
-     const data = await response.json();
-     console.log("📥 Fetch Response:", data);
+        console.log("📥 Get method", data);
+        if (!data.modifications || data.modifications.length === 0) {
+            console.warn("⚠️ No styles found for this page.");
+            return;
+        }
 
-     if (!data.modifications || data.modifications.length === 0) {
-       console.warn("⚠️ No modifications found.");
-       return;
-     }
+        data.modifications.forEach(({ pageId: storedPageId, elements }) => {
+            if (storedPageId === pageId) {
+                elements.forEach(({ elementId, css }) => {
+                    applyStylesToElement(elementId, css);
+                });
+            }
+        });
 
-     data.modifications.forEach(({ pageId: storedPageId, elements }) => {
-       if (storedPageId === pageId) {
-         elements.forEach(({ elementId, css }) => {
-           applyStylesToElement(elementId, css);
-         });
-       }
-     });
-
-   } catch (error) {
-     console.error("❌ Fetch modifications error:", error);
-     if (retries > 0) {
-       setTimeout(() => fetchModifications(retries - 1), 2000);
-     }
-   }
- }
-
- async function saveModifications(elementId, css) {
-   if (!pageId || !elementId || !css) {
-       console.warn("⚠️ Missing `pageId`, `elementId`, or `css`. Cannot save modifications.");
-       return;
-   }
-
-   console.log("📡 Saving modifications for:", { pageId, elementId, css });
-
-   const modificationData = {
-       userId,
-       widgetId,
-       modifications: [{ pageId, elements: [{ elementId, css }] }],
-   };
-
-   try {
-       const response = await fetch("https://webefo-backend.vercel.app/api/v1/modifications", {
-           method: "POST",
-           headers: {
-               "Content-Type": "application/json",
-               "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-           },
-           body: JSON.stringify(modificationData),
-       });
-
-       if (!response.ok) {
-           const errorResponse = await response.text();  // Get the error response body
-           throw new Error(`HTTP error! Status: ${response.status} | Response: ${errorResponse}`);
-       }
-
-       const jsonData = await response.json();
-       console.log("✅ Changes saved successfully!", jsonData);
-
-   } catch (error) {
-       console.error("❌ Save modifications error:", error);
-   }
+    } catch (error) {
+        console.error("❌ Error fetching modifications:", error);
+        if (retries > 0) {
+            setTimeout(() => fetchModifications(retries - 1), 2000);
+        }
+    }
 }
 
+
+  async function saveModifications(elementId, css) {
+    if (!pageId || !elementId || !css) {
+      console.warn(":warning: Missing required data to save modifications.");
+      return;
+    }
+
+    applyStylesToElement(elementId, css);
+    console.log(":satellite_antenna: Saving modifications for:", { pageId, elementId, css });
+
+    const modificationData = {
+      userId,
+      token,
+      widgetId,
+      modifications: [{ pageId, elements: [{ elementId, css }] }],
+    };
+
+    try {
+      const response = await fetch("https://webefo-backend.vercel.app/api/v1/modifications", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+          "userId": userId,
+          "pageId": pageId,
+          "widget-id": widgetId,
+        },
+        body: JSON.stringify(modificationData),
+      });
+
+      console.log("Changes Saved Successfully!", await response.json());
+    } catch (error) {
+      console.error(":x: Error saving modifications:", error);
+    }
+  }
 
   function createWidget() {
     const widgetContainer = document.createElement("div");
@@ -498,25 +489,24 @@
     }
 
     function stopDragging() {
-      isDragging = false;
-      widget.style.cursor = "grab";
-      document.removeEventListener("mousemove", moveAt);
-      document.removeEventListener("mouseup", stopDragging);
-  
-      localStorage.setItem("widget_X", widget.style.left.replace("px", ""));
-      localStorage.setItem("widget_Y", widget.style.top.replace("px", ""));
-  }
-  
-  let lastX = localStorage.getItem("widget_X");
-  let lastY = localStorage.getItem("widget_Y");
-  if (lastX && lastY) {
-      widget.style.left = `${lastX}px`;
-      widget.style.top = `${lastY}px`;
-  } else {
-      widget.style.left = "50px"; 
-      widget.style.top = "50px";
-  }
-  
+        isDragging = false;
+        widget.style.cursor = "grab";
+        document.removeEventListener("mousemove", moveAt);
+        document.removeEventListener("mouseup", stopDragging);
+
+        localStorage.setItem("widget_X", widget.style.left);
+        localStorage.setItem("widget_Y", widget.style.top);
+    }
+
+    let lastX = localStorage.getItem("widget_X");
+    let lastY = localStorage.getItem("widget_Y");
+    if (lastX && lastY) {
+        widget.style.left = lastX;
+        widget.style.top = lastY;
+    } else {
+        widget.style.left = "50px"; // Default position
+        widget.style.top = "50px";
+    }
 
 }
 
@@ -604,31 +594,6 @@ setTimeout(() => {
   fontfamilies();
 }, 1000);
 
-function attachEventListeners() {
-   document.body.addEventListener("click", (event) => {
-       let block = event.target.closest('[id^="block-"]'); 
-       const widget = document.getElementById("squarecraft-widget-container");
-
-       if (block) {
-           document.querySelectorAll(".squareCraft-outline").forEach(el => {
-               el.classList.remove("squareCraft-outline");
-           });
-
-           block.classList.add("squareCraft-outline");
-
-           selectedElement = block;
-           let elementType = block.classList.contains("sqs-block-button") ? "Button" :
-                             block.classList.contains("sqs-block-image") ? "Image" :
-                             block.classList.contains("sqs-block-html") ? "Text" : "Other";
-
-           console.log(`🖱️ Clicked Element: ID=${block.id}, Type=${elementType}`);
-
-           widget.classList.remove("squareCraft-hidden");
-       } else if (!widget.contains(event.target)) {
-           widget.classList.add("squareCraft-hidden");
-       }
-   });
-}
 
 function attachFontSizeEventListeners() {
    const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
@@ -640,35 +605,34 @@ function attachFontSizeEventListeners() {
        return;
    }
 
-   document.body.addEventListener("click", (event) => {
-      if (event.target.closest("#squarecraft-widget-container")) return;
-  
-      let block = event.target.closest('[id^="block-"]');
-      if (!block) return;
-  
-      if (selectedElement) {
-          selectedElement.style.outline = "";
-          selectedElement.classList.remove("squareCraft-outline");
-      }
-  
-      selectedElement = block;
-      selectedElement.style.outline = "2px dashed #EF7C2F"; 
-      selectedElement.classList.add("squareCraft-outline");
-  
-      document.getElementById("squareCraftFontSizeInput").addEventListener("input", function (event) {
-         if (selectedElement) {
-             let newSize = event.target.value + "px";
-             let css = { "font-size": newSize };
-     
-             applyStylesToElement(selectedElement.id, css);
-             saveModifications(selectedElement.id, css);
-         }
-     });
-     
-      
-      console.log("✅ Selected Element:", selectedElement);
-  });
-  
+document.body.addEventListener("click", (event) => {
+    // Prevent clicking inside the widget from interfering
+    if (event.target.closest("#squarecraft-widget-container")) return;
+
+    // Find the nearest selectable element
+    let block = event.target.closest('[id^="block-"]');
+    if (!block) return;
+
+    // Remove outline from previously selected element
+    if (selectedElement) {
+        selectedElement.style.outline = "";
+        selectedElement.classList.remove("squareCraft-outline");
+    }
+
+    // Set new selected element
+    selectedElement = block;
+    selectedElement.style.outline = "2px dashed #EF7C2F"; // Highlight selected element
+    selectedElement.classList.add("squareCraft-outline");
+
+    // Update font size input if exists
+    if (document.getElementById("squareCraftFontSizeInput")) {
+        let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
+        document.getElementById("squareCraftFontSizeInput").value = parseInt(computedFontSize, 10);
+    }
+    
+    console.log("✅ Selected Element:", selectedElement);
+});
+
 
    dropdownArrow.addEventListener("click", function (event) {
        event.stopPropagation();
@@ -676,20 +640,17 @@ function attachFontSizeEventListeners() {
    });
 
    dropdownOptions.addEventListener("click", function (event) {
-      if (event.target.classList.contains("squareCraft-dropdown-item")) {
-          let selectedSize = event.target.dataset.value;
-          
-          fontSizeInput.value = selectedSize;  // Update input field
-          dropdownOptions.classList.add("squareCraft-hidden");
-  
-          if (selectedElement) {
-              let css = { "font-size": `${selectedSize}px` };
-              applyStylesToElement(selectedElement.id, css);
-              saveModifications(selectedElement.id, css);
-          }
-      }
-  });
-  
+       if (event.target.classList.contains("squareCraft-dropdown-item")) {
+           fontSizeInput.value = event.target.dataset.value;
+           dropdownOptions.classList.add("squareCraft-hidden");
+
+           if (selectedElement) {
+               let css = { "font-size": `${event.target.dataset.value}px` };
+               applyStylesToElement(selectedElement.id, css);
+               saveModifications(selectedElement.id, css);
+           }
+       }
+   });
 
    document.addEventListener("click", function (event) {
        if (!dropdownArrow.contains(event.target) && !dropdownOptions.contains(event.target)) {
