@@ -88,44 +88,53 @@
   }
 
   async function fetchModifications(retries = 3) {
-    if (!pageId) return;
+   if (!pageId) return;
 
-    try {
-        const response = await fetch(
-            `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-                },
-            }
-        );
+   try {
+       const response = await fetch(
+           `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
+           {
+               method: "GET",
+               headers: {
+                   "Content-Type": "application/json",
+                   "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+               },
+           }
+       );
 
-        const data = await response.json();
+       if (!response.ok) {
+           console.error(`❌ API Error: ${response.status} - ${response.statusText}`);
+           if (retries > 0) {
+               console.log(`🔄 Retrying fetch... (${retries} left)`);
+               setTimeout(() => fetchModifications(retries - 1), 2000);
+           }
+           return;
+       }
 
-        console.log("📥 Get method", data);
-        if (!data.modifications || data.modifications.length === 0) {
-            console.warn("⚠️ No styles found for this page.");
-            return;
-        }
+       const data = await response.json();
 
-        data.modifications.forEach(({ pageId: storedPageId, elements }) => {
-            if (storedPageId === pageId) {
-                elements.forEach(({ elementId, css }) => {
-                    applyStylesToElement(elementId, css);
-                });
-            }
-        });
+       if (!data.modifications || data.modifications.length === 0) {
+           console.warn("⚠️ No styles found for this page.");
+           return;
+       }
 
-    } catch (error) {
-        console.error("❌ Error fetching modifications:", error);
-        if (retries > 0) {
-            console.log(`🔄 Retrying fetch... (${retries} left)`);
-            setTimeout(() => fetchModifications(retries - 1), 2000);
-        }
-    }
+       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
+           if (storedPageId === pageId) {
+               elements.forEach(({ elementId, css }) => {
+                   applyStylesToElement(elementId, css);
+               });
+           }
+       });
+
+   } catch (error) {
+       console.error("❌ Error fetching modifications:", error);
+       if (retries > 0) {
+           console.log(`🔄 Retrying fetch... (${retries} left)`);
+           setTimeout(() => fetchModifications(retries - 1), 2000);
+       }
+   }
 }
+
 
 
   async function saveModifications(elementId, css) {
@@ -166,8 +175,19 @@
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
-    widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
- 
+    widgetContainer.classList.add(
+      "squareCraft-fixed",
+      "squareCraft-bottom-5",
+      "squareCraft-right-5",
+      "squareCraft-bg-color-2c2c2c",
+      "squareCraft-text-color-white",
+      "squareCraft-p-4",
+      "squareCraft-border",
+      "squareCraft-border-solid",
+      "squareCraft-border-3d3d3d",
+      "squareCraft-rounded-15px"
+  );
+   
 
 
     widgetContainer.innerHTML = `
@@ -450,70 +470,6 @@
 
 
 
-  function makeWidgetDraggable() {
-   const widget = document.getElementById("squarecraft-widget-container");
-   const dragHandle = document.getElementById("squareCraft-cursor-grabbing"); 
-
-   if (!widget || !dragHandle) {
-       console.warn("❌ Widget or Drag Handle not found.");
-       return;
-   }
-
-   let offsetX = 0, offsetY = 0, isDragging = false;
-   dragHandle.addEventListener("mousedown", (event) => {
-       event.preventDefault();
-       isDragging = true;
-
-       offsetX = event.clientX - widget.getBoundingClientRect().left;
-       offsetY = event.clientY - widget.getBoundingClientRect().top;
-
-       widget.style.transition = "none";
-       widget.style.userSelect = "none";
-       widget.style.cursor = "grabbing";
-
-       document.addEventListener("mousemove", moveAt);
-       document.addEventListener("mouseup", stopDragging);
-   });
-
-   function moveAt(event) {
-       if (!isDragging) return;
-
-       let newX = event.clientX - offsetX;
-       let newY = event.clientY - offsetY;
-       
-       // Prevent dragging outside the viewport
-       newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
-       newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
-
-       widget.style.left = `${newX}px`;
-       widget.style.top = `${newY}px`;
-   }
-
-   function stopDragging() {
-       isDragging = false;
-       widget.style.cursor = "default";
-       document.removeEventListener("mousemove", moveAt);
-       document.removeEventListener("mouseup", stopDragging);
-
-       // Save last position to localStorage
-       localStorage.setItem("widget_X", widget.style.left);
-       localStorage.setItem("widget_Y", widget.style.top);
-   }
-
-   // Load last position
-   let lastX = localStorage.getItem("widget_X");
-   let lastY = localStorage.getItem("widget_Y");
-   if (lastX && lastY) {
-       widget.style.left = lastX;
-       widget.style.top = lastY;
-   } else {
-       widget.style.left = "50px"; 
-       widget.style.top = "50px";
-   }
-
-}
-
-
 
   async function loadFontsWithPagination(page = 1, perPage = 20) {
     try {
@@ -638,63 +594,64 @@ function attachEventListeners() {
   document.addEventListener("DOMContentLoaded", function () {
     createWidgetIcon();
 
-    function insertCustomAdminIcon() {
-      const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
-
-      if (!adminNavbar) {
-          console.warn("Admin navbar not found. Retrying...");
-          setTimeout(insertCustomAdminIcon, 1000); // Retry in case the page hasn't fully loaded
+    function insertCustomAdminIcon(retries = 5) {
+      const adminNavbar = document.querySelector("[data-test='editor-header']");
+  
+      if (!adminNavbar && retries > 0) {
+          console.warn(`⚠️ Admin navbar not found. Retrying... (${retries} attempts left)`);
+          setTimeout(() => insertCustomAdminIcon(retries - 1), 2000);
+          return;
+      } else if (!adminNavbar) {
+          console.error("❌ Admin navbar not found after multiple attempts.");
           return;
       }
-
+  
       if (document.getElementById("customAdminIcon")) return;
-
+  
       const customIcon = document.createElement("img");
-      customIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Your icon URL
+      customIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg";
       customIcon.id = "customAdminIcon";
       customIcon.style.cursor = "pointer";
-      customIcon.style.marginLeft = "15px"; // Adjust spacing
-      customIcon.style.width = "32px"; // Icon size
+      customIcon.style.marginLeft = "15px";
+      customIcon.style.width = "32px";
       customIcon.style.height = "32px";
       
       customIcon.addEventListener("click", function () {
           alert("Custom Plugin Clicked!");
       });
-
+  
       adminNavbar.appendChild(customIcon);
       console.log("✅ Custom admin icon added!");
   }
+  
 
   insertCustomAdminIcon();
-  function checkURL() {
+function checkURL() {
     const currentURL = window.location.href;
     let widgetContainer = document.getElementById("squarecraft-widget-container");
 
     if (currentURL.includes("/#")) {
-        
         if (!widgetContainer) {
-            createWidget(); 
+            createWidget();
             setTimeout(() => {
                 widgetContainer = document.getElementById("squarecraft-widget-container");
-               //  if (widgetContainer) makeWidgetDraggable(); 
-            }, 500); 
+                if (widgetContainer) widgetContainer.classList.remove("squareCraft-hidden"); 
+            }, 500);
         } else {
-            widgetContainer.style.display = "block"; 
-            // makeWidgetDraggable(); 
+            widgetContainer.classList.remove("squareCraft-hidden"); 
         }
-
     } else {
         console.log("❌ Widget is HIDDEN on other pages.");
-        if (widgetContainer) widgetContainer.style.display = "none"; 
+        if (widgetContainer) widgetContainer.classList.add("squareCraft-hidden");
     }
 }
+
 
 
   
 
     checkURL();
     setInterval(checkURL, 1000);
-makeWidgetDraggable(); 
     createWidget();
     attachEventListeners();
     fetchModifications();
