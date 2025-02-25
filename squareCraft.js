@@ -167,7 +167,7 @@
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
-    widgetContainer.style.display = "block";  
+ 
 
 
     widgetContainer.innerHTML = `
@@ -452,7 +452,7 @@
 
   function makeWidgetDraggable() {
    const widget = document.getElementById("squarecraft-widget-container");
-   const dragHandle = document.getElementById("squareCraft-cursor-grabbing"); // Use ID instead of class
+   const dragHandle = document.getElementById("squareCraft-cursor-grabbing"); 
 
    if (!widget || !dragHandle) {
        console.warn("❌ Widget or Drag Handle not found.");
@@ -519,7 +519,7 @@
     try {
         const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
         const data = await response.json();
-        return data.items.slice((page - 1) * perPage, page * perPage); // Paginate fonts
+        return data.items.slice((page - 1) * perPage, page * perPage); 
     } catch (error) {
         console.error("❌ Error fetching Google Fonts:", error);
         return [];
@@ -532,7 +532,6 @@ async function fontfamilies() {
   const perPage = 20;
   const fontDropdown = document.getElementById("squareCraft-font-family");
 
-  // Ensure the dropdown container is created
   let fontList = document.getElementById("squareCraft-font-list");
   if (!fontList) {
       fontList = document.createElement("div");
