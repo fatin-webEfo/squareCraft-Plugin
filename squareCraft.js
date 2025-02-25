@@ -590,8 +590,6 @@ async function fontfamilies() {
 }
 
 
-
-
 setTimeout(() => {
   fontfamilies();
 }, 1000);
