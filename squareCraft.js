@@ -417,8 +417,7 @@
       </div>
     `;
     document.documentElement.appendChild(widgetContainer);
-    makeWidgetDraggable();
-    setInterval(makeWidgetDraggable, 1000);
+  
   }
 
   function createWidgetIcon() {
@@ -449,8 +448,6 @@
 }
 
 
-  setInterval(makeWidgetDraggable, 1000);
-
   function makeWidgetDraggable() {
     const widget = document.getElementById("squarecraft-widget-container");
 
@@ -458,8 +455,6 @@
         console.warn("❌ Widget not found.");
         return;
     }
-
-    // Apply styles to allow free movement
     widget.style.position = "fixed"; // Change from "absolute" to "fixed" for full-page dragging
     widget.style.cursor = "grab";
     widget.style.zIndex = "99999"; // Ensure it's above other elements
@@ -515,24 +510,6 @@
 
 }
 
-
-
-makeWidgetDraggable();
-
-
-setTimeout(makeWidgetDraggable, 1000);
-
-
-
-window.addEventListener("load", () => {
-    setTimeout(makeWidgetDraggable, 500); // Wait for the widget to load
-    createWidgetIcon();
-
-});
-window.addEventListener("load", () => {
-  createWidget();  // Ensure widget is created first
-  setTimeout(makeWidgetDraggable, 500); // Apply draggability after it's added to DOM
-});
 
 
   async function loadFontsWithPagination(page = 1, perPage = 20) {
@@ -676,12 +653,15 @@ function attachFontSizeEventListeners() {
 }
 
 
+window.addEventListener("load", () => {
+   createWidget();
+   setTimeout(makeWidgetDraggable, 500); // Ensure draggable is applied after widget is created
+});
 
 
   document.addEventListener("DOMContentLoaded", function () {
     createWidgetIcon();
 
-    makeWidgetDraggable();
     function insertCustomAdminIcon() {
       const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
 
@@ -737,13 +717,10 @@ function attachFontSizeEventListeners() {
 
     checkURL();
     setInterval(checkURL, 1000);
-    setInterval(makeWidgetDraggable, 1000);
-
     createWidget();
     makeWidgetDraggable();
     attachEventListeners();
     fetchModifications();
-    makeWidgetDraggable();
 
     const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
     const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
