@@ -831,16 +831,7 @@ setTimeout(() => {
     });
  
     
-    document.body.addEventListener("click", () => {
-      const toolbar = document.querySelector("[data-test='block-toolbar']");
-      
-      if (toolbar) {
-          console.log("✅ Toolbar Found:", toolbar);
-          console.log("📌 Toolbar HTML:", toolbar.outerHTML);
-      } else {
-          console.warn("❌ Toolbar Not Found!");
-      }
-  });
+ 
   
   
   
@@ -854,6 +845,23 @@ setTimeout(() => {
     });
 });
 
+document.body.addEventListener("click", async (event) => {
+   let attempts = 0;
+   const interval = setInterval(() => {
+       const toolbar = document.querySelector("[data-test='block-toolbar']");
+       
+       if (toolbar) {
+           console.log("✅ Toolbar Found:", toolbar);
+           console.log("📌 Toolbar HTML:", toolbar.outerHTML);
+           clearInterval(interval); // Stop checking once found
+       } else if (attempts > 10) { // Stop after 1 second (10 attempts)
+           console.warn("❌ Toolbar Not Found after multiple attempts!");
+           clearInterval(interval);
+       }
+       
+       attempts++;
+   }, 100);
+});
 
 
 })();
