@@ -863,8 +863,7 @@ document.body.addEventListener("click", async (event) => {
    }, 100);
 });
 
-function insertCustomAdminIcon(attempts = 0) {
-   const maxAttempts = 20; // Try for 20 attempts (approx. 10 seconds)
+function insertCustomAdminIcon() {
    const adminNavbar = document.querySelector("[data-test='editor-header']");
 
    if (adminNavbar) {
@@ -878,25 +877,35 @@ function insertCustomAdminIcon(attempts = 0) {
            customIcon.style.marginLeft = "15px"; // Adjust spacing
            customIcon.style.width = "32px"; // Icon size
            customIcon.style.height = "32px";
-           
+
            adminNavbar.appendChild(customIcon);
            console.log("✅ Custom Admin Icon Inserted.");
        }
    } else {
-       console.warn(`⚠️ Admin navbar not found. Retrying... (${attempts + 1}/${maxAttempts})`);
-       if (attempts < maxAttempts) {
-           setTimeout(() => insertCustomAdminIcon(attempts + 1), 500);
-       } else {
-           console.error("❌ Admin navbar not found after multiple attempts. Stopping retries.");
-       }
+       console.warn("⚠️ Admin navbar not found. Watching for changes...");
+
+       // Use MutationObserver to detect when the navbar loads
+       const observer = new MutationObserver((mutations, obs) => {
+           const adminNavbar = document.querySelector("[data-test='editor-header']");
+           if (adminNavbar) {
+               console.log("✅ Admin Navbar Found!");
+               obs.disconnect(); // Stop observing once found
+               insertCustomAdminIcon();
+           }
+       });
+
+       observer.observe(document.body, {
+           childList: true,
+           subtree: true
+       });
    }
 }
 
 // Run function after page load
 window.addEventListener("load", () => {
-   setTimeout(() => insertCustomAdminIcon(), 1000);
+   insertCustomAdminIcon();
 });
-console.log(window.frames);
+
 
 
 })();
