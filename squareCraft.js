@@ -166,7 +166,9 @@ async function saveModifications(elementId, css) {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
     widgetContainer.classList.add("squareCraft-absolute", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
-    widgetContainer.style.display = "none"; // Hide the widget by default
+    widgetContainer.style.display = "none";
+    widgetContainer.style.position = "absolute";
+    widgetContainer.style.zIndex = "99999";
 
 
     widgetContainer.innerHTML = `
