@@ -456,53 +456,45 @@ function makeWidgetDraggable() {
        return;
    }
 
-   let selectedElement = null;
    let isDragging = false, startX = 0, startY = 0, offsetX = 0, offsetY = 0;
 
    document.body.addEventListener("click", (event) => {
-       // **Prevent dragging when clicking inside the widget**
        if (widget.contains(event.target)) return;
 
-       // **Find the closest Squarespace block**
        let newSelectedElement = event.target.closest(".sqs-block, [id^='block-'], .fluid-engine-block, [class*='fe-block-']");
        if (!newSelectedElement) return;
 
-       // **Remove outline from previous selection**
-       if (selectedElement && selectedElement !== newSelectedElement) {
-           selectedElement.classList.remove("squareCraft-outline");
-           selectedElement.style.outline = "";
-       }
+       document.querySelectorAll(".squareCraft-outline").forEach(el => {
+           el.classList.remove("squareCraft-outline");
+           el.style.outline = "";
+       });
 
-       selectedElement = newSelectedElement;
-       selectedElement.classList.add("squareCraft-outline");
-       selectedElement.style.outline = "2px dashed #EF7C2F";
+       newSelectedElement.classList.add("squareCraft-outline");
+       newSelectedElement.style.outline = "2px dashed #EF7C2F";
 
-       // **Get element position**
-       const elementRect = selectedElement.getBoundingClientRect();
+       const elementRect = newSelectedElement.getBoundingClientRect();
        const viewportWidth = window.innerWidth;
        const viewportHeight = window.innerHeight;
        const widgetWidth = widget.offsetWidth;
        const widgetHeight = widget.offsetHeight;
 
-       // **Smart Positioning - Avoid edges**
        let widgetLeft = (elementRect.right + widgetWidth > viewportWidth)
-           ? elementRect.left - widgetWidth - 10 // If too close to right, place on left
-           : elementRect.right + 10; // Default: Place on right
+           ? elementRect.left - widgetWidth - 10
+           : elementRect.right + 10;
 
        let widgetTop = (elementRect.bottom + widgetHeight > viewportHeight)
-           ? elementRect.top - widgetHeight - 10 // If too close to bottom, place above
-           : elementRect.bottom + 10; // Default: Place below
+           ? elementRect.top - widgetHeight - 10
+           : elementRect.bottom + 10;
 
-       widget.style.display = "block"; // Show widget
+       widget.style.display = "block";
        widget.style.position = "absolute";
        widget.style.zIndex = "99999";
        widget.style.top = `${widgetTop}px`;
        widget.style.left = `${widgetLeft}px`;
    });
 
-   // **Drag & Drop Handling**
    widget.addEventListener("mousedown", (e) => {
-       if (e.target.tagName === "INPUT" || e.target.tagName === "BUTTON") return; // Prevent drag on input fields & buttons
+       if (e.target.tagName === "INPUT" || e.target.tagName === "BUTTON") return;
        isDragging = true;
        startX = e.clientX;
        startY = e.clientY;
@@ -523,7 +515,6 @@ function makeWidgetDraggable() {
        let newX = offsetX + (e.clientX - startX);
        let newY = offsetY + (e.clientY - startY);
 
-       // Keep widget within the screen bounds
        newX = Math.max(10, Math.min(window.innerWidth - widget.offsetWidth - 10, newX));
        newY = Math.max(10, Math.min(window.innerHeight - widget.offsetHeight - 10, newY));
 
@@ -531,11 +522,11 @@ function makeWidgetDraggable() {
        widget.style.top = `${newY}px`;
    }
 
-   // **Prevent movement on scroll**
    window.addEventListener("scroll", () => {
        if (!isDragging) return;
    }, { passive: true });
 }
+
 
 
 
