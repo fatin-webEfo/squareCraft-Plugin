@@ -529,7 +529,6 @@ function makeWidgetDraggable() {
 }
 
 
-
   async function loadFontsWithPagination(page = 1, perPage = 20) {
     try {
         const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
