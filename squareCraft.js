@@ -759,7 +759,6 @@ setTimeout(() => {
     const currentURL = window.location.href;
     let widgetContainer = document.getElementById("squarecraft-widget-container");
 
-
     if (currentURL.includes("/#")) {
         
         if (!widgetContainer) {
@@ -830,23 +829,21 @@ setTimeout(() => {
             dropdownOptions.classList.add("squareCraft-hidden");
         }
     });
-    document.body.addEventListener("click", (event) => {
-
-      const clickedElement = event.target.closest("[id^='block-'], .sqs-block, .fluid-engine-block, [class*='fe-block-']");
-  
-      if (clickedElement) {
-          console.log("🟠 Clicked Element ID:", clickedElement.id);
-  
-          const toolbar = document.querySelector("[data-test='block-toolbar']");
-  
-          if (toolbar) {
-              console.log("✅ Toolbar Found:", toolbar);
-              console.log("📌 Toolbar HTML:", toolbar.outerHTML);
-          } else {
-              console.warn("❌ Toolbar Not Found!");
-          }
+ 
+    
+    document.body.addEventListener("click", () => {
+      const toolbar = document.querySelector("[data-test='block-toolbar']");
+      
+      if (toolbar) {
+          console.log("✅ Toolbar Found:", toolbar);
+          console.log("📌 Toolbar HTML:", toolbar.outerHTML);
+      } else {
+          console.warn("❌ Toolbar Not Found!");
       }
   });
+  
+  
+  
   
     fontSizeInput.addEventListener("input", function () {
         if (selectedElement) {
