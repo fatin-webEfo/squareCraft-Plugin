@@ -473,18 +473,23 @@ function makeWidgetDraggable() {
        newSelectedElement.style.outline = "2px dashed #EF7C2F";
 
        const elementRect = newSelectedElement.getBoundingClientRect();
-       const viewportWidth = window.innerWidth;
-       const viewportHeight = window.innerHeight;
        const widgetWidth = widget.offsetWidth;
        const widgetHeight = widget.offsetHeight;
+       const viewportWidth = window.innerWidth;
+       const viewportHeight = window.innerHeight;
 
-       let widgetLeft = (elementRect.right + widgetWidth > viewportWidth)
-           ? elementRect.left - widgetWidth - 10
-           : elementRect.right + 10;
+       let widgetLeft = elementRect.right + 10;
+       let widgetTop = elementRect.top;
 
-       let widgetTop = (elementRect.bottom + widgetHeight > viewportHeight)
-           ? elementRect.top - widgetHeight - 10
-           : elementRect.bottom + 10;
+       if (widgetLeft + widgetWidth > viewportWidth) {
+           widgetLeft = elementRect.left - widgetWidth - 10;
+       }
+       if (widgetTop + widgetHeight > viewportHeight) {
+           widgetTop = viewportHeight - widgetHeight - 20;
+       }
+       if (widgetTop < 10) {
+           widgetTop = 10;
+       }
 
        widget.style.display = "block";
        widget.style.position = "absolute";
@@ -521,12 +526,7 @@ function makeWidgetDraggable() {
        widget.style.left = `${newX}px`;
        widget.style.top = `${newY}px`;
    }
-
-   window.addEventListener("scroll", () => {
-       if (!isDragging) return;
-   }, { passive: true });
 }
-
 
 
 
