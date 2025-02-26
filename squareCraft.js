@@ -59,107 +59,98 @@
   if (!pageId) console.warn(":warning: No page ID found. Plugin may not work correctly.");
 
   function applyStylesToElement(elementId, css) {
-    if (!elementId || !css) return;
+   if (!elementId || !css) return;
 
-    let styleTag = document.getElementById(`style-${elementId}`);
-    if (styleTag) {
-      styleTag.remove();  // Remove the old styles before adding new ones
-    }
+   let styleTag = document.getElementById(`style-${elementId}`);
+   if (styleTag) styleTag.remove();
 
-    styleTag = document.createElement("style");
-    styleTag.id = `style-${elementId}`;
-    document.head.appendChild(styleTag);
+   styleTag = document.createElement("style");
+   styleTag.id = `style-${elementId}`;
+   document.head.appendChild(styleTag);
 
-    let cssText = `#${elementId} { `;
-    Object.keys(css).forEach(prop => {
-        cssText += `${prop}: ${css[prop]} !important; `;
-    });
-    cssText += "}";
-    
+   let cssText = `#${elementId} { ${Object.entries(css).map(([prop, value]) => `${prop}: ${value} !important;`).join(" ")} }`;
 
-    if (css["border-radius"]) {
-      cssText += `#${elementId} { overflow: hidden !important; }`;
-    }
-
-    styleTag.innerHTML = cssText;
-    appliedStyles.add(elementId);
-    console.log(`:white_check_mark: Styles Persisted for ${elementId}`);
-  }
-
-  async function fetchModifications(retries = 3) {
-    if (!pageId) return;
-
-    try {
-        const response = await fetch(
-            `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-                },
-            }
-        );
-
-        const data = await response.json();
-
-        console.log("📥 Get method", data);
-        if (!data.modifications || data.modifications.length === 0) {
-            console.warn("⚠️ No styles found for this page.");
-            return;
-        }
-
-        data.modifications.forEach(({ pageId: storedPageId, elements }) => {
-            if (storedPageId === pageId) {
-                elements.forEach(({ elementId, css }) => {
-                    applyStylesToElement(elementId, css);
-                });
-            }
-        });
-
-    } catch (error) {
-        console.error("❌ Error fetching modifications:", error);
-        if (retries > 0) {
-            setTimeout(() => fetchModifications(retries - 1), 2000);
-        }
-    }
+   styleTag.innerHTML = cssText;
+   console.log(`✅ Applied real-time changes to ${elementId}`);
 }
 
 
-  async function saveModifications(elementId, css) {
-    if (!pageId || !elementId || !css) {
-      console.warn(":warning: Missing required data to save modifications.");
-      return;
-    }
+  async function fetchModifications() {
+   const userId = localStorage.getItem("squareCraft_u_id");
+   const token = localStorage.getItem("squareCraft_auth_token");
+   const pageId = getPageId();
 
-    applyStylesToElement(elementId, css);
-    console.log(":satellite_antenna: Saving modifications for:", { pageId, elementId, css });
+   if (!userId || !token || !pageId) {
+       console.warn("⚠️ Required data missing to fetch modifications.");
+       return;
+   }
 
-    const modificationData = {
-      userId,
-      token,
-      widgetId,
-      modifications: [{ pageId, elements: [{ elementId, css }] }],
-    };
+   try {
+       const response = await fetch(`https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`, {
+           method: "GET",
+           headers: {
+               "Content-Type": "application/json",
+               "Authorization": `Bearer ${token}`
+           }
+       });
 
-    try {
-      const response = await fetch("https://webefo-backend.vercel.app/api/v1/modifications", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-          "userId": userId,
-          "pageId": pageId,
-          "widget-id": widgetId,
-        },
-        body: JSON.stringify(modificationData),
-      });
+       const data = await response.json();
 
-      console.log("Changes Saved Successfully!", await response.json());
-    } catch (error) {
-      console.error(":x: Error saving modifications:", error);
-    }
-  }
+       if (!data.modifications || data.modifications.length === 0) {
+           console.warn("⚠️ No styles found for this page.");
+           return;
+       }
+
+       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
+           if (storedPageId === pageId) {
+               elements.forEach(({ elementId, css }) => {
+                   applyStylesToElement(elementId, css);
+               });
+           }
+       });
+
+       console.log("✅ Fetched and applied styles from backend.");
+   } catch (error) {
+       console.error("❌ Error fetching modifications:", error);
+   }
+}
+
+
+
+async function saveModifications(elementId, css) {
+   const userId = localStorage.getItem("squareCraft_u_id");
+   const token = localStorage.getItem("squareCraft_auth_token");
+   const widgetId = localStorage.getItem("squareCraft_w_id");
+   const pageId = getPageId();
+
+   if (!pageId || !elementId || !css || !userId || !token) {
+       console.warn("⚠️ Missing required data to save modifications.");
+       return;
+   }
+
+   const modificationData = {
+       userId,
+       token,
+       widgetId,
+       modifications: [{ pageId, elements: [{ elementId, css }] }]
+   };
+
+   try {
+       const response = await fetch("https://webefo-backend.vercel.app/api/v1/modifications", {
+           method: "POST",
+           headers: {
+               "Content-Type": "application/json",
+               "Authorization": `Bearer ${token}`
+           },
+           body: JSON.stringify(modificationData),
+       });
+
+       console.log("✅ Changes Saved Successfully!", await response.json());
+   } catch (error) {
+       console.error("❌ Error saving modifications:", error);
+   }
+}
+
 
   function createWidget() {
     const widgetContainer = document.createElement("div");
