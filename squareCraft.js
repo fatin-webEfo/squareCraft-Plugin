@@ -896,6 +896,7 @@ function insertCustomAdminIcon(attempts = 0) {
 window.addEventListener("load", () => {
    setTimeout(() => insertCustomAdminIcon(), 1000);
 });
+console.log(window.frames);
 
 
 })();
