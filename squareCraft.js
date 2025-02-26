@@ -455,29 +455,43 @@ function makeWidgetDraggable() {
        return;
    }
 
+   let selectedElement = null;
+
    document.body.addEventListener("click", (event) => {
-       let selectedElement = event.target.closest('[id^="block-"]');
+       if (widget.contains(event.target)) return;
 
-       if (!selectedElement) return;
+       let newSelectedElement = event.target.closest('[id^="block-"]');
+       if (!newSelectedElement) return;
 
-       document.querySelectorAll(".squareCraft-outline").forEach(el => {
-           el.classList.remove("squareCraft-outline");
-       });
+       if (selectedElement && selectedElement !== newSelectedElement) {
+           selectedElement.classList.remove("squareCraft-outline");
+           selectedElement.style.outline = "";
+       }
 
+       selectedElement = newSelectedElement;
        selectedElement.classList.add("squareCraft-outline");
+       selectedElement.style.outline = "2px dashed #EF7C2F";
 
        const elementRect = selectedElement.getBoundingClientRect();
-
        widget.classList.remove("squareCraft-hidden");
 
-       widget.classList.remove("squareCraft-top-0", "squareCraft-left-0");
+       let widgetTop = window.scrollY + elementRect.top + elementRect.height + 10;
+       let widgetLeft = window.scrollX + elementRect.left;
 
-       widget.classList.add("squareCraft-absolute", "squareCraft-z-99999", "squareCraft-widget-position");
+       if (widgetLeft + widget.offsetWidth > window.innerWidth) {
+           widgetLeft = window.innerWidth - widget.offsetWidth - 10;
+       }
+       if (widgetTop + widget.offsetHeight > window.innerHeight) {
+           widgetTop = window.scrollY + elementRect.top - widget.offsetHeight - 10;
+       }
 
-       widget.style.top = `${window.scrollY + elementRect.top + elementRect.height + 10}px`;
-       widget.style.left = `${window.scrollX + elementRect.left}px`;
+       widget.style.position = "absolute";
+       widget.style.zIndex = "99999";
+       widget.style.top = `${widgetTop}px`;
+       widget.style.left = `${widgetLeft}px`;
    });
 }
+
 
 
 
