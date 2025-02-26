@@ -449,7 +449,6 @@ async function saveModifications(elementId, css) {
     document.body.appendChild(widgetIcon);
 }
 
-
 function makeWidgetDraggable() {
    const widget = document.getElementById("squarecraft-widget-container");
    if (!widget) {
@@ -537,7 +536,6 @@ function makeWidgetDraggable() {
        if (!isDragging) return;
    }, { passive: true });
 }
-
 
 
 
