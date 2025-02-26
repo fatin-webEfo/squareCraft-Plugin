@@ -517,13 +517,19 @@
     console.log("✅ Fully Flexible Widget Dragging Enabled.");
 }
 
+document.body.addEventListener("click", (event) => {
+   const toolbar = event.target.closest("[data-test='block-toolbar']");
+   
+   if (toolbar) {
+       console.log("Toolbar HTML:", toolbar.outerHTML);
+   }
+});
 
 
 makeWidgetDraggable();
 
 
 setTimeout(makeWidgetDraggable, 1000);
-
 
 
 window.addEventListener("load", () => {
