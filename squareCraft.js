@@ -447,66 +447,40 @@
 }
 
 
-  function makeWidgetDraggable() {
-    const widget = document.getElementById("squarecraft-widget-container");
+function makeWidgetDraggable() {
+   const widget = document.getElementById("squarecraft-widget-container");
 
-    if (!widget) {
-        console.warn("❌ Widget not found.");
-        return;
-    }
-    widget.style.position = "fixed"; // Change from "absolute" to "fixed" for full-page dragging
-    widget.style.cursor = "grab";
-    widget.style.zIndex = "99999"; // Ensure it's above other elements
+   if (!widget) {
+       console.warn("❌ Widget not found.");
+       return;
+   }
 
-    let offsetX = 0, offsetY = 0, isDragging = false;
+   document.body.addEventListener("click", (event) => {
+       let selectedElement = event.target.closest('[id^="block-"]');
 
-    widget.addEventListener("mousedown", (event) => {
-        event.preventDefault();
-        isDragging = true;
+       if (!selectedElement) return;
 
-        offsetX = event.clientX - widget.getBoundingClientRect().left;
-        offsetY = event.clientY - widget.getBoundingClientRect().top;
+       // Remove outline from previous elements
+       document.querySelectorAll(".squareCraft-outline").forEach(el => {
+           el.classList.remove("squareCraft-outline");
+       });
 
-        widget.style.transition = "none";
-        widget.style.userSelect = "none";
-        widget.style.cursor = "grabbing";
+       // Add outline to selected element
+       selectedElement.classList.add("squareCraft-outline");
 
-        document.addEventListener("mousemove", moveAt);
-        document.addEventListener("mouseup", stopDragging);
-    });
+       // Get element position
+       const elementRect = selectedElement.getBoundingClientRect();
 
-    function moveAt(event) {
-        if (!isDragging) return;
+       // Remove old positioning classes
+       widget.classList.remove("squareCraft-top-0", "squareCraft-left-0", "squareCraft-hidden");
 
-        let newX = event.clientX - offsetX;
-        let newY = event.clientY - offsetY;
-        newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
-        newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
+       // Add SquareCraft-specific positioning classes
+       widget.classList.add("squareCraft-absolute", "squareCraft-z-99999", "squareCraft-widget-position");
 
-        widget.style.left = `${newX}px`;
-        widget.style.top = `${newY}px`;
-    }
-
-    function stopDragging() {
-        isDragging = false;
-        widget.style.cursor = "grab";
-        document.removeEventListener("mousemove", moveAt);
-        document.removeEventListener("mouseup", stopDragging);
-
-        localStorage.setItem("widget_X", widget.style.left);
-        localStorage.setItem("widget_Y", widget.style.top);
-    }
-
-    let lastX = localStorage.getItem("widget_X");
-    let lastY = localStorage.getItem("widget_Y");
-    if (lastX && lastY) {
-        widget.style.left = lastX;
-        widget.style.top = lastY;
-    } else {
-        widget.style.left = "50px"; // Default position
-        widget.style.top = "50px";
-    }
-
+       // Update custom CSS variables for positioning
+       document.documentElement.style.setProperty("--squareCraft-widget-top", `${window.scrollY + elementRect.top + elementRect.height + 10}px`);
+       document.documentElement.style.setProperty("--squareCraft-widget-left", `${window.scrollX + elementRect.left}px`);
+   });
 }
 
 
