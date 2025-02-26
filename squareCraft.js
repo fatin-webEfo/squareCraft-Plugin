@@ -164,7 +164,7 @@
   function createWidget() {
     const widgetContainer = document.createElement("div");
     widgetContainer.id = "squarecraft-widget-container";
-    widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
+    widgetContainer.classList.add("squareCraft-absolute", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-99999");
     widgetContainer.style.display = "none"; // Hide the widget by default
 
 
