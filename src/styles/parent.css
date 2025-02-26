@@ -921,13 +921,8 @@ font-size: 12px !important;
   padding: 0 !important;
 }
 
-:root {
-  --squareCraft-widget-top: 100px;
-  --squareCraft-widget-left: 100px;
+.squareCraft-widget-position {
+  position: absolute;
+  z-index: 99999;
 }
 
-.squareCraft-widget-position {
-  top: var(--squareCraft-widget-top);
-  left: var(--squareCraft-widget-left);
-}
-  

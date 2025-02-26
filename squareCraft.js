@@ -460,26 +460,22 @@ function makeWidgetDraggable() {
 
        if (!selectedElement) return;
 
-       // Remove outline from previous elements
        document.querySelectorAll(".squareCraft-outline").forEach(el => {
            el.classList.remove("squareCraft-outline");
        });
 
-       // Add outline to selected element
        selectedElement.classList.add("squareCraft-outline");
 
-       // Get element position
        const elementRect = selectedElement.getBoundingClientRect();
 
-       // Remove old positioning classes
-       widget.classList.remove("squareCraft-top-0", "squareCraft-left-0", "squareCraft-hidden");
+       widget.classList.remove("squareCraft-hidden");
 
-       // Add SquareCraft-specific positioning classes
+       widget.classList.remove("squareCraft-top-0", "squareCraft-left-0");
+
        widget.classList.add("squareCraft-absolute", "squareCraft-z-99999", "squareCraft-widget-position");
 
-       // Update custom CSS variables for positioning
-       document.documentElement.style.setProperty("--squareCraft-widget-top", `${window.scrollY + elementRect.top + elementRect.height + 10}px`);
-       document.documentElement.style.setProperty("--squareCraft-widget-left", `${window.scrollX + elementRect.left}px`);
+       widget.style.top = `${window.scrollY + elementRect.top + elementRect.height + 10}px`;
+       widget.style.left = `${window.scrollX + elementRect.left}px`;
    });
 }
 
