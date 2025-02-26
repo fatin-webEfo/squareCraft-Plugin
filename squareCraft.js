@@ -845,7 +845,7 @@ setTimeout(() => {
     });
 });
 
-document.body.addEventListener("click", function (event) {
+document.body.addEventListener("click", function () {
    setTimeout(() => {
        const toolbar = document.querySelector('[data-block-focus-handler-id="react-block-annotation"][data-test="block-toolbar"]');
        
@@ -855,9 +855,31 @@ document.body.addEventListener("click", function (event) {
        } else {
            console.warn("❌ Toolbar Not Found!");
        }
-   }, 100); 
+   }, 300); // Delayed check after 300ms
 });
 
+
+// Function to observe DOM changes and detect Squarespace block toolbar
+function observeSquarespaceToolbar() {
+   const observer = new MutationObserver((mutations) => {
+       mutations.forEach((mutation) => {
+           if (mutation.type === "childList") {
+               const toolbar = document.querySelector('[data-block-focus-handler-id="react-block-annotation"][data-test="block-toolbar"]');
+               if (toolbar) {
+                   console.log("✅ Toolbar Found:", toolbar);
+                   console.log("📌 Toolbar HTML:", toolbar.outerHTML);
+               }
+           }
+       });
+   });
+
+   observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// Start observing for the toolbar when the page loads
+window.addEventListener("load", () => {
+   observeSquarespaceToolbar();
+});
 
 function insertCustomAdminIcon() {
    const adminNavbar = document.querySelector("[data-test='editor-header']");
