@@ -440,22 +440,25 @@ async function saveModifications(elementId, css) {
 
 function makeWidgetDraggable() {
    const widget = document.getElementById("squarecraft-widget-container");
-   let isWidgetVisible = false;
-   let selectedElement = null;
 
    if (!widget) {
        console.warn("❌ Widget not found.");
        return;
    }
 
+   let selectedElement = null;
+
    document.body.addEventListener("click", (event) => {
        if (widget.contains(event.target)) return;
 
-       // If the widget is already visible, do nothing on further clicks
-       if (isWidgetVisible) return;
-
        let newSelectedElement = event.target.closest('[id^="block-"]');
        if (!newSelectedElement) return;
+
+       // Remove outline from previously selected element
+       if (selectedElement && selectedElement !== newSelectedElement) {
+           selectedElement.classList.remove("squareCraft-outline");
+           selectedElement.style.outline = "";
+       }
 
        selectedElement = newSelectedElement;
        selectedElement.classList.add("squareCraft-outline");
@@ -463,7 +466,6 @@ function makeWidgetDraggable() {
 
        const elementRect = selectedElement.getBoundingClientRect();
        widget.style.display = "block"; // Show the widget
-       isWidgetVisible = true;
 
        let widgetTop = window.scrollY + elementRect.bottom + 10;
        let widgetLeft = window.scrollX + elementRect.left;
@@ -477,6 +479,7 @@ function makeWidgetDraggable() {
        widget.style.top = `${widgetTop}px`;
        widget.style.left = `${widgetLeft}px`;
 
+       // Dragging functionality
        let offsetX = 0, offsetY = 0, mouseX = 0, mouseY = 0;
        let isDragging = false;
 
@@ -507,6 +510,7 @@ function makeWidgetDraggable() {
        });
    });
 }
+
 
 
 
