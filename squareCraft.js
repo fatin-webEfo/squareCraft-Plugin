@@ -475,19 +475,19 @@ function makeWidgetDraggable() {
        const elementRect = selectedElement.getBoundingClientRect();
        widget.classList.remove("squareCraft-hidden");
 
-       let widgetTop = window.scrollY + elementRect.top + elementRect.height + 10;
+       let widgetTop = window.scrollY + elementRect.bottom + elementRect.height + 10;
        let widgetLeft = window.scrollX + elementRect.left;
 
        if (widgetLeft + widget.offsetWidth > window.innerWidth) {
            widgetLeft = window.innerWidth - widget.offsetWidth - 10;
        }
        if (widgetTop + widget.offsetHeight > window.innerHeight) {
-           widgetTop = window.scrollY + elementRect.top - widget.offsetHeight - 10;
+           widgetTop = window.scrollY + elementRect.bottom - widget.offsetHeight - 10;
        }
 
        widget.style.position = "absolute";
        widget.style.zIndex = "99999";
-       widget.style.top = `${widgetTop}px`;
+       widget.style.bottom = `${widgetTop}px`;
        widget.style.left = `${widgetLeft}px`;
    });
 }
