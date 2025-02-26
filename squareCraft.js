@@ -440,46 +440,71 @@ async function saveModifications(elementId, css) {
 
 function makeWidgetDraggable() {
    const widget = document.getElementById("squarecraft-widget-container");
+   let isWidgetVisible = false;
+   let selectedElement = null;
 
    if (!widget) {
        console.warn("❌ Widget not found.");
        return;
    }
 
-   let selectedElement = null;
-
    document.body.addEventListener("click", (event) => {
        if (widget.contains(event.target)) return;
 
+       // If the widget is already visible, do nothing on further clicks
+       if (isWidgetVisible) return;
+
        let newSelectedElement = event.target.closest('[id^="block-"]');
        if (!newSelectedElement) return;
-
-       if (selectedElement && selectedElement !== newSelectedElement) {
-           selectedElement.classList.remove("squareCraft-outline");
-           selectedElement.style.outline = "";
-       }
 
        selectedElement = newSelectedElement;
        selectedElement.classList.add("squareCraft-outline");
        selectedElement.style.outline = "2px dashed #EF7C2F";
 
        const elementRect = selectedElement.getBoundingClientRect();
-       widget.classList.remove("squareCraft-hidden");
+       widget.style.display = "block"; // Show the widget
+       isWidgetVisible = true;
 
-       let widgetTop = window.scrollY + elementRect.bottom + elementRect.height + 10;
+       let widgetTop = window.scrollY + elementRect.bottom + 10;
        let widgetLeft = window.scrollX + elementRect.left;
 
-       if (widgetLeft + widget.offsetWidth > window.innerWidth) {
-           widgetLeft = window.innerWidth - widget.offsetWidth - 10;
-       }
-       if (widgetTop + widget.offsetHeight > window.innerHeight) {
-           widgetTop = window.scrollY + elementRect.bottom - widget.offsetHeight - 10;
-       }
+       // Ensure the widget stays within viewport
+       widgetLeft = Math.min(widgetLeft, window.innerWidth - widget.offsetWidth - 10);
+       widgetTop = Math.min(widgetTop, window.innerHeight - widget.offsetHeight - 10);
 
        widget.style.position = "absolute";
        widget.style.zIndex = "99999";
-       widget.style.bottom = `${widgetTop}px`;
+       widget.style.top = `${widgetTop}px`;
        widget.style.left = `${widgetLeft}px`;
+
+       let offsetX = 0, offsetY = 0, mouseX = 0, mouseY = 0;
+       let isDragging = false;
+
+       widget.addEventListener("mousedown", (e) => {
+           if (e.target.tagName === "INPUT") return; // Prevent drag on inputs
+           isDragging = true;
+           mouseX = e.clientX;
+           mouseY = e.clientY;
+           offsetX = widget.offsetLeft;
+           offsetY = widget.offsetTop;
+       });
+
+       document.addEventListener("mousemove", (e) => {
+           if (!isDragging) return;
+           let newX = offsetX + (e.clientX - mouseX);
+           let newY = offsetY + (e.clientY - mouseY);
+
+           // Ensure the widget stays within viewport
+           newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
+           newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
+
+           widget.style.left = `${newX}px`;
+           widget.style.top = `${newY}px`;
+       });
+
+       document.addEventListener("mouseup", () => {
+           isDragging = false;
+       });
    });
 }
 
