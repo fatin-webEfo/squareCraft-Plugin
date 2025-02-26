@@ -450,23 +450,23 @@ async function saveModifications(elementId, css) {
 
 function makeWidgetDraggable() {
    const widget = document.getElementById("squarecraft-widget-container");
-
    if (!widget) {
        console.warn("❌ Widget not found.");
        return;
    }
 
    let selectedElement = null;
-   let isDragging = false, offsetX = 0, offsetY = 0, startX = 0, startY = 0;
+   let isDragging = false, startX = 0, startY = 0, offsetX = 0, offsetY = 0;
 
    document.body.addEventListener("click", (event) => {
-       // **Prevent interaction inside the widget**
+       // **Prevent dragging when clicking inside the widget**
        if (widget.contains(event.target)) return;
 
-       let newSelectedElement = event.target.closest('[id^="block-"]');
+       // **Find the closest Squarespace block**
+       let newSelectedElement = event.target.closest(".sqs-block, [id^='block-'], .fluid-engine-block, [class*='fe-block-']");
        if (!newSelectedElement) return;
 
-       // Remove outline from previous selection
+       // **Remove outline from previous selection**
        if (selectedElement && selectedElement !== newSelectedElement) {
            selectedElement.classList.remove("squareCraft-outline");
            selectedElement.style.outline = "";
@@ -476,22 +476,23 @@ function makeWidgetDraggable() {
        selectedElement.classList.add("squareCraft-outline");
        selectedElement.style.outline = "2px dashed #EF7C2F";
 
+       // **Get element position**
        const elementRect = selectedElement.getBoundingClientRect();
        const viewportWidth = window.innerWidth;
        const viewportHeight = window.innerHeight;
        const widgetWidth = widget.offsetWidth;
        const widgetHeight = widget.offsetHeight;
 
-       // **Smart Positioning - Left or Right Based on Screen**
+       // **Smart Positioning - Avoid edges**
        let widgetLeft = (elementRect.right + widgetWidth > viewportWidth)
-           ? elementRect.left - widgetWidth - 10 // Place on the left if too close to the right
-           : elementRect.right + 10; // Default: Place on the right
+           ? elementRect.left - widgetWidth - 10 // If too close to right, place on left
+           : elementRect.right + 10; // Default: Place on right
 
        let widgetTop = (elementRect.bottom + widgetHeight > viewportHeight)
-           ? elementRect.top - widgetHeight - 10 // Place above if too close to the bottom
+           ? elementRect.top - widgetHeight - 10 // If too close to bottom, place above
            : elementRect.bottom + 10; // Default: Place below
 
-       widget.style.display = "block"; // Show the widget
+       widget.style.display = "block"; // Show widget
        widget.style.position = "absolute";
        widget.style.zIndex = "99999";
        widget.style.top = `${widgetTop}px`;
