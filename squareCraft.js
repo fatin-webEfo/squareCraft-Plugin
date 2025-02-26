@@ -121,7 +121,6 @@
     } catch (error) {
         console.error("❌ Error fetching modifications:", error);
         if (retries > 0) {
-            console.log(`🔄 Retrying fetch... (${retries} left)`);
             setTimeout(() => fetchModifications(retries - 1), 2000);
         }
     }
@@ -442,9 +441,7 @@
         "squareCraft-z-9999"
     );
 
-    widgetIcon.addEventListener("click", function () {
-        alert("Click on an element to open the widget.");
-    });
+
 
     document.body.appendChild(widgetIcon);
 }
@@ -514,7 +511,6 @@
         widget.style.top = "50px";
     }
 
-    console.log("✅ Fully Flexible Widget Dragging Enabled.");
 }
 
 document.body.addEventListener("click", (event) => {
@@ -758,7 +754,6 @@ setTimeout(() => {
       });
 
       adminNavbar.appendChild(customIcon);
-      console.log("✅ Custom admin icon added!");
   }
 
   insertCustomAdminIcon();
@@ -769,7 +764,6 @@ setTimeout(() => {
     console.log("Current URL:", currentURL);
 
     if (currentURL.includes("/#")) {
-        console.log("✅ Widget is VISIBLE on the Code Injection page.");
         
         if (!widgetContainer) {
             createWidget(); 
@@ -783,7 +777,6 @@ setTimeout(() => {
         }
 
     } else {
-        console.log("❌ Widget is HIDDEN on other pages.");
         if (widgetContainer) widgetContainer.style.display = "none"; 
     }
 }
