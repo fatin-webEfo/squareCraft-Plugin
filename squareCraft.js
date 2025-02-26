@@ -75,17 +75,19 @@
 }
 
 
-  async function fetchModifications() {
+async function fetchModifications() {
    const userId = localStorage.getItem("squareCraft_u_id");
    const token = localStorage.getItem("squareCraft_auth_token");
    const pageId = getPageId();
 
    if (!userId || !token || !pageId) {
-       console.warn("⚠️ Required data missing to fetch modifications.");
+       console.warn("⚠️ Missing data: Cannot fetch modifications.");
        return;
    }
 
    try {
+       console.log("🚀 Fetching from:", `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`);
+
        const response = await fetch(`https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`, {
            method: "GET",
            headers: {
@@ -94,7 +96,13 @@
            }
        });
 
+       if (!response.ok) {
+           console.error("❌ Fetch failed:", response.status, response.statusText);
+           return;
+       }
+
        const data = await response.json();
+       console.log("✅ Fetched Data:", data);
 
        if (!data.modifications || data.modifications.length === 0) {
            console.warn("⚠️ No styles found for this page.");
@@ -109,11 +117,13 @@
            }
        });
 
-       console.log("✅ Fetched and applied styles from backend.");
+       console.log("✅ Successfully applied styles from backend.");
    } catch (error) {
        console.error("❌ Error fetching modifications:", error);
    }
 }
+
+
 
 
 
