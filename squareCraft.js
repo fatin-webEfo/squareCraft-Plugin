@@ -33,8 +33,6 @@
   link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
   document.head.appendChild(link);
 
-  let selectedElement = null;
-
   async function createWidget() {
       console.log("📥 Fetching widget module...");
       try {
