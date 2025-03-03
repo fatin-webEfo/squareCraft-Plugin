@@ -65,10 +65,8 @@
           widgetIcon.classList.add(
               "squareCraft-absolute",
               "squareCraft-hidden",
-              "squareCraft-rounded-md",
               "squareCraft-w-20",
               "squareCraft-rounded-lg",
-              "squareCraft-bg-color-2c2c2c",
               "squareCraft-cursor-pointer",
               "squareCraft-z-9999",
               "squareCraft-animate-border"
