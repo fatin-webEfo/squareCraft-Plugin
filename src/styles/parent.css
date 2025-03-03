@@ -958,7 +958,7 @@ font-size: 12px !important;
 
 
 .squareCraft-widget-icon {
-  width: 80px !important;  /* Adjust size */
+  width: 100px !important;  /* Adjust size */
   height: 30px !important; /* Keep it proportional */
 }
 
