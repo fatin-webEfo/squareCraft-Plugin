@@ -29,12 +29,9 @@
   link.type = "text/css";
   link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
   document.head.appendChild(link);
-
-  let selectedElement = null;
   let widgetIcon = null;
   let widgetContainer = null;
 
-  // Function to create Widget UI
   async function createWidget() {
       console.log("📥 Fetching widget module...");
       try {
@@ -59,7 +56,6 @@
       }
   }
 
-  // Function to create the widget icon
   function createWidgetIcon() {
       if (!widgetIcon) {
           widgetIcon = document.createElement("img");
@@ -86,14 +82,11 @@
   document.body.addEventListener("click", (event) => {
       const targetBlock = event.target.closest('[id^="block-"]');
 
-      // Case 1: Clicked on widget icon → Hide it & Show Widget UI
       if (widgetIcon && event.target === widgetIcon) {
           widgetIcon.classList.add("squareCraft-hidden");
           createWidget();
           return;
       }
-
-      // Case 2: Clicked outside both widgetIcon & Widget UI → Hide all
       if (
           widgetContainer &&
           !widgetContainer.contains(event.target) &&
@@ -110,7 +103,6 @@
           return;
       }
 
-      // Case 3: Clicked on a valid block → Show Widget Icon
       if (targetBlock) {
           console.log("Target Block:", targetBlock);
           console.log("Target Block ID:", targetBlock?.id);
