@@ -209,53 +209,63 @@
         }
     }
 
-
-
-
-
-
-
-
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var navBar = document.querySelector('.header-actions');
+    function injectWidgetIconIntoNavbar() {
+        let attempts = 0;
+        const maxAttempts = 10; 
     
-        if (!navBar) {
-            navBar = document.querySelector('.header-nav-list') || 
-                     document.querySelector('nav.header-nav') || 
-                     document.querySelector('header');
-                     console.log("navBar not found" , navBar);
+        function attemptToInject() {
+            let navBar = document.querySelector('.header-actions');
+    
+            if (!navBar) {
+                navBar = document.querySelector('.header-nav-list') ||
+                         document.querySelector('nav.header-nav') ||
+                         document.querySelector('header');
+            }
+    
+            if (navBar) {
+                console.log("✅ Admin Navbar found!", navBar);
+    
+                if (!document.getElementById("squarecraft-widget-icon")) {
+                    let widgetIcon = document.createElement("img");
+                    widgetIcon.id = "squarecraft-widget-icon";
+                    widgetIcon.src = "https://i.ibb.co/RGcBx7SF/Logo-Blue.png";
+    
+                    widgetIcon.style.width = "24px";
+                    widgetIcon.style.height = "24px";
+                    widgetIcon.style.cursor = "pointer";
+                    widgetIcon.style.marginLeft = "10px";
+                    widgetIcon.style.verticalAlign = "middle";
+    
+                    let iconWrapper = document.createElement('div');
+                    iconWrapper.classList.add('header-actions-action--social');
+                    iconWrapper.appendChild(widgetIcon);
+    
+                    navBar.appendChild(iconWrapper);
+    
+                    widgetIcon.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        console.log("🎨 SquareCraft Icon Clicked!");
+                        createWidget();
+                    });
+    
+                    console.log("🎯 SquareCraft Icon successfully injected into admin navbar!");
+                }
+            } else if (attempts < maxAttempts) {
+                attempts++;
+                console.warn(`❌ Admin Navbar not found, retrying... (${attempts}/${maxAttempts})`);
+                setTimeout(attemptToInject, 500); 
+            } else {
+                console.error("🚨 Could not find Squarespace admin navbar after multiple attempts!");
+            }
         }
     
-        if (navBar) {
-            console.log("✅ Navbar found!", navBar);
+        attemptToInject();
+    }
     
-            var widgetIcon = document.createElement("img");
-            widgetIcon.id = "squarecraft-widget-icon";
-            widgetIcon.src = "https://i.ibb.co/RGcBx7SF/Logo-Blue.png"; 
+    document.addEventListener("DOMContentLoaded", injectWidgetIconIntoNavbar);
     
-            widgetIcon.style.width = "24px"; 
-            widgetIcon.style.height = "24px";
-            widgetIcon.style.cursor = "pointer";
-            widgetIcon.style.marginLeft = "10px";
-            widgetIcon.style.verticalAlign = "middle";
-            
-            var iconWrapper = document.createElement('div');
-            iconWrapper.classList.add('header-actions-action--social'); 
-            iconWrapper.appendChild(widgetIcon);
-    
-            navBar.appendChild(iconWrapper);
-    
-            widgetIcon.addEventListener("click", function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-                console.log("🎨 SquareCraft Icon Clicked!");
-                createWidget(); 
-            });
-        } else {
-            console.warn("❌ Navbar container not found.");
-        }
-    });
+
     
   })();
   
