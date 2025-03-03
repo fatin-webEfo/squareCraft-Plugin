@@ -77,41 +77,51 @@
   }
 
   document.body.addEventListener("click", (event) => {
-      const targetBlock = event.target.closest('[id^="block-"]');
-      let widgetIcon = document.getElementById("squarecraft-widget-icon") || createWidgetIcon();
+    const targetBlock = event.target.closest('[id^="block-"]');
+    let widgetIcon = document.getElementById("squarecraft-widget-icon") || createWidgetIcon();
 
-      if (event.target === widgetIcon) {
-          widgetIcon.classList.add("squareCraft-hidden");
-          createWidget();
-          return;
-      }
+    if (event.target === widgetIcon) {
+        widgetIcon.classList.add("squareCraft-hidden");
+        createWidget();
+        return;
+    }
 
-      if (targetBlock) {
-          console.log("Target Block:", targetBlock);
-          console.log("Target Block ID:", targetBlock?.id);
+    if (targetBlock) {
+        console.log("Target Block:", targetBlock);
+        console.log("Target Block ID:", targetBlock?.id);
 
-          document.querySelectorAll(".squareCraft-outline").forEach(el => {
-              el.classList.remove("squareCraft-outline");
-              el.style.outline = "";
-          });
+        document.querySelectorAll(".squareCraft-outline").forEach(el => {
+            el.classList.remove("squareCraft-outline");
+            el.style.outline = "";
+            el.style.position = ""; // Reset previous elements
+        });
 
-          targetBlock.classList.add("squareCraft-outline");
-          targetBlock.style.outline = "2px dashed #EF7C2F";
+        targetBlock.classList.add("squareCraft-outline");
+        targetBlock.style.outline = "2px dashed #EF7C2F";
 
-          selectedElement = targetBlock;
-          widgetIcon.classList.remove("squareCraft-hidden");
+        // Ensure targetBlock has relative positioning
+        if (getComputedStyle(targetBlock).position === "static") {
+            targetBlock.style.position = "relative";
+        }
 
-          const rect = targetBlock.getBoundingClientRect();
-          widgetIcon.style.top = `${window.scrollY + rect.top}px`; 
-          widgetIcon.style.left = `${window.scrollX + rect.right - widgetIcon.offsetWidth}px`; 
+        selectedElement = targetBlock;
+        widgetIcon.classList.remove("squareCraft-hidden");
 
-      } else {
-          widgetIcon.classList.add("squareCraft-hidden");
-          document.querySelectorAll(".squareCraft-outline").forEach(el => {
-              el.classList.remove("squareCraft-outline");
-              el.style.outline = "";
-          });
-      }
-  });
+        // Correct absolute positioning relative to the selected element
+        widgetIcon.style.position = "absolute";
+        widgetIcon.style.top = `${targetBlock.offsetTop}px`;
+        widgetIcon.style.left = `${targetBlock.offsetWidth - widgetIcon.offsetWidth}px`;
+
+        // Append widgetIcon inside targetBlock for correct absolute positioning
+        targetBlock.appendChild(widgetIcon);
+    } else {
+        widgetIcon.classList.add("squareCraft-hidden");
+        document.querySelectorAll(".squareCraft-outline").forEach(el => {
+            el.classList.remove("squareCraft-outline");
+            el.style.outline = "";
+        });
+    }
+});
+
 
 })();
