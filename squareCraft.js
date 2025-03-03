@@ -74,6 +74,7 @@
               "squareCraft-bg-color-2c2c2c",
               "squareCraft-cursor-pointer",
               "squareCraft-z-9999",
+              "squareCraft-widget-icon",
               "squareCraft-animate-border",
               "squareCraft-animate-border"
           );
