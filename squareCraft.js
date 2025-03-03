@@ -124,7 +124,7 @@
             widgetIcon.classList.remove("squareCraft-hidden");
   
             const rect = targetBlock.getBoundingClientRect();
-            widgetIcon.style.top = `${window.scrollY + rect.top }px`;
+            widgetIcon.style.top = `${window.scrollY + rect.top + 2 }px`;
             widgetIcon.style.left = `${window.scrollX + rect.right - 110}px`;
             widgetIcon.style.display = "block";
         }
