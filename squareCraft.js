@@ -39,7 +39,7 @@
         try {
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
             if (module && module.html) {
-                console.log("✅ HTML module loaded successfully!");
+                console.log("✅ HTML module loaded successfully!"   );
   
                 if (!widgetContainer) {
                     widgetContainer = document.createElement("div");
@@ -47,6 +47,7 @@
                     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
                     widgetContainer.innerHTML = module.html();
                     document.body.appendChild(widgetContainer);
+                    console.log("widgetContainer" , widgetContainer)
                 } else {
                     widgetContainer.classList.remove("squareCraft-hidden");
                 }
