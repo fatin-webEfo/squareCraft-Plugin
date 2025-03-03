@@ -49,7 +49,6 @@
                     document.body.appendChild(widgetContainer);
     
                     widgetContainer.style.display = "block";
-                    widgetContainer.style.borderRadius = "12px";
                     widgetContainer.style.opacity = "1";
                     widgetContainer.style.zIndex = "9999";
                     widgetContainer.style.position = "fixed";
