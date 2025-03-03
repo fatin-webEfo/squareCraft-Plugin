@@ -63,13 +63,20 @@
             widgetIcon = document.createElement("img");
             widgetIcon.id = "squarecraft-widget-icon";
             widgetIcon.src = "https://i.ibb.co/RGcBx7SF/Logo-Blue.png";
-            widgetIcon.style.position = "absolute";
-            widgetIcon.style.width = "40px";
-            widgetIcon.style.height = "40px";
-            widgetIcon.style.zIndex = "9999";
-            widgetIcon.style.cursor = "pointer";
-            widgetIcon.style.borderRadius = "8px";
-            widgetIcon.classList.add("squareCraft-hidden", "squareCraft-animate-border");
+       
+            widgetIcon.classList.add(
+                "squareCraft-absolute",
+                "squareCraft-hidden",
+                "squareCraft-rounded-md",
+                "squareCraft-w-12",
+                "squareCraft-h-12",
+                "squareCraft-rounded-lg",
+                "squareCraft-bg-color-2c2c2c",
+                "squareCraft-cursor-pointer",
+                "squareCraft-z-9999",
+                "squareCraft-widget-icon",
+                "squareCraft-animate-border"
+            );
             document.body.appendChild(widgetIcon);
   
             widgetIcon.addEventListener("click", (e) => {
