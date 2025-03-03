@@ -39,15 +39,26 @@
         try {
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
             if (module && module.html) {
-                console.log("✅ HTML module loaded successfully!"   );
-  
+                console.log("✅ HTML module loaded successfully!");
+    
                 if (!widgetContainer) {
                     widgetContainer = document.createElement("div");
                     widgetContainer.id = "squarecraft-widget-container";
                     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
                     widgetContainer.innerHTML = module.html();
                     document.body.appendChild(widgetContainer);
-                    console.log("widgetContainer" , widgetContainer)
+    
+                    widgetContainer.style.display = "block";
+                    widgetContainer.style.opacity = "1";
+                    widgetContainer.style.zIndex = "9999";
+                    widgetContainer.style.position = "fixed";
+                    widgetContainer.style.top = "100px";
+                    widgetContainer.style.right = "100px";
+                    widgetContainer.style.background = "red"; 
+    
+                    console.log("✅ Widget container added:", widgetContainer);
+                    console.log("📝 Widget HTML:", widgetContainer.innerHTML);
+                    console.log("📌 Widget Computed Style:", getComputedStyle(widgetContainer));
                 } else {
                     widgetContainer.classList.remove("squareCraft-hidden");
                 }
@@ -58,6 +69,7 @@
             console.error("🚨 Error loading HTML module:", error);
         }
     }
+    
   
     function createWidgetIcon() {
         if (!widgetIcon) {
