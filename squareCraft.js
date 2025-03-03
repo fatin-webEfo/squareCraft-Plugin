@@ -27,7 +27,7 @@
   const link = document.createElement("link");
   link.rel = "stylesheet";
   link.type = "text/css";
-  link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css";
+  link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
   document.head.appendChild(link);
 
   let selectedElement = null;
