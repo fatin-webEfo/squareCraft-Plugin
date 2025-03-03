@@ -10,4 +10,3 @@ data-u-id="67ac69843e2d0c106e78088a"
 data-w-id="67ac69873e2d0c106e78088e"
 defer
 ></script>
-```# squareCraft-plugin
