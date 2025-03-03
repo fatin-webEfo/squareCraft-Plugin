@@ -38,7 +38,7 @@
   async function createWidget() {
       console.log("📥 Fetching widget module...");
       try {
-          const module = await import("https://fatin-webefo.github.io/squareCraft-Plugin/html.js");
+          const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
           if (module && module.html) {
               console.log("✅ HTML module loaded successfully!");
 
