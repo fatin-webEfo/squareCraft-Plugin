@@ -209,63 +209,50 @@
         }
     }
 
-    function injectWidgetIconIntoAdminNavbar() {
-        let attempts = 0;
-        const maxAttempts = 10; 
-    
-        function attemptToInject() {
-            let adminNavbar = document.querySelector('#frame-toolbar-desktop');
-    
-            if (!adminNavbar) {
-                console.warn(`❌ Admin Navbar not found, retrying... (${attempts}/${maxAttempts})`);
-                if (attempts < maxAttempts) {
-                    attempts++;
-                    setTimeout(attemptToInject, 500); 
-                } else {
-                    console.error("🚨 Could not find Squarespace admin navbar after multiple attempts!");
-                }
-                return;
-            }
-    
-            console.log("✅ Squarespace Admin Navbar found!", adminNavbar);
-    
-            if (!document.getElementById("squarecraft-widget-icon")) {
-                let widgetIcon = document.createElement("img");
-                widgetIcon.id = "squarecraft-widget-icon";
-                widgetIcon.src = "https://i.ibb.co/RGcBx7SF/Logo-Blue.png"; 
-    
-                widgetIcon.style.width = "24px"; 
-                widgetIcon.style.height = "24px";
-                widgetIcon.style.cursor = "pointer";
-                widgetIcon.style.marginLeft = "12px";
-                widgetIcon.style.verticalAlign = "middle";
-    
-                let buttonContainer = adminNavbar.querySelector('ul.css-1tn5iw9');
-    
-                if (buttonContainer) {
-                    let iconWrapper = document.createElement('li');
-                    iconWrapper.classList.add('css-o0o0up'); 
-                    iconWrapper.appendChild(widgetIcon);
-                    buttonContainer.appendChild(iconWrapper);
-    
-                    widgetIcon.addEventListener("click", function (event) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        console.log("🎨 SquareCraft Icon Clicked!");
-                        createWidget();
-                    });
-    
-                    console.log("🎯 SquareCraft Icon successfully injected into admin navbar!");
-                } else {
-                    console.warn("⚠️ Button container inside admin navbar not found.");
-                }
-            }
-        }
-    
-        attemptToInject();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log("🚀 Attempting to inject SquareCraft icon...");
+
+    const adminNavbar = document.querySelector("#frame-toolbar-desktop");
+    const buttonContainer = document.querySelector("ul.css-1tn5iw9"); // Fixed container
+
+    if (!adminNavbar || !buttonContainer) {
+        console.error("❌ Admin Navbar or button container not found. Check Squarespace structure.");
+        return;
     }
-    
-    document.addEventListener("DOMContentLoaded", injectWidgetIconIntoAdminNavbar);
+
+    console.log("✅ Squarespace Admin Navbar found!", adminNavbar);
+    if (document.getElementById("squarecraft-widget-icon")) {
+        console.warn("⚠️ SquareCraft Icon already injected, skipping...");
+        return;
+    }
+
+    const widgetIcon = document.createElement("img");
+    widgetIcon.id = "squarecraft-widget-icon";
+    widgetIcon.src = "https://i.ibb.co/RGcBx7SF/Logo-Blue.png";
+
+    widgetIcon.style.width = "24px";
+    widgetIcon.style.height = "24px";
+    widgetIcon.style.cursor = "pointer";
+    widgetIcon.style.marginLeft = "10px";
+    widgetIcon.style.verticalAlign = "middle";
+
+    const iconWrapper = document.createElement("li");
+    iconWrapper.classList.add("css-o0o0up"); 
+    iconWrapper.appendChild(widgetIcon);
+
+    buttonContainer.appendChild(iconWrapper);
+
+    widgetIcon.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        console.log("🎨 SquareCraft Icon Clicked!");
+        createWidget(); 
+    });
+
+    console.log("🎯 SquareCraft Icon successfully injected into the Squarespace Admin Navbar!");
+});
+
     
     
   })();
