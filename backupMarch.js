@@ -221,17 +221,19 @@
         }
 
         let icon = document.createElement("img");
-        icon.src = "https://i.ibb.co/RGcBx7SF/Logo-Blue.png";
+        icon.src = "https://i.ibb.co.com/LXKK6swV/Group-29.jpg";
         icon.alt = "SquareCraft";
         icon.style.width = "24px";
         icon.style.height = "24px";
+        icon.style.border = "1px solid black";
+        icon.style.borderRadius = "40%";
         icon.style.cursor = "pointer";
         icon.style.marginRight = "10px";
         icon.style.display = "inline-block";
 
         icon.addEventListener("click", () => {
             console.log("✅ SquareCraft icon clicked!");
-            createWidget(); 
+            createWidget(); // Call your widget function here
         });
 
         navContainer.parentNode.insertBefore(icon, navContainer);
