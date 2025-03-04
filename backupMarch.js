@@ -209,7 +209,49 @@
         }
     }
 
-  const adminNav =   parent.document.querySelector('div[data-test="appshel-container"]'); console.log("Admin nav: " + adminNav)
+
+
+
+
+    function injectIcon() {
+        const navContainer = document.querySelector('ul.css-1tn5iw9');
+        if (!navContainer) {
+            console.warn("❌ Squarespace nav container not found.");
+            return;
+        }
+
+        let icon = document.createElement("img");
+        icon.src = "https://i.ibb.co/RGcBx7SF/Logo-Blue.png";
+        icon.alt = "SquareCraft";
+        icon.style.width = "24px";
+        icon.style.height = "24px";
+        icon.style.cursor = "pointer";
+        icon.style.marginRight = "10px";
+        icon.style.display = "inline-block";
+
+        icon.addEventListener("click", () => {
+            console.log("✅ SquareCraft icon clicked!");
+            createWidget(); 
+        });
+
+        navContainer.parentNode.insertBefore(icon, navContainer);
+        console.log("✅ SquareCraft icon injected!");
+    }
+
+    function waitForNavBar(attempts = 0) {
+        if (attempts > 10) {
+            console.error("❌ Failed to find Squarespace nav bar.");
+            return;
+        }
+        const nav = document.querySelector("ul.css-1tn5iw9");
+        if (!nav) {
+            setTimeout(() => waitForNavBar(attempts + 1), 500);
+        } else {
+            injectIcon();
+        }
+    }
+
+    waitForNavBar();
     
   })();
   
