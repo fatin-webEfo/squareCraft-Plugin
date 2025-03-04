@@ -139,18 +139,15 @@
     
         function moveAt(event) {
             if (!isDragging) return;
-        
-            let viewportWidth = window.innerWidth;
-            let widgetWidth = widget.offsetWidth;
-        
-            let newRight = viewportWidth - (event.clientX + widgetWidth - offsetX);
-            let newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, event.clientY - offsetY));
-            newRight = Math.max(0, Math.min(viewportWidth - widgetWidth, newRight));
-        
-            widget.style.right = `${newRight}px`;
+    
+            let newX = event.clientX - offsetX;
+            let newY = event.clientY - offsetY;
+            newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
+            newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
+    
+            widget.style.left = `${newX}px`;
             widget.style.top = `${newY}px`;
         }
-        
     
         function stopDragging() {
             isDragging = false;
