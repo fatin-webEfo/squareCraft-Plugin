@@ -209,19 +209,16 @@
         }
     }
 
-
-
-
-
-    function injectIcon() {
-        const navContainer = document.querySelector('ul.css-1tn5iw9');
+    
+   function injectIcon() {
+        const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
         if (!navContainer) {
-            console.warn("❌ Squarespace nav container not found.");
+            console.warn("❌ Squarespace admin nav container not found.");
             return;
         }
 
         let icon = document.createElement("img");
-        icon.src = "https://i.ibb.co.com/LXKK6swV/Group-29.jpg";
+        icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg"; // Ensure correct image URL
         icon.alt = "SquareCraft";
         icon.style.width = "25px";
         icon.style.height = "24px";
@@ -232,13 +229,30 @@
         icon.style.marginRight = "10px";
         icon.style.display = "inline-block";
 
+        icon.classList.add("squareCraft-admin-icon");
+
         icon.addEventListener("click", () => {
             console.log("✅ SquareCraft icon clicked!");
-            createWidget(); 
+            showFloatingMessage();
         });
 
         navContainer.parentNode.insertBefore(icon, navContainer);
         console.log("✅ SquareCraft icon injected!");
+    }
+
+    function showFloatingMessage() {
+        const existingMessage = parent.document.querySelector(".squareCraft-tooltip");
+        if (existingMessage) return;
+
+        const tooltip = document.createElement("div");
+        tooltip.classList.add("squareCraft-tooltip");
+        tooltip.innerHTML = "SquareCraft customizations are disabled. Click here to enable.";
+
+        parent.document.body.appendChild(tooltip);
+
+        setTimeout(() => {
+            tooltip.remove();
+        }, 3000); // Remove after 3 seconds
     }
 
     function waitForNavBar(attempts = 0) {
@@ -246,7 +260,7 @@
             console.error("❌ Failed to find Squarespace nav bar.");
             return;
         }
-        const nav = document.querySelector("ul.css-1tn5iw9");
+        const nav = parent.document.querySelector("ul.css-1tn5iw9");
         if (!nav) {
             setTimeout(() => waitForNavBar(attempts + 1), 500);
         } else {
@@ -255,6 +269,7 @@
     }
 
     waitForNavBar();
+    
     
   })();
   
