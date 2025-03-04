@@ -31,7 +31,6 @@
     document.head.appendChild(link);
   
     let selectedElement = null;
-    let widgetIcon = null;
     let widgetContainer = null;
   
     async function createWidget() {
