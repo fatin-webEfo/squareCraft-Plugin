@@ -193,6 +193,20 @@
         icon.style.display = "inline-block";
     
         icon.classList.add("squareCraft-admin-icon");
+
+        let toolbaricon = document.createElement("img");
+        toolbaricon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+        toolbaricon.alt = "SquareCraft";
+        toolbaricon.style.width = "25px";
+        toolbaricon.style.height = "24px";
+        toolbaricon.style.border = "1px solid #dddbdb";
+        toolbaricon.style.borderRadius = "20%";
+        toolbaricon.style.padding = "4px";
+        toolbaricon.style.marginLeft = "6px";
+        toolbaricon.style.cursor = "pointer";
+        toolbaricon.style.display = "inline-block";
+    
+        toolbaricon.classList.add("squareCraft-admin-icon");
     
         icon.addEventListener("click", () => { 
             console.log("✅ SquareCraft icon clicked!");
@@ -220,7 +234,7 @@
                 wrapper.style.alignItems = "center";
                 wrapper.style.gap = "6px";
     
-                let clonedIcon = icon.cloneNode(true);
+                let clonedIcon = toolbaricon.cloneNode(true);
     
                 element.parentNode.insertBefore(wrapper, element);
                 wrapper.appendChild(clonedIcon);
