@@ -217,7 +217,6 @@
             console.warn("❌ Squarespace AppShell Container not found.");
             return;
         }
-    
         var adminNavBar = appShellContainer.querySelector("#frame-toolbar-desktop .css-1tn5iw9");
     
         if (adminNavBar) {
