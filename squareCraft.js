@@ -29,8 +29,6 @@
     link.type = "text/css";
     link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
     document.head.appendChild(link);
-  
-    let selectedElement = null;
     let widgetContainer = null;
   
     async function createWidget() {
@@ -70,8 +68,6 @@
         }
     }
     
- 
-  
     document.body.addEventListener("click", (event) => {
         const targetBlock = event.target.closest('[id^="block-"]');
   
@@ -169,9 +165,7 @@
             localStorage.setItem("widget_top", widget.style.top);
         }
     }
-    
-
-    
+     
     function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
         
@@ -227,8 +221,8 @@
     
             if (targetElements.length === 0) {
                 console.warn("❌ Target elements not found. Retrying...");
-                setTimeout(injectIconIntoTargetElements, 1000); // Keep searching every second
-                return;
+                setTimeout(injectIconIntoTargetElements, 1000); 
+              
             }
     
             targetElements.forEach((element) => {
@@ -283,9 +277,6 @@
     }
     
     waitForNavBar();
-    
-    
-    
     
     
   })();
