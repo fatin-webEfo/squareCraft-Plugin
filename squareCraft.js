@@ -112,15 +112,27 @@
             console.warn("❌ Widget not found.");
             return;
         }
+    
         widget.style.position = "fixed";
         widget.style.cursor = "grab";
         widget.style.zIndex = "999";
+    
+        let lastLeft = localStorage.getItem("widget_left");
+        let lastTop = localStorage.getItem("widget_top");
+    
+        if (lastLeft && lastTop) {
+            widget.style.left = lastLeft;
+            widget.style.top = lastTop;
+        } else {
+            widget.style.left = "calc(100% - 250px)"; // Default: Start from right
+            widget.style.top = "100px";
+        }
     
         let offsetX = 0, offsetY = 0, isDragging = false;
     
         widget.addEventListener("mousedown", (event) => {
             if (event.target.tagName === "INPUT" || event.target.tagName === "SELECT" || event.target.isContentEditable) {
-                return; 
+                return;
             }
     
             event.preventDefault();
@@ -140,10 +152,8 @@
         function moveAt(event) {
             if (!isDragging) return;
     
-            let newX = event.clientX - offsetX;
-            let newY = event.clientY - offsetY;
-            newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
-            newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
+            let newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, event.clientX - offsetX));
+            let newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, event.clientY - offsetY));
     
             widget.style.left = `${newX}px`;
             widget.style.top = `${newY}px`;
@@ -155,20 +165,11 @@
             document.removeEventListener("mousemove", moveAt);
             document.removeEventListener("mouseup", stopDragging);
     
-            localStorage.setItem("widget_X", widget.style.left);
-            localStorage.setItem("widget_Y", widget.style.top);
-        }
-    
-        let lastX = localStorage.getItem("widget_X");
-        let lastY = localStorage.getItem("widget_Y");
-        if (lastX && lastY) {
-            widget.style.left = lastX;
-            widget.style.top = lastY;
-        } else {
-            widget.style.left = "50px"; // Default position
-            widget.style.top = "50px";
+            localStorage.setItem("widget_left", widget.style.left);
+            localStorage.setItem("widget_top", widget.style.top);
         }
     }
+    
 
     
    function injectIcon() {
