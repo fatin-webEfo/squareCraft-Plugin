@@ -174,7 +174,7 @@
     
     function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
-        const targetElements = document.querySelectorAll(".tidILMJ7AVANuKwS"); 
+        const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS"); 
     
         if (!navContainer) {
             console.warn("❌ Squarespace admin nav container not found.");
