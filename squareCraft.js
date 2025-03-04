@@ -210,7 +210,7 @@
     }
 
     
-    function injectIcon() {
+   function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
         if (!navContainer) {
             console.warn("❌ Squarespace admin nav container not found.");
@@ -220,6 +220,15 @@
         let icon = document.createElement("img");
         icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg"; // Ensure correct image URL
         icon.alt = "SquareCraft";
+        icon.style.width = "25px";
+        icon.style.height = "24px";
+        icon.style.border = "1px solid #dddbdb";
+        icon.style.borderRadius = "20%";
+        icon.style.padding = "4px";
+        icon.style.cursor = "pointer";
+        icon.style.marginRight = "10px";
+        icon.style.display = "inline-block";
+
         icon.classList.add("squareCraft-admin-icon");
 
         icon.addEventListener("click", () => {
