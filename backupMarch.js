@@ -29,8 +29,6 @@
     link.type = "text/css";
     link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
     document.head.appendChild(link);
-  
-    let selectedElement = null;
     let widgetContainer = null;
   
     async function createWidget() {
@@ -70,8 +68,6 @@
         }
     }
     
- 
-  
     document.body.addEventListener("click", (event) => {
         const targetBlock = event.target.closest('[id^="block-"]');
   
@@ -169,9 +165,7 @@
             localStorage.setItem("widget_top", widget.style.top);
         }
     }
-    
-
-    
+     
     function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
         
@@ -188,13 +182,32 @@
         icon.style.border = "1px solid #dddbdb";
         icon.style.borderRadius = "20%";
         icon.style.padding = "4px";
-        icon.style.margin = "0px 8px";
+        icon.style.margin = "0px 6px";
         icon.style.cursor = "pointer";
         icon.style.display = "inline-block";
     
         icon.classList.add("squareCraft-admin-icon");
+
+        let toolbaricon = document.createElement("img");
+        toolbaricon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+        toolbaricon.alt = "SquareCraft";
+        toolbaricon.style.width = "25px";
+        toolbaricon.style.height = "24px";
+        toolbaricon.style.border = "1px solid #dddbdb";
+        toolbaricon.style.borderRadius = "20%";
+        toolbaricon.style.padding = "4px";
+        toolbaricon.style.marginLeft = "6px";
+        toolbaricon.style.cursor = "pointer";
+        toolbaricon.style.display = "inline-block";
     
-        icon.addEventListener("click", () => {
+        toolbaricon.classList.add("squareCraft-admin-icon");
+    
+        icon.addEventListener("click", () => { 
+            console.log("✅ SquareCraft icon clicked!");
+            showFloatingMessage();
+            createWidget();
+        });
+        toolbaricon.addEventListener("click", () => { 
             console.log("✅ SquareCraft icon clicked!");
             showFloatingMessage();
             createWidget();
@@ -208,8 +221,8 @@
     
             if (targetElements.length === 0) {
                 console.warn("❌ Target elements not found. Retrying...");
-                setTimeout(injectIconIntoTargetElements, 1000); // Keep searching every second
-                return;
+                setTimeout(injectIconIntoTargetElements, 1000); 
+              
             }
     
             targetElements.forEach((element) => {
@@ -220,7 +233,7 @@
                 wrapper.style.alignItems = "center";
                 wrapper.style.gap = "6px";
     
-                let clonedIcon = icon.cloneNode(true);
+                let clonedIcon = toolbaricon.cloneNode(true);
     
                 element.parentNode.insertBefore(wrapper, element);
                 wrapper.appendChild(clonedIcon);
@@ -264,9 +277,6 @@
     }
     
     waitForNavBar();
-    
-    
-    
     
     
   })();
