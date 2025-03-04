@@ -49,16 +49,17 @@
                     document.body.appendChild(widgetContainer);
     
                     widgetContainer.style.display = "block";
+                    widgetContainer.style.borderRadius = "14px";
                     widgetContainer.style.opacity = "1";
                     widgetContainer.style.zIndex = "9999";
                     widgetContainer.style.position = "fixed";
                     widgetContainer.style.top = "100px";
                     widgetContainer.style.right = "100px";
-                    widgetContainer.style.background = "red"; 
     
                     console.log("✅ Widget container added:", widgetContainer);
                     console.log("📝 Widget HTML:", widgetContainer.innerHTML);
                     console.log("📌 Widget Computed Style:", getComputedStyle(widgetContainer));
+                    makeWidgetDraggable();
                 } else {
                     widgetContainer.classList.remove("squareCraft-hidden");
                 }
@@ -142,5 +143,73 @@
             widgetIcon.style.display = "block";
         }
     });
+
+    function makeWidgetDraggable() {
+        const widget = document.getElementById("squarecraft-widget-container");
+    
+        if (!widget) {
+            console.warn("❌ Widget not found.");
+            return;
+        }
+        widget.style.position = "fixed";
+        widget.style.cursor = "grab";
+        widget.style.zIndex = "999";
+    
+        let offsetX = 0, offsetY = 0, isDragging = false;
+    
+        widget.addEventListener("mousedown", (event) => {
+            if (event.target.tagName === "INPUT" || event.target.tagName === "SELECT" || event.target.isContentEditable) {
+                return; 
+            }
+    
+            event.preventDefault();
+            isDragging = true;
+    
+            offsetX = event.clientX - widget.getBoundingClientRect().left;
+            offsetY = event.clientY - widget.getBoundingClientRect().top;
+    
+            widget.style.transition = "none";
+            widget.style.userSelect = "none";
+            widget.style.cursor = "grabbing";
+    
+            document.addEventListener("mousemove", moveAt);
+            document.addEventListener("mouseup", stopDragging);
+        });
+    
+        function moveAt(event) {
+            if (!isDragging) return;
+    
+            let newX = event.clientX - offsetX;
+            let newY = event.clientY - offsetY;
+            newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
+            newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
+    
+            widget.style.left = `${newX}px`;
+            widget.style.top = `${newY}px`;
+        }
+    
+        function stopDragging() {
+            isDragging = false;
+            widget.style.cursor = "grab";
+            document.removeEventListener("mousemove", moveAt);
+            document.removeEventListener("mouseup", stopDragging);
+    
+            localStorage.setItem("widget_X", widget.style.left);
+            localStorage.setItem("widget_Y", widget.style.top);
+        }
+    
+        let lastX = localStorage.getItem("widget_X");
+        let lastY = localStorage.getItem("widget_Y");
+        if (lastX && lastY) {
+            widget.style.left = lastX;
+            widget.style.top = lastY;
+        } else {
+            widget.style.left = "50px"; // Default position
+            widget.style.top = "50px";
+        }
+    }
+
+  const adminNav =   parent.document.querySelector('div[data-test="appshel-container"]'); console.log("Admin nav: " + adminNav)
+    
   })();
   
