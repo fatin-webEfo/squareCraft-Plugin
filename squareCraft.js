@@ -233,6 +233,38 @@
 
     waitForNavBar();
     
+
+    function addCustomIconBesideElement() {
+        const targetElements = document.querySelectorAll(".tidILMJ7AVANuKwS");
+    
+        if (targetElements.length === 0) {
+            console.warn("❌ No elements found with class 'tidILMJ7AVANuKwS'.");
+            return;
+        }
+    
+        targetElements.forEach((element) => {
+            const icon = document.createElement("img");
+            icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";  
+            icon.alt = "SquareCraft Icon";
+            
+            icon.style.width = "22px";
+            icon.style.height = "22px";
+            icon.style.border = "1px solid #dddbdb";
+            icon.style.borderRadius = "20%";
+            icon.style.padding = "4px";
+            icon.style.cursor = "pointer";
+            icon.style.marginLeft = "6px";
+            icon.style.display = "inline-block";
+            icon.style.verticalAlign = "middle";
+    
+            element.parentNode.insertBefore(icon, element.nextSibling);
+    
+            console.log("✅ Custom icon added beside element:", element);
+        });
+    }
+    
+    document.addEventListener("DOMContentLoaded", addCustomIconBesideElement);
+    
     
   })();
   
