@@ -194,7 +194,7 @@
     
         icon.classList.add("squareCraft-admin-icon");
     
-        icon.addEventListener("click", () => {
+        icon.addEventListener("click", () => { 
             console.log("✅ SquareCraft icon clicked!");
             showFloatingMessage();
             createWidget();
