@@ -30,6 +30,7 @@
     link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
     document.head.appendChild(link);
   
+    let selectedElement = null;
     let widgetContainer = null;
   
     async function createWidget() {
@@ -111,15 +112,27 @@
             console.warn("❌ Widget not found.");
             return;
         }
+    
         widget.style.position = "fixed";
         widget.style.cursor = "grab";
         widget.style.zIndex = "999";
+    
+        let lastLeft = localStorage.getItem("widget_left");
+        let lastTop = localStorage.getItem("widget_top");
+    
+        if (lastLeft && lastTop) {
+            widget.style.left = lastLeft;
+            widget.style.top = lastTop;
+        } else {
+            widget.style.left = "calc(100% - 250px)"; // Default: Start from right
+            widget.style.top = "100px";
+        }
     
         let offsetX = 0, offsetY = 0, isDragging = false;
     
         widget.addEventListener("mousedown", (event) => {
             if (event.target.tagName === "INPUT" || event.target.tagName === "SELECT" || event.target.isContentEditable) {
-                return; 
+                return;
             }
     
             event.preventDefault();
@@ -139,10 +152,8 @@
         function moveAt(event) {
             if (!isDragging) return;
     
-            let newX = event.clientX - offsetX;
-            let newY = event.clientY - offsetY;
-            newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
-            newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
+            let newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, event.clientX - offsetX));
+            let newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, event.clientY - offsetY));
     
             widget.style.left = `${newX}px`;
             widget.style.top = `${newY}px`;
@@ -154,68 +165,91 @@
             document.removeEventListener("mousemove", moveAt);
             document.removeEventListener("mouseup", stopDragging);
     
-            localStorage.setItem("widget_X", widget.style.left);
-            localStorage.setItem("widget_Y", widget.style.top);
-        }
-    
-        let lastX = localStorage.getItem("widget_X");
-        let lastY = localStorage.getItem("widget_Y");
-        if (lastX && lastY) {
-            widget.style.left = lastX;
-            widget.style.top = lastY;
-        } else {
-            widget.style.left = "50px"; // Default position
-            widget.style.top = "50px";
+            localStorage.setItem("widget_left", widget.style.left);
+            localStorage.setItem("widget_top", widget.style.top);
         }
     }
+    
 
     
-   function injectIcon() {
+    function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
+        
         if (!navContainer) {
             console.warn("❌ Squarespace admin nav container not found.");
             return;
         }
-
+    
         let icon = document.createElement("img");
-        icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg"; 
+        icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
         icon.alt = "SquareCraft";
         icon.style.width = "25px";
         icon.style.height = "24px";
         icon.style.border = "1px solid #dddbdb";
         icon.style.borderRadius = "20%";
         icon.style.padding = "4px";
+        icon.style.margin = "0px 8px";
         icon.style.cursor = "pointer";
-        icon.style.marginRight = "10px";
         icon.style.display = "inline-block";
-
+    
         icon.classList.add("squareCraft-admin-icon");
-
+    
         icon.addEventListener("click", () => {
             console.log("✅ SquareCraft icon clicked!");
             showFloatingMessage();
             createWidget();
         });
-
-        navContainer.parentNode.insertBefore(icon, navContainer);
-        console.log("✅ SquareCraft icon injected!");
+    
+        navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
+        console.log("✅ SquareCraft icon injected into nav bar!");
+    
+        function injectIconIntoTargetElements() {
+            const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
+    
+            if (targetElements.length === 0) {
+                console.warn("❌ Target elements not found. Retrying...");
+                setTimeout(injectIconIntoTargetElements, 1000); // Keep searching every second
+                return;
+            }
+    
+            targetElements.forEach((element) => {
+                if (!element.parentNode || element.parentNode.querySelector(".squareCraft-admin-icon")) return;
+    
+                let wrapper = document.createElement("div");
+                wrapper.style.display = "flex";
+                wrapper.style.alignItems = "center";
+                wrapper.style.gap = "6px";
+    
+                let clonedIcon = icon.cloneNode(true);
+    
+                element.parentNode.insertBefore(wrapper, element);
+                wrapper.appendChild(clonedIcon);
+                wrapper.appendChild(element);
+    
+                console.log("✅ SquareCraft icon injected beside target element:", element);
+            });
+    
+            setTimeout(injectIconIntoTargetElements, 1000); // Keep checking every second
+        }
+    
+        injectIconIntoTargetElements(); // Start the loop
     }
-
+    
     function showFloatingMessage() {
         const existingMessage = parent.document.querySelector(".squareCraft-tooltip");
         if (existingMessage) return;
-
+    
         const tooltip = document.createElement("div");
         tooltip.classList.add("squareCraft-tooltip");
         tooltip.innerHTML = "SquareCraft customizations are disabled. Click here to enable.";
-
+    
         parent.document.body.appendChild(tooltip);
-
+    
         setTimeout(() => {
             tooltip.remove();
-        }, 3000); // Remove after 3 seconds
+        }, 3000);
     }
-
+    
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
             console.error("❌ Failed to find Squarespace nav bar.");
@@ -228,8 +262,11 @@
             injectIcon();
         }
     }
-
+    
     waitForNavBar();
+    
+    
+    
     
     
   })();
