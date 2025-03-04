@@ -213,6 +213,11 @@
             showFloatingMessage();
             createWidget();
         });
+        toolbaricon.addEventListener("click", () => { 
+            console.log("✅ SquareCraft icon clicked!");
+            showFloatingMessage();
+            createWidget();
+        });
     
         navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
         console.log("✅ SquareCraft icon injected into nav bar!");
