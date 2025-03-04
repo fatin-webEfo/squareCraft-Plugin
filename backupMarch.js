@@ -226,7 +226,7 @@
         icon.style.width = "25px";
         icon.style.height = "24px";
         icon.style.border = "1px solid #dddbdb";
-        icon.style.borderRadius = "30%";
+        icon.style.borderRadius = "20%";
         icon.style.padding = "4px";
         icon.style.cursor = "pointer";
         icon.style.marginRight = "10px";
