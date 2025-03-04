@@ -107,7 +107,16 @@
 
     function makeWidgetDraggable() {
         const widget = document.getElementById("squarecraft-widget-container");
-    
+        let lastRight = localStorage.getItem("widget_right");
+        
+        if (lastRight && lastY) {
+            widget.style.right = lastRight;
+            widget.style.top = lastY;
+        } else {
+            widget.style.right = "100px"; // Default position
+            widget.style.top = "100px";
+        }
+        
         if (!widget) {
             console.warn("❌ Widget not found.");
             return;
@@ -139,25 +148,29 @@
     
         function moveAt(event) {
             if (!isDragging) return;
-    
-            let newX = event.clientX - offsetX;
-            let newY = event.clientY - offsetY;
-            newX = Math.max(0, Math.min(window.innerWidth - widget.offsetWidth, newX));
-            newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, newY));
-    
-            widget.style.left = `${newX}px`;
+        
+            let viewportWidth = window.innerWidth;
+            let widgetWidth = widget.offsetWidth;
+        
+            let newRight = viewportWidth - (event.clientX + widgetWidth - offsetX);
+            let newY = Math.max(0, Math.min(window.innerHeight - widget.offsetHeight, event.clientY - offsetY));
+            newRight = Math.max(0, Math.min(viewportWidth - widgetWidth, newRight));
+        
+            widget.style.right = `${newRight}px`;
             widget.style.top = `${newY}px`;
         }
+        
     
         function stopDragging() {
             isDragging = false;
             widget.style.cursor = "grab";
             document.removeEventListener("mousemove", moveAt);
             document.removeEventListener("mouseup", stopDragging);
-    
-            localStorage.setItem("widget_X", widget.style.left);
+        
+            localStorage.setItem("widget_right", widget.style.right);
             localStorage.setItem("widget_Y", widget.style.top);
         }
+        
     
         let lastX = localStorage.getItem("widget_X");
         let lastY = localStorage.getItem("widget_Y");

@@ -30,8 +30,6 @@
     link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
     document.head.appendChild(link);
   
-    let selectedElement = null;
-    let widgetIcon = null;
     let widgetContainer = null;
   
     async function createWidget() {
@@ -71,36 +69,7 @@
         }
     }
     
-  
-    function createWidgetIcon() {
-        if (!widgetIcon) {
-            widgetIcon = document.createElement("img");
-            widgetIcon.id = "squarecraft-widget-icon";
-            widgetIcon.src = "https://i.ibb.co/RGcBx7SF/Logo-Blue.png";
-       
-            widgetIcon.classList.add(
-                "squareCraft-absolute",
-                "squareCraft-hidden",
-                "squareCraft-rounded-md",
-                "squareCraft-w-12",
-                "squareCraft-h-12",
-                "squareCraft-rounded-lg",
-                "squareCraft-bg-color-2c2c2c",
-                "squareCraft-cursor-pointer",
-                "squareCraft-z-9999",
-                "squareCraft-widget-icon",
-                "squareCraft-animate-border"
-            );
-            document.body.appendChild(widgetIcon);
-  
-            widgetIcon.addEventListener("click", (e) => {
-                e.stopPropagation();
-                widgetIcon.classList.add("squareCraft-hidden");
-                createWidget();
-            });
-        }
-        return widgetIcon;
-    }
+ 
   
     document.body.addEventListener("click", (event) => {
         const targetBlock = event.target.closest('[id^="block-"]');
@@ -108,11 +77,9 @@
         if (
             widgetContainer &&
             !widgetContainer.contains(event.target) &&
-            !widgetIcon?.contains(event.target) &&
             !targetBlock
         ) {
             console.log("🛑 Clicked outside. Hiding all elements.");
-            widgetIcon?.classList.add("squareCraft-hidden");
             widgetContainer?.classList.add("squareCraft-hidden");
             document.querySelectorAll(".squareCraft-outline").forEach(el => {
                 el.classList.remove("squareCraft-outline");
@@ -134,13 +101,6 @@
   
             selectedElement = targetBlock;
   
-            widgetIcon = createWidgetIcon();
-            widgetIcon.classList.remove("squareCraft-hidden");
-  
-            const rect = targetBlock.getBoundingClientRect();
-            widgetIcon.style.top = `${window.scrollY + rect.top + 2 }px`;
-            widgetIcon.style.left = `${window.scrollX + rect.right - 110}px`;
-            widgetIcon.style.display = "block";
         }
     });
 
@@ -218,7 +178,7 @@
         }
 
         let icon = document.createElement("img");
-        icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg"; // Ensure correct image URL
+        icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg"; 
         icon.alt = "SquareCraft";
         icon.style.width = "25px";
         icon.style.height = "24px";
@@ -234,6 +194,7 @@
         icon.addEventListener("click", () => {
             console.log("✅ SquareCraft icon clicked!");
             showFloatingMessage();
+            createWidget();
         });
 
         navContainer.parentNode.insertBefore(icon, navContainer);
