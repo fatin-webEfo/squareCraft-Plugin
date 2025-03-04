@@ -234,7 +234,7 @@
 
         icon.addEventListener("click", () => {
             console.log("✅ SquareCraft icon clicked!");
-            createWidget(); // Call your widget function here
+            createWidget(); 
         });
 
         navContainer.parentNode.insertBefore(icon, navContainer);
