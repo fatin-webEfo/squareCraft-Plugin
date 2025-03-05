@@ -115,29 +115,37 @@
 
     function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
-        
+    
         if (!navContainer) {
             console.warn("❌ Squarespace admin nav container not found.");
             return;
         }
     
+        let iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+        let toolbarIconSrc = localStorage.getItem("squareCraft_toolbar_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+    
+        localStorage.setItem("squareCraft_icon", iconSrc);
+        localStorage.setItem("squareCraft_toolbar_icon", toolbarIconSrc);
+    
         let icon = document.createElement("img");
-        icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+      
+        icon.src = iconSrc;
         icon.alt = "SquareCraft";
         icon.style.width = "25px";
         icon.style.height = "24px";
         icon.style.border = "1px solid #dddbdb";
-        icon.style.background = "#fcf4ee"
+        icon.style.background = "#fcf4ee";
         icon.style.borderRadius = "20%";
         icon.style.padding = "4px";
         icon.style.margin = "0px 6px";
         icon.style.cursor = "pointer";
         icon.style.display = "inline-block";
+        icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+        
+        
     
-        icon.classList.add("squareCraft-admin-icon");
-
         let toolbaricon = document.createElement("img");
-        toolbaricon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+        toolbaricon.src = toolbarIconSrc;
         toolbaricon.alt = "SquareCraft";
         toolbaricon.style.width = "25px";
         toolbaricon.style.height = "24px";
@@ -148,12 +156,12 @@
         toolbaricon.style.marginLeft = "6px";
         toolbaricon.style.cursor = "pointer";
         toolbaricon.style.display = "inline-block";
-        toolbaricon.classList.add("squareCraft-admin-icon");
+        toolbaricon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
     
-        toolbaricon.addEventListener("click", () => { 
-            console.log("✅ SquareCraft icon clicked!");
+       
+        toolbaricon.addEventListener("click", function(){
             toggleWidgetVisibility();
-        });
+        })
     
         navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
         console.log("✅ SquareCraft icon injected into nav bar!");
@@ -162,9 +170,9 @@
             const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
     
             if (targetElements.length === 0) {
-                console.warn("❌ Target elements not found. Retrying...");
-                setTimeout(injectIconIntoTargetElements, 1000); 
-              
+                console.warn("❌ Target elements not found. Retrying in 1 second...");
+                setTimeout(injectIconIntoTargetElements, 1000);
+                return;
             }
     
             targetElements.forEach((element) => {
@@ -173,7 +181,6 @@
                 let wrapper = document.createElement("div");
                 wrapper.style.display = "flex";
                 wrapper.style.alignItems = "center";
-                wrapper.style.gap = "6px";
     
                 let clonedIcon = toolbaricon.cloneNode(true);
     
@@ -187,8 +194,9 @@
             setTimeout(injectIconIntoTargetElements, 1000); // Keep checking every second
         }
     
-        injectIconIntoTargetElements(); // Start the loop
+        injectIconIntoTargetElements();
     }
+    
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
             console.error("❌ Failed to find Squarespace nav bar.");
