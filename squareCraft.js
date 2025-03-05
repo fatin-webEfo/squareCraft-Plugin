@@ -121,8 +121,8 @@
             return;
         }
     
-        let iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
-        let toolbarIconSrc = localStorage.getItem("squareCraft_toolbar_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+        let iconSrc ="https://i.ibb.co/LXKK6swV/Group-29.jpg";
+        let toolbarIconSrc = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
     
         localStorage.setItem("squareCraft_icon", iconSrc);
         localStorage.setItem("squareCraft_toolbar_icon", toolbarIconSrc);
@@ -191,7 +191,7 @@
                 console.log("✅ SquareCraft icon injected beside target element:", element);
             });
     
-            setTimeout(injectIconIntoTargetElements, 1000); // Keep checking every second
+            setTimeout(injectIconIntoTargetElements, 1000); 
         }
     
         injectIconIntoTargetElements();
