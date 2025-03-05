@@ -196,7 +196,7 @@
         toolbaricon.style.marginLeft = "6px";
         toolbaricon.style.cursor = "pointer";
         toolbaricon.style.display = "inline-block";
-        toolbaricon.classList.add("squareCraft-admin-icon");
+        toolbaricon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
     
         toolbaricon.addEventListener("click", () => { 
             console.log("✅ SquareCraft icon clicked!");
@@ -260,7 +260,6 @@
     }
     
     waitForNavBar();
-    createWidget();
     
     
   })();
