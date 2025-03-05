@@ -231,7 +231,6 @@
                 let wrapper = document.createElement("div");
                 wrapper.style.display = "flex";
                 wrapper.style.alignItems = "center";
-                wrapper.style.gap = "6px";
     
                 let clonedIcon = toolbaricon.cloneNode(true);
     
