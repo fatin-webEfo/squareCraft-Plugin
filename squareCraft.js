@@ -207,13 +207,9 @@
         toolbaricon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
     
         icon.addEventListener("click", () => {
-            console.log("✅ SquareCraft icon clicked!");
-            if (typeof createWidget === "function") {
                 createWidget();
                 console.log("✅ createWidget() function executed");
-            } else {
-                console.error("❌ createWidget() function not found!");
-            }
+            
         });
         
     
