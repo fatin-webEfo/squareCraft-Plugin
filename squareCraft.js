@@ -145,7 +145,7 @@
             icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
             
         
-            iconSrc.addEventListener("click", function(){
+            icon.addEventListener("click", function(){
                 toggleWidgetVisibility();
             })
         
@@ -181,7 +181,7 @@
                     console.log("✅ SquareCraft icon injected at the last inside wrapper:", element);
                 });
             
-                setTimeout(injectIconIntoTargetElements, 1000); 
+                setTimeout(injectIconIntoTargetElements, 500); 
             }
             
             
