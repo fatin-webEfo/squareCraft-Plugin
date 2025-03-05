@@ -127,7 +127,6 @@
         localStorage.setItem("squareCraft_icon", iconSrc);
         localStorage.setItem("squareCraft_toolbar_icon", toolbarIconSrc);
     
-        // ✅ Ensure navbar icon is added only once
         if (!parent.document.querySelector(".squareCraft-admin-icon")) {
             let icon = document.createElement("img");
             icon.src = iconSrc;
@@ -149,7 +148,6 @@
             console.warn("⚠️ SquareCraft admin icon already exists. Skipping injection.");
         }
     
-        // ✅ Ensure toolbar icon is added only once
         if (!parent.document.querySelector(".squareCraft-toolbar-icon")) {
             let toolbaricon = document.createElement("img");
             toolbaricon.src = toolbarIconSrc;
