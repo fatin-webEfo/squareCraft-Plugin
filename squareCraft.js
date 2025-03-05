@@ -131,9 +131,7 @@
             let iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
         
             localStorage.setItem("squareCraft_icon", iconSrc);
-        
             let icon = document.createElement("img");
-        
             icon.src = iconSrc;
             icon.alt = "SquareCraft";
             icon.style.width = "22px";
@@ -183,7 +181,7 @@
                     console.log("✅ SquareCraft icon injected at the last inside wrapper:", element);
                 });
             
-                setTimeout(injectIconIntoTargetElements, 1000); 
+                setTimeout(injectIconIntoTargetElements, 500); 
             }
             
             
