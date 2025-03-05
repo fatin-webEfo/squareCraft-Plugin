@@ -203,7 +203,7 @@
         toolbaricon.style.display = "inline-block";
         toolbaricon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
     
-        toolbaricon.addEventListener("click", () => {
+        icon.addEventListener("click", () => {
             console.log("✅ SquareCraft icon clicked!");
             if (typeof createWidget === "function") {
                 createWidget();
