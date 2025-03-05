@@ -194,7 +194,7 @@
         icon.style.cursor = "pointer";
         icon.style.display = "inline-block";
         icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-        navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
+        
         
     
         let toolbaricon = document.createElement("img");
