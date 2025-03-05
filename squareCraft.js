@@ -167,7 +167,7 @@
         console.log("✅ SquareCraft icon injected into nav bar!");
     
         function injectIconIntoTargetElements() {
-            const targetElements = parent.document.querySelectorAll(".QJtc3Joz6C0eyIVn");
+            const targetElements = parent.document.querySelectorAll(".css-rxv52q");
         
             if (targetElements.length === 0) {
                 console.warn("❌ Target elements not found. Retrying in 1 second...");
