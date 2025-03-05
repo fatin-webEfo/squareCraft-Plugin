@@ -181,7 +181,7 @@
                     console.log("✅ SquareCraft icon injected at the last inside wrapper:", element);
                 });
             
-                setTimeout(injectIconIntoTargetElements, 500); 
+                setTimeout(injectIconIntoTargetElements, 1000); 
             }
             
             
