@@ -230,8 +230,6 @@
     }
     
     
-    
-    
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
             console.error("❌ Failed to find Squarespace nav bar.");
