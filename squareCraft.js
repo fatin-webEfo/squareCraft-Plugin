@@ -147,7 +147,7 @@
             icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
             
         
-            icon.addEventListener("click", function(){
+            iconSrc.addEventListener("click", function(){
                 toggleWidgetVisibility();
             })
         
