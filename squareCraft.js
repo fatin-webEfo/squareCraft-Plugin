@@ -180,6 +180,7 @@
         icon.style.width = "25px";
         icon.style.height = "24px";
         icon.style.border = "1px solid #dddbdb";
+        icon.style.background = "#fcf4ee"
         icon.style.borderRadius = "20%";
         icon.style.padding = "4px";
         icon.style.margin = "0px 6px";
@@ -195,6 +196,7 @@
         toolbaricon.style.height = "24px";
         toolbaricon.style.border = "1px solid #dddbdb";
         toolbaricon.style.borderRadius = "20%";
+        toolbaricon.style.background = "#fcf4ee";
         toolbaricon.style.padding = "4px";
         toolbaricon.style.marginLeft = "6px";
         toolbaricon.style.cursor = "pointer";
