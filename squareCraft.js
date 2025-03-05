@@ -201,7 +201,6 @@
         toolbaricon.style.marginLeft = "6px";
         toolbaricon.style.cursor = "pointer";
         toolbaricon.style.display = "inline-block";
-    
         toolbaricon.classList.add("squareCraft-admin-icon");
     
         toolbaricon.addEventListener("click", () => { 
@@ -232,16 +231,16 @@
                 let clonedIcon = toolbaricon.cloneNode(true);
     
                 element.parentNode.insertBefore(wrapper, element);
-                wrapper.appendChild(clonedIcon);
+                // wrapper.appendChild(clonedIcon);
                 wrapper.appendChild(element);
     
                 console.log("✅ SquareCraft icon injected beside target element:", element);
             });
     
-            setTimeout(injectIconIntoTargetElements, 1000); // Keep checking every second
+            setTimeout(injectIconIntoTargetElements, 1000); 
         }
     
-        injectIconIntoTargetElements(); // Start the loop
+        injectIconIntoTargetElements(); 
     }
     
     

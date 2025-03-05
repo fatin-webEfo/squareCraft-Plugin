@@ -180,6 +180,7 @@
         icon.style.width = "25px";
         icon.style.height = "24px";
         icon.style.border = "1px solid #dddbdb";
+        icon.style.background = "#fcf4ee"
         icon.style.borderRadius = "20%";
         icon.style.padding = "4px";
         icon.style.margin = "0px 6px";
@@ -195,21 +196,15 @@
         toolbaricon.style.height = "24px";
         toolbaricon.style.border = "1px solid #dddbdb";
         toolbaricon.style.borderRadius = "20%";
+        toolbaricon.style.background = "#fcf4ee";
         toolbaricon.style.padding = "4px";
         toolbaricon.style.marginLeft = "6px";
         toolbaricon.style.cursor = "pointer";
         toolbaricon.style.display = "inline-block";
-    
         toolbaricon.classList.add("squareCraft-admin-icon");
     
-        icon.addEventListener("click", () => { 
-            console.log("✅ SquareCraft icon clicked!");
-            showFloatingMessage();
-            createWidget();
-        });
         toolbaricon.addEventListener("click", () => { 
             console.log("✅ SquareCraft icon clicked!");
-            showFloatingMessage();
             createWidget();
         });
     
@@ -248,20 +243,6 @@
         injectIconIntoTargetElements(); // Start the loop
     }
     
-    function showFloatingMessage() {
-        const existingMessage = parent.document.querySelector(".squareCraft-tooltip");
-        if (existingMessage) return;
-    
-        const tooltip = document.createElement("div");
-        tooltip.classList.add("squareCraft-tooltip");
-        tooltip.innerHTML = "SquareCraft customizations are disabled. Click here to enable.";
-    
-        parent.document.body.appendChild(tooltip);
-    
-        setTimeout(() => {
-            tooltip.remove();
-        }, 3000);
-    }
     
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
