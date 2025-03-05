@@ -142,7 +142,7 @@
         icon.style.background = "#fcf4ee";
         icon.style.borderRadius = "20%";
         icon.style.padding = "4px";
-        icon.style.marginRight = "0px 6px";
+        icon.style.marginRight = "6px";
         icon.style.cursor = "pointer";
         icon.style.display = "inline-block";
         icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
