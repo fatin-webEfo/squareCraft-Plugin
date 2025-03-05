@@ -45,14 +45,6 @@
                     widgetContainer.innerHTML = module.html();
                     document.body.appendChild(widgetContainer);
     
-                    widgetContainer.style.display = "block";
-                    widgetContainer.style.borderRadius = "14px";
-                    widgetContainer.style.opacity = "1";
-                    widgetContainer.style.zIndex = "9999";
-                    widgetContainer.style.position = "fixed";
-                    widgetContainer.style.top = "100px";
-                    widgetContainer.style.right = "100px";
-    
                     console.log("✅ Widget container added:", widgetContainer);
                     console.log("📌 Widget Computed Style:", getComputedStyle(widgetContainer));
     
