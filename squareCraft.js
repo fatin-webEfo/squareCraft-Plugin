@@ -54,11 +54,13 @@
                     widgetContainer.style.right = "100px";
     
                     console.log("✅ Widget container added:", widgetContainer);
-                    console.log("📝 Widget HTML:", widgetContainer.innerHTML);
                     console.log("📌 Widget Computed Style:", getComputedStyle(widgetContainer));
+    
                     makeWidgetDraggable();
                 } else {
-                    widgetContainer.classList.remove("squareCraft-hidden");
+                    console.log("ℹ️ Widget already exists. Making it visible.");
+                    widgetContainer.classList.remove("squareCraft-hidden"); // Ensure it's not hidden
+                    widgetContainer.style.display = "block"; // Show widget
                 }
             } else {
                 console.error("❌ Failed to retrieve the HTML function from module!");
@@ -67,6 +69,7 @@
             console.error("🚨 Error loading HTML module:", error);
         }
     }
+    
     
     document.body.addEventListener("click", (event) => {
         const targetBlock = event.target.closest('[id^="block-"]');
@@ -205,8 +208,14 @@
     
         toolbaricon.addEventListener("click", () => { 
             console.log("✅ SquareCraft icon clicked!");
-            createWidget();
+            if (typeof createWidget === "function") {
+                createWidget();
+                console.log("✅ createWidget() function executed");
+            } else {
+                console.error("❌ createWidget() function not found!");
+            }
         });
+        
     
         navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
         console.log("✅ SquareCraft icon injected into nav bar!");
@@ -231,7 +240,7 @@
                 let clonedIcon = toolbaricon.cloneNode(true);
     
                 element.parentNode.insertBefore(wrapper, element);
-                // wrapper.appendChild(clonedIcon);
+                wrapper.appendChild(clonedIcon);
                 wrapper.appendChild(element);
     
                 console.log("✅ SquareCraft icon injected beside target element:", element);
