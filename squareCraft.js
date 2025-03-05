@@ -176,6 +176,7 @@
         localStorage.setItem("squareCraft_toolbar_icon", toolbarIconSrc);
     
         let icon = document.createElement("img");
+        navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
         icon.src = iconSrc;
         icon.alt = "SquareCraft";
         icon.style.width = "25px";
@@ -188,6 +189,8 @@
         icon.style.cursor = "pointer";
         icon.style.display = "inline-block";
         icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+        
+
     
         let toolbaricon = document.createElement("img");
         toolbaricon.src = toolbarIconSrc;
@@ -212,6 +215,7 @@
                 console.error("❌ createWidget() function not found!");
             }
         });
+        
     
         navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
         console.log("✅ SquareCraft icon injected into nav bar!");
