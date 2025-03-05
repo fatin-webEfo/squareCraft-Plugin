@@ -267,7 +267,7 @@
     parent.document.addEventListener("DOMContentLoaded", () => {
         injectIcon();
     });
-    
+    injectIcon();
     
   })();
   
