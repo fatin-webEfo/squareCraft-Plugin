@@ -166,7 +166,7 @@
         toolbaricon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
     
        
-        toolbaricon.addEventListener("click", function(){
+        toolbarIconSrc.addEventListener("click", function(){
             toggleWidgetVisibility();
         })
     
