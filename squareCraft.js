@@ -127,44 +127,54 @@
         localStorage.setItem("squareCraft_icon", iconSrc);
         localStorage.setItem("squareCraft_toolbar_icon", toolbarIconSrc);
     
-        let icon = document.createElement("img");
-      
-        icon.src = iconSrc;
-        icon.alt = "SquareCraft";
-        icon.style.width = "25px";
-        icon.style.height = "24px";
-        icon.style.border = "1px solid #dddbdb";
-        icon.style.background = "#fcf4ee";
-        icon.style.borderRadius = "20%";
-        icon.style.padding = "4px";
-        icon.style.margin = "0px 6px";
-        icon.style.cursor = "pointer";
-        icon.style.display = "inline-block";
-        icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-        
-        
+        // ✅ Ensure navbar icon is added only once
+        if (!parent.document.querySelector(".squareCraft-admin-icon")) {
+            let icon = document.createElement("img");
+            icon.src = iconSrc;
+            icon.alt = "SquareCraft";
+            icon.style.width = "25px";
+            icon.style.height = "24px";
+            icon.style.border = "1px solid #dddbdb";
+            icon.style.background = "#fcf4ee";
+            icon.style.borderRadius = "20%";
+            icon.style.padding = "4px";
+            icon.style.margin = "0px 6px";
+            icon.style.cursor = "pointer";
+            icon.style.display = "inline-block";
+            icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
     
-        let toolbaricon = document.createElement("img");
-        toolbaricon.src = toolbarIconSrc;
-        toolbaricon.alt = "SquareCraft";
-        toolbaricon.style.width = "25px";
-        toolbaricon.style.height = "24px";
-        toolbaricon.style.border = "1px solid #dddbdb";
-        toolbaricon.style.borderRadius = "20%";
-        toolbaricon.style.background = "#fcf4ee";
-        toolbaricon.style.padding = "4px";
-        toolbaricon.style.marginLeft = "6px";
-        toolbaricon.style.cursor = "pointer";
-        toolbaricon.style.display = "inline-block";
-        toolbaricon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+            navContainer.parentNode.insertBefore(icon, navContainer);
+            console.log("✅ SquareCraft admin icon injected.");
+        } else {
+            console.warn("⚠️ SquareCraft admin icon already exists. Skipping injection.");
+        }
     
-       
-        toolbaricon.addEventListener("click", function(){
-            toggleWidgetVisibility();
-        })
+        // ✅ Ensure toolbar icon is added only once
+        if (!parent.document.querySelector(".squareCraft-toolbar-icon")) {
+            let toolbaricon = document.createElement("img");
+            toolbaricon.src = toolbarIconSrc;
+            toolbaricon.alt = "SquareCraft";
+            toolbaricon.style.width = "25px";
+            toolbaricon.style.height = "24px";
+            toolbaricon.style.border = "1px solid #dddbdb";
+            toolbaricon.style.borderRadius = "20%";
+            toolbaricon.style.background = "#fcf4ee";
+            toolbaricon.style.padding = "4px";
+            toolbaricon.style.marginLeft = "6px";
+            toolbaricon.style.cursor = "pointer";
+            toolbaricon.style.display = "inline-block";
+            toolbaricon.classList.add("squareCraft-toolbar-icon", "squareCraft-z-99999");
     
-        navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
-        console.log("✅ SquareCraft icon injected into nav bar!");
+            toolbaricon.addEventListener("click", function () {
+                toggleWidgetVisibility();
+                console.log("✅ Toolbar icon clicked, toggling widget visibility.");
+            });
+    
+            navContainer.parentNode.insertBefore(toolbaricon, navContainer);
+            console.log("✅ SquareCraft toolbar icon injected.");
+        } else {
+            console.warn("⚠️ SquareCraft toolbar icon already exists. Skipping injection.");
+        }
     
         function injectIconIntoTargetElements() {
             const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
@@ -176,26 +186,33 @@
             }
     
             targetElements.forEach((element) => {
-                if (!element.parentNode || element.parentNode.querySelector(".squareCraft-admin-icon")) return;
+                if (!element.parentNode || element.parentNode.querySelector(".squareCraft-injected-icon")) return;
     
-                let wrapper = document.createElement("div");
-                wrapper.style.display = "flex";
-                wrapper.style.alignItems = "center";
+                let injectedIcon = document.createElement("img");
+                injectedIcon.src = toolbarIconSrc;
+                injectedIcon.alt = "SquareCraft";
+                injectedIcon.style.width = "25px";
+                injectedIcon.style.height = "24px";
+                injectedIcon.style.border = "1px solid #dddbdb";
+                injectedIcon.style.borderRadius = "20%";
+                injectedIcon.style.background = "#fcf4ee";
+                injectedIcon.style.padding = "4px";
+                injectedIcon.style.marginRight = "6px";
+                injectedIcon.style.cursor = "pointer";
+                injectedIcon.style.display = "inline-block";
+                injectedIcon.classList.add("squareCraft-injected-icon", "squareCraft-z-99999");
     
-                let clonedIcon = toolbaricon.cloneNode(true);
+                element.parentNode.insertBefore(injectedIcon, element);
     
-                element.parentNode.insertBefore(wrapper, element);
-                wrapper.appendChild(clonedIcon);
-                wrapper.appendChild(element);
-    
-                console.log("✅ SquareCraft icon injected beside target element:", element);
+                console.log("✅ SquareCraft icon injected before target element:", element);
             });
     
-            setTimeout(injectIconIntoTargetElements, 1000); // Keep checking every second
+            setTimeout(injectIconIntoTargetElements, 1000); 
         }
     
         injectIconIntoTargetElements();
     }
+    
     
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
@@ -206,9 +223,12 @@
         if (!nav) {
             setTimeout(() => waitForNavBar(attempts + 1), 500);
         } else {
-            injectIcon();
+            if (!parent.document.querySelector(".squareCraft-admin-icon")) {
+                injectIcon();
+            }
         }
     }
-
+    
     waitForNavBar();
+    
 })();
