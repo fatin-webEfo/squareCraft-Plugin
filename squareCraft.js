@@ -175,10 +175,11 @@
         }
     
         let icon = document.createElement("img");
-        icon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+        icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
         icon.alt = "SquareCraft";
         icon.style.width = "25px";
         icon.style.height = "24px";
+        icon.style.border = "1px solid #dddbdb";
         icon.style.borderRadius = "20%";
         icon.style.padding = "4px";
         icon.style.margin = "0px 6px";
@@ -188,10 +189,11 @@
         icon.classList.add("squareCraft-admin-icon");
 
         let toolbaricon = document.createElement("img");
-        toolbaricon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+        toolbaricon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
         toolbaricon.alt = "SquareCraft";
         toolbaricon.style.width = "25px";
         toolbaricon.style.height = "24px";
+        toolbaricon.style.border = "1px solid #dddbdb";
         toolbaricon.style.borderRadius = "20%";
         toolbaricon.style.padding = "4px";
         toolbaricon.style.marginLeft = "6px";
@@ -199,7 +201,7 @@
         toolbaricon.style.display = "inline-block";
     
         toolbaricon.classList.add("squareCraft-admin-icon");
-
+    
         toolbaricon.addEventListener("click", () => { 
             console.log("✅ SquareCraft icon clicked!");
             createWidget();
@@ -239,7 +241,7 @@
     
         injectIconIntoTargetElements(); // Start the loop
     }
-
+    
     
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
