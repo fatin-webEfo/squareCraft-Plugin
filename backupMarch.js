@@ -153,7 +153,7 @@
         toolbaricon.style.borderRadius = "20%";
         toolbaricon.style.background = "#fcf4ee";
         toolbaricon.style.padding = "4px";
-        toolbaricon.style.marginLeft = "6px";
+        toolbaricon.style.marginRight = "6px";
         toolbaricon.style.cursor = "pointer";
         toolbaricon.style.display = "inline-block";
         toolbaricon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
@@ -165,35 +165,40 @@
     
         navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
         console.log("✅ SquareCraft icon injected into nav bar!");
-    
+        
         function injectIconIntoTargetElements() {
             const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
-    
+        
             if (targetElements.length === 0) {
                 console.warn("❌ Target elements not found. Retrying in 1 second...");
                 setTimeout(injectIconIntoTargetElements, 1000);
                 return;
             }
-    
+        
             targetElements.forEach((element) => {
-                if (!element.parentNode || element.parentNode.querySelector(".squareCraft-admin-icon")) return;
-    
+                if (!element.parentNode || element.parentNode.querySelector(".squareCraft-injected-wrapper")) return;
+        
                 let wrapper = document.createElement("div");
+                wrapper.classList.add("squareCraft-injected-wrapper");
                 wrapper.style.display = "flex";
                 wrapper.style.alignItems = "center";
-    
+        
                 let clonedIcon = toolbaricon.cloneNode(true);
-    
-                element.parentNode.insertBefore(wrapper, element);
-                wrapper.appendChild(clonedIcon);
-                wrapper.appendChild(element);
-    
-                console.log("✅ SquareCraft icon injected beside target element:", element);
+                clonedIcon.classList.add("squareCraft-injected-icon");
+        
+                if (!element.parentNode.classList.contains("squareCraft-injected-wrapper")) {
+                    element.parentNode.insertBefore(wrapper, element);
+                    wrapper.appendChild(element);
+                    wrapper.appendChild(clonedIcon); 
+                }
+        
+                console.log("✅ SquareCraft icon injected at the last inside wrapper:", element);
             });
-    
-            setTimeout(injectIconIntoTargetElements, 1000); // Keep checking every second
+        
+            setTimeout(injectIconIntoTargetElements, 1000); 
         }
-    
+        
+        
         injectIconIntoTargetElements();
     }
     

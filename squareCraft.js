@@ -63,16 +63,23 @@
     function toggleWidgetVisibility() {
         if (!widgetLoaded) {
             createWidget().then(() => {
-                widgetContainer.style.display = "block";
+                widgetContainer = document.getElementById("squarecraft-widget-container");
+                if (widgetContainer) {
+                    widgetContainer.style.display = "fixed"; 
+                }
             });
         } else {
-            if (widgetContainer.style.display === "none") {
-                widgetContainer.style.display = "block";
-            } else {
-                widgetContainer.style.display = "none";
+            widgetContainer = document.getElementById("squarecraft-widget-container"); 
+            if (widgetContainer) {
+                if (widgetContainer.style.display === "none") {
+                    widgetContainer.style.display = "fixed"; 
+                } else {
+                    widgetContainer.style.display = "none"; 
+                }
             }
         }
     }
+    
 
     function makeWidgetDraggable() {
         if (!widgetContainer) return;
@@ -186,18 +193,16 @@
                 let clonedIcon = toolbaricon.cloneNode(true);
                 clonedIcon.classList.add("squareCraft-injected-icon");
         
-                // ✅ Check if wrapper already exists
                 if (!element.parentNode.classList.contains("squareCraft-injected-wrapper")) {
-                    // Move the target element inside wrapper
                     element.parentNode.insertBefore(wrapper, element);
                     wrapper.appendChild(element);
-                    wrapper.appendChild(clonedIcon); // ✅ Adds toolbar icon at the last only once
+                    wrapper.appendChild(clonedIcon); 
                 }
         
                 console.log("✅ SquareCraft icon injected at the last inside wrapper:", element);
             });
         
-            setTimeout(injectIconIntoTargetElements, 1000); // Keep checking every second
+            setTimeout(injectIconIntoTargetElements, 1000); 
         }
         
         
