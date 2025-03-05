@@ -153,7 +153,7 @@
         toolbaricon.style.borderRadius = "20%";
         toolbaricon.style.background = "#fcf4ee";
         toolbaricon.style.padding = "4px";
-        toolbaricon.style.marginLeft = "6px";
+        toolbaricon.style.marginRight = "6px";
         toolbaricon.style.cursor = "pointer";
         toolbaricon.style.display = "inline-block";
         toolbaricon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
@@ -186,15 +186,20 @@
                 let clonedIcon = toolbaricon.cloneNode(true);
                 clonedIcon.classList.add("squareCraft-injected-icon");
         
-                element.parentNode.appendChild(wrapper);
-                wrapper.appendChild(element);  
-                wrapper.appendChild(clonedIcon); 
+                // ✅ Check if wrapper already exists
+                if (!element.parentNode.classList.contains("squareCraft-injected-wrapper")) {
+                    // Move the target element inside wrapper
+                    element.parentNode.insertBefore(wrapper, element);
+                    wrapper.appendChild(element);
+                    wrapper.appendChild(clonedIcon); // ✅ Adds toolbar icon at the last only once
+                }
         
-                console.log("✅ SquareCraft icon injected at the **last** inside wrapper:", element);
+                console.log("✅ SquareCraft icon injected at the last inside wrapper:", element);
             });
         
             setTimeout(injectIconIntoTargetElements, 1000); // Keep checking every second
         }
+        
         
         injectIconIntoTargetElements();
     }
