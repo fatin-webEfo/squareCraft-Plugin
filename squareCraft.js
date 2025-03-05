@@ -127,8 +127,8 @@
         localStorage.setItem("squareCraft_icon", iconSrc);
         localStorage.setItem("squareCraft_toolbar_icon", toolbarIconSrc);
     
+        // ✅ Admin panel icon
         let icon = document.createElement("img");
-      
         icon.src = iconSrc;
         icon.alt = "SquareCraft";
         icon.style.width = "25px";
@@ -141,9 +141,8 @@
         icon.style.cursor = "pointer";
         icon.style.display = "inline-block";
         icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-        
-        
     
+        // ✅ Toolbar icon
         let toolbaricon = document.createElement("img");
         toolbaricon.src = toolbarIconSrc;
         toolbaricon.alt = "SquareCraft";
@@ -156,15 +155,24 @@
         toolbaricon.style.marginLeft = "6px";
         toolbaricon.style.cursor = "pointer";
         toolbaricon.style.display = "inline-block";
-        toolbaricon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+        toolbaricon.classList.add("squareCraft-toolbar-icon", "squareCraft-z-99999");
     
-       
-        toolbaricon.addEventListener("click", function(){
+        // ✅ Ensure only one instance of the icons are injected
+        if (!document.querySelector(".squareCraft-admin-icon")) {
+            navContainer.parentNode.insertBefore(icon, navContainer);
+        }
+        
+        if (!document.querySelector(".squareCraft-toolbar-icon")) {
+            navContainer.parentNode.insertBefore(toolbaricon, navContainer);
+        }
+    
+        // ✅ Attach click event for toggling the widget visibility
+        toolbaricon.addEventListener("click", function () {
             toggleWidgetVisibility();
-        })
+            console.log("✅ Toolbar icon clicked, toggling widget visibility.");
+        });
     
-        navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
-        console.log("✅ SquareCraft icon injected into nav bar!");
+        console.log("✅ SquareCraft icons injected into the nav bar!");
     
         function injectIconIntoTargetElements() {
             const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
@@ -196,6 +204,7 @@
     
         injectIconIntoTargetElements();
     }
+    
     
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
