@@ -115,38 +115,80 @@
 
     function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
+        
         if (!navContainer) {
             console.warn("❌ Squarespace admin nav container not found.");
             return;
         }
+    
+        let icon = document.createElement("img");
+        icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+        icon.alt = "SquareCraft";
+        icon.style.width = "25px";
+        icon.style.height = "24px";
+        icon.style.border = "1px solid #dddbdb";
+        icon.style.background = "#fcf4ee"
+        icon.style.borderRadius = "20%";
+        icon.style.padding = "4px";
+        icon.style.margin = "0px 6px";
+        icon.style.cursor = "pointer";
+        icon.style.display = "inline-block";
+    
+        icon.classList.add("squareCraft-admin-icon");
 
-        let iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
-        let toolbarIconSrc = localStorage.getItem("squareCraft_toolbar_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
-
-        let toolbarIcon = document.createElement("img");
-        toolbarIcon.src = toolbarIconSrc;
-        toolbarIcon.alt = "SquareCraft";
-        toolbarIcon.style.width = "25px";
-        toolbarIcon.style.height = "24px";
-        toolbarIcon.style.border = "1px solid #dddbdb";
-        toolbarIcon.style.borderRadius = "20%";
-        toolbarIcon.style.background = "#fcf4ee";
-        toolbarIcon.style.padding = "4px";
-        toolbarIcon.style.marginLeft = "6px";
-        toolbarIcon.style.cursor = "pointer";
-        toolbarIcon.style.display = "inline-block";
-        toolbarIcon.classList.add("squareCraft-toolbar-icon", "squareCraft-z-99999");
-
-        navContainer.parentNode.insertBefore(toolbarIcon, navContainer);
-
-        toolbarIcon.addEventListener("click", () => {
+        let toolbaricon = document.createElement("img");
+        toolbaricon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+        toolbaricon.alt = "SquareCraft";
+        toolbaricon.style.width = "25px";
+        toolbaricon.style.height = "24px";
+        toolbaricon.style.border = "1px solid #dddbdb";
+        toolbaricon.style.borderRadius = "20%";
+        toolbaricon.style.background = "#fcf4ee";
+        toolbaricon.style.padding = "4px";
+        toolbaricon.style.marginLeft = "6px";
+        toolbaricon.style.cursor = "pointer";
+        toolbaricon.style.display = "inline-block";
+        toolbaricon.classList.add("squareCraft-admin-icon");
+    
+        toolbaricon.addEventListener("click", () => { 
+            console.log("✅ SquareCraft icon clicked!");
             toggleWidgetVisibility();
-            console.log("✅ Toolbar icon clicked, toggling widget visibility.");
         });
-
-        console.log("✅ SquareCraft toolbar icon injected.");
+    
+        navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
+        console.log("✅ SquareCraft icon injected into nav bar!");
+    
+        function injectIconIntoTargetElements() {
+            const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
+    
+            if (targetElements.length === 0) {
+                console.warn("❌ Target elements not found. Retrying...");
+                setTimeout(injectIconIntoTargetElements, 1000); 
+              
+            }
+    
+            targetElements.forEach((element) => {
+                if (!element.parentNode || element.parentNode.querySelector(".squareCraft-admin-icon")) return;
+    
+                let wrapper = document.createElement("div");
+                wrapper.style.display = "flex";
+                wrapper.style.alignItems = "center";
+                wrapper.style.gap = "6px";
+    
+                let clonedIcon = toolbaricon.cloneNode(true);
+    
+                element.parentNode.insertBefore(wrapper, element);
+                wrapper.appendChild(clonedIcon);
+                wrapper.appendChild(element);
+    
+                console.log("✅ SquareCraft icon injected beside target element:", element);
+            });
+    
+            setTimeout(injectIconIntoTargetElements, 1000); // Keep checking every second
+        }
+    
+        injectIconIntoTargetElements(); // Start the loop
     }
-
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
             console.error("❌ Failed to find Squarespace nav bar.");
