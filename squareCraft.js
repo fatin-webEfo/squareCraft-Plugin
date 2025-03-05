@@ -187,7 +187,7 @@
         icon.style.margin = "0px 6px";
         icon.style.cursor = "pointer";
         icon.style.display = "inline-block";
-        icon.classList.add("squareCraft-admin-icon");
+        icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
     
         let toolbaricon = document.createElement("img");
         toolbaricon.src = toolbarIconSrc;
