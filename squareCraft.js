@@ -120,14 +120,11 @@
             console.warn("❌ Squarespace admin nav container not found.");
             return;
         }
-    
         let iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
         let toolbarIconSrc = localStorage.getItem("squareCraft_toolbar_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
     
         localStorage.setItem("squareCraft_icon", iconSrc);
         localStorage.setItem("squareCraft_toolbar_icon", toolbarIconSrc);
-    
-        // ✅ Admin panel icon
         let icon = document.createElement("img");
         icon.src = iconSrc;
         icon.alt = "SquareCraft";
@@ -142,7 +139,6 @@
         icon.style.display = "inline-block";
         icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
     
-        // ✅ Toolbar icon
         let toolbaricon = document.createElement("img");
         toolbaricon.src = toolbarIconSrc;
         toolbaricon.alt = "SquareCraft";
@@ -157,7 +153,6 @@
         toolbaricon.style.display = "inline-block";
         toolbaricon.classList.add("squareCraft-toolbar-icon", "squareCraft-z-99999");
     
-        // ✅ Ensure only one instance of the icons are injected
         if (!document.querySelector(".squareCraft-admin-icon")) {
             navContainer.parentNode.insertBefore(icon, navContainer);
         }
@@ -166,7 +161,6 @@
             navContainer.parentNode.insertBefore(toolbaricon, navContainer);
         }
     
-        // ✅ Attach click event for toggling the widget visibility
         toolbaricon.addEventListener("click", function () {
             toggleWidgetVisibility();
             console.log("✅ Toolbar icon clicked, toggling widget visibility.");
@@ -205,19 +199,5 @@
         injectIconIntoTargetElements();
     }
     
-    
-    function waitForNavBar(attempts = 0) {
-        if (attempts > 10) {
-            console.error("❌ Failed to find Squarespace nav bar.");
-            return;
-        }
-        const nav = parent.document.querySelector("ul.css-1tn5iw9");
-        if (!nav) {
-            setTimeout(() => waitForNavBar(attempts + 1), 500);
-        } else {
-            injectIcon();
-        }
-    }
 
-    waitForNavBar();
 })();
