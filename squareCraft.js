@@ -168,31 +168,27 @@
     
         function injectIconIntoTargetElements() {
             const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
-    
+        
             if (targetElements.length === 0) {
                 console.warn("❌ Target elements not found. Retrying in 1 second...");
                 setTimeout(injectIconIntoTargetElements, 1000);
                 return;
             }
-    
+        
             targetElements.forEach((element) => {
-                if (!element.parentNode || element.parentNode.querySelector(".squareCraft-admin-icon")) return;
-    
-                let wrapper = document.createElement("div");
-                wrapper.style.display = "flex";
-                wrapper.style.alignItems = "center";
-    
+                if (!element.parentNode || element.parentNode.querySelector(".squareCraft-injected-icon")) return;
+        
                 let clonedIcon = toolbaricon.cloneNode(true);
-    
-                element.parentNode.insertBefore(wrapper, element);
-                wrapper.appendChild(clonedIcon);
-                wrapper.appendChild(element);
-    
-                console.log("✅ SquareCraft icon injected beside target element:", element);
+                clonedIcon.classList.add("squareCraft-injected-icon");
+        
+                element.parentNode.insertBefore(clonedIcon, element);
+        
+                console.log("✅ SquareCraft icon injected **before** target element:", element);
             });
-    
-            setTimeout(injectIconIntoTargetElements, 1000); // Keep checking every second
+        
+            setTimeout(injectIconIntoTargetElements, 1000);
         }
+        
     
         injectIconIntoTargetElements();
     }
