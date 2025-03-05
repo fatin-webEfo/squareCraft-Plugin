@@ -259,6 +259,7 @@
     }
     
     waitForNavBar();
+    createWidget();
     
     
   })();
